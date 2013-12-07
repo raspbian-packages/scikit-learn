@@ -56,7 +56,7 @@ def launch_mcd_on_dataset(
 
     pure_data = data[inliers_mask]
     # compute MCD by fitting an object
-    mcd_fit = MinCovDet().fit(data)
+    mcd_fit = MinCovDet(random_state=rand_gen).fit(data)
     T = mcd_fit.location_
     S = mcd_fit.covariance_
     H = mcd_fit.support_
