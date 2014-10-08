@@ -802,6 +802,11 @@ def test_precision_recall_curve_toydata():
 
         y_true = [0, 0]
         y_score = [0.25, 0.75]
+        import platform
+        if platform.uname()[4].startswith('armv'):
+            # https://github.com/numpy/numpy/issues/15562
+            pytest.skip("no precision-related exceptions get issued on armel")
+
         with pytest.raises(Exception):
             precision_recall_curve(y_true, y_score)
         with pytest.raises(Exception):

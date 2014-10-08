@@ -395,6 +395,10 @@ def test_tfidf_no_smoothing():
         numpy_provides_div0_warning = len(w) == 1
 
     in_warning_message = 'divide by zero'
+    import platform
+    if platform.uname()[4].startswith('armv'):
+        raise SkipTest("no warning gets issued on armel")
+
     tfidf = assert_warns_message(RuntimeWarning, in_warning_message,
                                  tr.fit_transform, X).toarray()
     if not numpy_provides_div0_warning:
