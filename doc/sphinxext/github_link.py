@@ -5,8 +5,8 @@ import os
 import sys
 from functools import partial
 
-REVISION_CMD = "git rev-parse --short HEAD"
-
+#REVISION_CMD = "git rev-parse --short HEAD"
+REVISION_CMD = 'cat ../debian/github-revision.txt'
 
 def _get_git_revision():
     try:
