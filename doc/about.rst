@@ -594,9 +594,11 @@ Donating to the project
 .......................
 
 If you are interested in donating to the project or to one of our code-sprints,
-you can use the *Paypal* button below or the `NumFOCUS Donations Page
-<https://www.numfocus.org/support-numfocus.html>`_ (if you use the latter,
-please indicate that you are donating for the scikit-learn project).
+you can use the `*Paypal* button on the upstream website
+<https://scikit-learn.org/stable/about.html#donating-to-the-project>`_ or the
+`NumFOCUS Donations Page <https://www.numfocus.org/support-numfocus.html>`_ (if
+you use the latter, please indicate that you are donating for the scikit-learn
+project).
 
 All donations will be handled by `NumFOCUS
 <https://numfocus.org/>`_, a non-profit-organization which is
