@@ -482,9 +482,11 @@ Donating to the project
 .......................
 
 If you are interested in donating to the project or to one of our code-sprints,
-you can use the *Paypal* button below or the `NumFOCUS Donations Page
-<https://www.numfocus.org/support-numfocus.html>`_ (if you use the latter,
-please indicate that you are donating for the scikit-learn project).
+you can use the `*Paypal* button on the upstream website
+<https://scikit-learn.org/stable/about.html#donating-to-the-project>`_ or the
+`NumFOCUS Donations Page <https://www.numfocus.org/support-numfocus.html>`_ (if
+you use the latter, please indicate that you are donating for the scikit-learn
+project).
 
 All donations will be handled by `NumFOCUS
 <https://numfocus.org/>`_, a non-profit-organization which is
@@ -497,24 +499,6 @@ the project funded and available while in compliance with tax regulations.
 The received donations for the scikit-learn project mostly will go towards
 covering travel-expenses for code sprints, as well as towards the organization
 budget of the project [#f1]_.
-
-.. raw :: html
-
-    </br></br>
-    <form action="https://www.paypal.com/cgi-bin/webscr" method="post"
-    target="_top">
-    <input type="hidden" name="cmd" value="_s-xclick">
-    <input type="hidden" name="hosted_button_id" value="74EYUMF3FTSW8">
-    <input type="image"
-    src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
-    border="0" name="submit" alt="PayPal - The safer, easier way to pay
-    online!" style="position: relative;
-    left: 40%;">
-    <img alt="" border="0"
-    src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1"
-    height="1">
-    </form>
-    </br>
 
 .. rubric:: Notes
 
