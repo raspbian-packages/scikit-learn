@@ -168,7 +168,7 @@ def _load_imgs(file_paths, slice_, color, resize):
         face = np.asarray(img[slice_], dtype=np.float32)
         face /= 255.0  # scale uint8 coded colors to the [0.0, 1.0] floats
         if resize is not None:
-            face = imresize(face, resize)
+            face = imresize(face, (h, w))
         if not color:
             # average the color channels to compute a gray levels
             # representation
