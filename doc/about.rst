@@ -166,49 +166,12 @@ for code sprints, as well as towards the organization budget of the project [#f1
 The 2013 Paris international sprint
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|center-div|   |telecom|   |tinyclues|   |afpy| |FNRS|
-
- |end-div|
-
-
-
-.. |center-div| raw:: html
-
-    <div style="text-align: center; margin: -7px 0 -10px 0;">
-
-
-.. |telecom| image:: http://f.hypotheses.org/wp-content/blogs.dir/331/files/2011/03/Logo-TPT.jpg
-   :width: 120pt
-   :target: http://www.telecom-paristech.fr/
-
-
-.. |tinyclues| image:: https://www.tinyclues.com/web/wp-content/uploads/2016/06/Tinyclues-PNG-logo.png
-   :width: 120pt
-   :target: https://www.tinyclues.com/
-
-
-.. |afpy| image:: https://www.afpy.org/logo.png
-   :width: 120pt
-   :target: https://www.afpy.org
-
-
-.. |SGR| image:: http://www.svi.cnrs-bellevue.fr/wikimedia/images/Logo_svi_inp.png
-   :width: 120pt
-   :target: http://www.svi.cnrs-bellevue.fr
-
-.. |FNRS| image:: http://www.fnrs.be/en/images/FRS-FNRS_rose_transp.png
-   :width: 120pt
-   :target: http://www.frs-fnrs.be/
-
-.. figure:: http://sites.uclouvain.be/dysco/pmwiki/uploads/Main/dysco.gif
-   :width: 120pt
-   :target: http://sites.uclouvain.be/dysco/
-
-   IAP VII/19 - DYSCO
-
-.. |end-div| raw:: html
-
-  </div>
+`telecom <http://www.telecom-paristech.fr/>`_,
+`tinyclues <http://www.tinyclues.com/>`_,
+`afpy <http://www.afpy.org>`_
+`SGR <http://www.svi.cnrs-bellevue.fr>`,
+`FNRS <http://www.frs-fnrs.be/>`_,
+`IAP VII/19 - DYSCO <http://sites.uclouvain.be/dysco/>`_.
 
 *For more information on this sprint, see* `here
 <https://github.com/scikit-learn/administrative/blob/master/sprint_paris_2013/proposal.rst>`__
