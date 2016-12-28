@@ -1,0 +1,21 @@
+# emacs: -*- mode: org; indent-tabs-mode: nil -*-
+
+* Modularization
+** Use now-available system-wide liblinear?
+** Use system-wide atlas?
+
+ATM Debian carries stable upstream release 3.8.3, while scikits.learn
+uses 3.9.25 (current development upstream release is 3.9.32,
+see #609287)
+
+* provide .doc-base file
+* provide -dbg package
+
+
+* lintian E/W:
+
+neurodebian@head2:~/deb/builds/scikit-learn/0.16.1-2$ lintian scikit-learn_0.16.1-2_amd64.changes
+W: scikit-learn source: invalid-short-name-in-dep5-copyright bsd (paragraph at line 10)
+W: python-sklearn: image-file-in-usr-lib usr/lib/python2.7/dist-packages/sklearn/datasets/images/china.jpg
+W: python-sklearn: image-file-in-usr-lib usr/lib/python2.7/dist-packages/sklearn/datasets/images/flower.jpg
+
