@@ -11,6 +11,7 @@ Build-Depends: debhelper (>= 7.0.50), dh-autoreconf,
                python-nose,
                python-matplotlib,
                python-joblib (>= 0.9.2),
+               python-pytest,
                python3-all-dev,
                cython3,
                python3-setuptools,
@@ -18,15 +19,16 @@ Build-Depends: debhelper (>= 7.0.50), dh-autoreconf,
                python3-nose,
                python3-matplotlib,
                python3-joblib (>= 0.9.2),
+               python3-pytest,
                libsvm-dev (>= 2.84.0),
                libatlas3-base,
 Build-Depends-Indep:
                python-sphinx (>= 1.0), python-imaging, graphviz,
 Standards-Version: 3.9.6
 X-Python-Version: >= 2.6
+Vcs-Browser: https://anonscm.debian.org/cgit/debian-science/packages/scikit-learn.git
+Vcs-Git: https://anonscm.debian.org/git/debian-science/packages/scikit-learn.git
 Homepage: http://scikit-learn.sourceforge.net
-Vcs-Browser: http://github.com/yarikoptic/scikit-learn
-Vcs-Git: git://github.com/yarikoptic/scikit-learn.git -b debian
 
 Package: python-sklearn
 Replaces: python-scikits-learn (<< 0.9~)

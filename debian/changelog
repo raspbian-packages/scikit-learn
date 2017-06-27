@@ -1,8 +1,18 @@
-scikit-learn (0.18-4+rpi1) stretch-staging; urgency=medium
+scikit-learn (0.18-5+rpi1) stretch-staging; urgency=medium
 
+  [changes brought forward from 0.18-4+rpi1 by Peter Michael Green <plugwash@raspbian.org> at Tue, 22 Nov 2016 15:34:29 +0000]
   * Disable testsuite
 
- -- Peter Michael Green <plugwash@raspbian.org>  Tue, 22 Nov 2016 15:34:29 +0000
+ -- Raspbian forward porter <root@raspbian.org>  Tue, 27 Jun 2017 22:16:46 +0000
+
+scikit-learn (0.18-5) unstable; urgency=medium
+
+  * Team upload.
+  * Moved packaging to Debian Science team
+  * Build-Depends: python-pytest, python3-pytest
+    Closes: #848788
+
+ -- Andreas Tille <tille@debian.org>  Wed, 28 Dec 2016 13:24:45 +0100
 
 scikit-learn (0.18-4) unstable; urgency=medium
 
