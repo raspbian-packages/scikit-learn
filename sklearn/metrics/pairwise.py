@@ -1080,7 +1080,7 @@ def _parallel_pairwise(X, Y, func, n_jobs, **kwds):
     """Break the pairwise matrix in n_jobs even slices
     and compute them in parallel"""
     if n_jobs < 0:
-        n_jobs = max(cpu_count() + 1 + n_jobs, 1)
+        n_jobs = max(parallel.cpu_count() + 1 + n_jobs, 1)
 
     if Y is None:
         Y = X
