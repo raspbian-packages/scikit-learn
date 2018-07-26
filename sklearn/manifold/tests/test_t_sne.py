@@ -246,7 +246,7 @@ def test_preserve_trustworthiness_approximately():
                         method=method)
             X_embedded = tsne.fit_transform(X)
             t = trustworthiness(X, X_embedded, n_neighbors=1)
-            assert_greater(t, 0.9)
+            assert_greater(t, 0.85)
 
 
 def test_optimization_minimizes_kl_divergence():
