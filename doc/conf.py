@@ -62,7 +62,10 @@ source_suffix = '.rst'
 #source_encoding = 'utf-8'
 
 # Generate the plots for the gallery
-plot_gallery = True
+# yoh: some examples require network access (and thus get stuck at times), etc
+#      so to robustify builds of the debian packages across platforms, for now
+#      gallery is disabled
+plot_gallery = False
 
 # The master toctree document.
 master_doc = 'index'
