@@ -60,11 +60,7 @@ def cythonize_extensions(top_path, config):
     #   to actually build the compiled extensions with OpenMP flags if needed.
     sklearn._OPENMP_SUPPORTED = check_openmp_support()
 
-    n_jobs = 1
-    with contextlib.suppress(ImportError):
-        import joblib
-
-        n_jobs = joblib.cpu_count()
+    n_jobs = int(os.environ.get('JOBS', 1))
 
     # Additional checks for Cython
     cython_enable_debug_directives = (
