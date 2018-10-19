@@ -571,13 +571,12 @@ trim_doctests_flags = True
 
 # intersphinx configuration
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/{.major}".format(sys.version_info), None),
-    "numpy": ("https://numpy.org/doc/stable", None),
-    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
+    "python": ("/usr/share/doc/python3/html/", None),
+    "numpy": ("/usr/share/doc/python-numpy/html/", None),
+    "scipy": ("/usr/share/doc/python-scipy-doc/html/", None),
     "narwhals": ("https://narwhals-dev.github.io/narwhals/", None),
-    "matplotlib": ("https://matplotlib.org/", None),
-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
-    "joblib": ("https://joblib.readthedocs.io/en/latest/", None),
+    "matplotlib": ("/usr/share/doc/python-matplotlib/html/", None),
+    "pandas": ("/usr/share/doc/python-pandas-doc/html/", None),
     "seaborn": ("https://seaborn.pydata.org/", None),
     "skops": ("https://skops.readthedocs.io/en/stable/", None),
 }
