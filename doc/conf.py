@@ -301,13 +301,11 @@ trim_doctests_flags = True
 
 # intersphinx configuration
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/{.major}".format(sys.version_info), None),
-    "numpy": ("https://numpy.org/doc/stable", None),
-    "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
-    "matplotlib": ("https://matplotlib.org/", None),
-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
-    "joblib": ("https://joblib.readthedocs.io/en/latest/", None),
-    "seaborn": ("https://seaborn.pydata.org/", None),
+    "python": ("https://docs.python.org/{.major}".format(sys.version_info), '/usr/share/doc/python3/html/objects.inv'),
+    "numpy": ('https://docs.scipy.org/doc/numpy/', '/usr/share/doc/python-numpy-doc/html/objects.inv'),
+    "scipy": ('https://docs.scipy.org/doc/scipy/reference', '/usr/share/doc/python-scipy-doc/html/objects.inv'),
+    "matplotlib": ('https://matplotlib.org/', '/usr/share/doc/python-matplotlib-doc/html/objects.inv'),
+    "pandas": ('https://matplotlib.org/', '/usr/share/doc/python-pandas-doc/html/objects.inv'),
 }
 
 v = parse(release)
