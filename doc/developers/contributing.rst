@@ -73,7 +73,6 @@ link to it from your website, or simply star to say "I use it":
    <a class="github-button" href="https://github.com/scikit-learn/scikit-learn"
    data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star
    scikit-learn/scikit-learn on GitHub">Star</a>
-   <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 In case a contribution/issue involves changes to the API principles
 or changes to dependencies or supported versions, it must be backed by a
