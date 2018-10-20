@@ -75,7 +75,6 @@ and follows the decision-making process outlined in :ref:`governance`.
    <a class="github-button" href="https://github.com/scikit-learn/scikit-learn"
    data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star
    scikit-learn/scikit-learn on GitHub">Star</a>
-   <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 .. topic:: Contributing to related projects
 
