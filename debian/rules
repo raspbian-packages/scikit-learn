@@ -1,0 +1,184 @@
+#!/usr/bin/make -f
+# -*- mode: makefile; coding: utf-8 -*-
+
+# See also: skimage
+
+PY2VERS ?= $(shell pyversions -vr)
+PY3VER  ?= $(shell py3versions -vd)
+PY3VERS ?= $(shell py3versions -vr)
+
+export DEB_BUILD_MAINT_OPTIONS := hardening=+all
+
+export DEB_CFLAGS_MAINT_APPEND :=
+export DEB_LDFLAGS_MAINT_APPEND := -Wl,--as-needed
+
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+  JOBS := $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+else
+  JOBS := 1
+endif
+export JOBS := $(JOBS)
+
+include /usr/share/dpkg/architecture.mk
+
+PYBUILD_TEST_ARGS = -m "not network"
+PYTEST_KEYWORD =
+
+# Some tests are known to fail randomly so need to be excluded ATM
+ifeq ($(DEB_HOST_ARCH),arm64)
+  # A bit aggressive exclusion of some tests which exhibit a problem I have no time to deal with on arm64
+  PYBUILD_TEST_ARGS += -k-test_dump
+endif
+ifeq ($(DEB_HOST_ARCH),i386)
+  # https://github.com/scikit-learn/scikit-learn/issues/7544
+  # Closing as outdated -- let's see
+  # PYBUILD_TEST_ARGS += -k-test_gpr
+endif
+ifeq ($(DEB_HOST_ARCH),ppc64el)
+  # https://buildd.debian.org/status/fetch.php?pkg=scikit-learn&arch=ppc64el&ver=0.18-3&stamp=1475603905
+
+  PYTEST_KEYWORD += and not test_show_versions_with_blas
+  # https://github.com/scikit-learn/scikit-learn/issues/10561
+  PYTEST_KEYWORD += and not test_estimate_bandwidth_1sample
+  # https://github.com/scikit-learn/scikit-learn/issues/12448
+  PYTEST_KEYWORD += and not test_logistic_regression_multi_class_auto
+endif
+
+# TODO: figure out WTF
+PYTEST_KEYWORD += not test_show_versions_with_blas
+PYBUILD_TEST_ARGS += -k "$(PYTEST_KEYWORD)"
+
+
+export PYBUILD_TEST_PYTEST := 1
+# python2 soon deprecated -- doctests unreliable
+export PYBUILD_TEST_ARGS_python2 := $(PYBUILD_TEST_ARGS)
+export PYBUILD_TEST_ARGS_python3 := $(PYBUILD_TEST_ARGS)
+export JOBLIB_MULTIPROCESSING := $(shell expr $(JOBS) / $$(expr $(words $(PY2VERS)) + $(words $(PY3VERS))))
+
+# try to prevent unsunctioned downloads
+export http_proxy := http://127.0.0.1:9/
+export https_proxy := http://127.0.0.1:9/
+
+
+%:
+	dh $@ --with python2,python3,sphinxdoc --buildsystem pybuild
+
+%-arch:
+	dh $@ --with python2,python3 --buildsystem pybuild
+
+clean:
+	dh $@ --with python2,python3 --buildsystem pybuild
+
+# silly distutils does not support parallelism! waste hours of time
+.PHONY: build
+build build-arch build-indep:
+	$(MAKE) -j $(JOBS) -f debian/rules _$@
+
+_build-arch: $(addprefix debian/build-stamp-python,$(PY2VERS)) $(addprefix debian/build-stamp-python,$(PY3VERS))
+	:
+_build _build-indep: _build-arch doc/_build/html
+	:
+
+debian/build-stamp-python%: debian/build-stamp-pyx
+	PYBUILD_INTERPRETERS=python{version} PYBUILD_VERSIONS=$* dh build-arch --with python$(basename $*) --buildsystem pybuild
+	touch $@
+
+override_dh_clean:
+	dh_clean
+	rm -rf .pytest_cache build scikit_learn.egg-info
+	-mv PKG-INFO-BAK PKG-INFO
+	rm -f debian/build-stamp-*
+	for i in $$(find -name '*.pyx'); do \
+		rm -f $${i%.*}.c $${i%.*}.cpp; \
+	done
+	for i in $$(find -name '*.pyx.in'); do \
+		rm -f $${i%.*}; \
+	done
+ifeq (,$(findstring -a,$(DH_INTERNAL_OPTIONS)))
+ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+	+$(MAKE) -C doc clean
+endif
+endif
+
+debian/build-stamp-pyx:
+	-mv PKG-INFO PKG-INFO-BAK
+	python$(PY3VER) setup.py config
+	mv PKG-INFO-BAK PKG-INFO
+	touch $@
+
+doc/_build/html: debian/build-stamp-python$(PY3VER)
+ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+	# urllib.error.URLError -- have to ignore
+	# hotfix SPHINXOPTS -- remove in next release
+	-+\
+		PYTHONPATH=`/bin/ls -d $(CURDIR)/.pybuild/*python*_$(PY3VER)/build`:$$(python3 -c 'import sys;print(":".join(sys.path))') \
+		SPHINXBUILD="python$(PY3VER) -m sphinx -j $(JOBS) -D mathjax_path=MathJax.js" \
+		SPHINXOPTS="-j $(JOBS) -D mathjax_path=MathJax.js" \
+		$(MAKE) -C doc html
+	[ -d $@ ]
+endif
+
+# Test data not copied to .pybuild -- manually link for them
+override_dh_auto_test-arch:
+	for ver in $(PYBUILD_VERSIONS); do \
+		i=`/bin/ls -d $(CURDIR)/.pybuild/*python*_$$ver/build/sklearn`; \
+        ( cd .pybuild; PYTHONPATH=$$(dirname $$i) python$$ver -c 'import sklearn; sklearn.show_versions()'; ); \
+		for dir in data descr images; do \
+			rm -rf $$i/datasets/$$dir || true; \
+			ln -s ../../../../../sklearn/datasets/$$dir $$i/datasets; \
+		done; \
+		rm -rf $$i/datasets/tests/data || true; \
+		ln -s ../../../../../../sklearn/datasets/tests/data $$i/datasets/tests; \
+	done
+	dh_auto_test
+
+override_dh_auto_install:
+	dh_auto_install
+	# cleanup python3 cache (mixing python3 subversions)
+	-find debian/tmp -name "__pycache__" -exec rm -r {} +
+
+override_dh_installdocs-arch:
+	dh_installdocs -A README*.rst
+
+override_dh_installdocs-indep:
+	dh_installdocs -A README*.rst
+ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+    docdir=debian/python-sklearn-doc/usr/share/doc/python-sklearn-doc; \
+	if [ -e $$docdir/stable ] ; then \
+	mv \
+		$$docdir/stable $$docdir/html; \
+    fi
+endif
+
+override_dh_installchangelogs:
+	dh_installchangelogs doc/whats_new.rst
+
+# remove .so libraries from main package, and call dh_numpy*
+_dh_python%:
+	-find debian/python$(*:2=)-sklearn/usr/lib -name "*.so" -delete;
+
+	dh_numpy$(*:2=) -ppython$(*:2=)-sklearn-lib
+	dh_python$*
+
+override_dh_python2: _dh_python2
+override_dh_python3: _dh_python3
+
+## immediately useable documentation and exemplar scripts/data
+override_dh_compress:
+	dh_compress -X.py -X.html -X.pdf -X.css -X.jpg -X.txt -X.js -X.json -X.rtc
+
+override_dh_sphinxdoc-indep:
+ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+	dh_sphinxdoc -XMathJax.js -Xjquery.js
+endif
+
+
+## to prepare next Debian upstream source tarball
+dfsg: dfsg-releases
+dfsg-%:
+	git checkout dfsg
+	-git merge --no-commit $*
+	-git rm -rf sklearn/externals/joblib
+	: # -git rm -f ./sklearn/svm/src/libsvm/svm.*
+	git commit -m "Merge $* into DFSG (pruning externals: joblib)" -a
+	git checkout debian
