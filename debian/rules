@@ -61,27 +61,13 @@ export https_proxy := http://127.0.0.1:9/
 
 
 %:
-	dh $@ --with python2,python3,sphinxdoc --buildsystem pybuild
+	dh $@ --with python2,python3,sphinxdoc --buildsystem pybuild  --parallel
 
 %-arch:
-	dh $@ --with python2,python3 --buildsystem pybuild
+	dh $@ --with python2,python3 --buildsystem pybuild --parallel
 
 clean:
 	dh $@ --with python2,python3 --buildsystem pybuild
-
-# silly distutils does not support parallelism! waste hours of time
-.PHONY: build
-build build-arch build-indep:
-	$(MAKE) -j $(JOBS) -f debian/rules _$@
-
-_build-arch: $(addprefix debian/build-stamp-python,$(PY2VERS)) $(addprefix debian/build-stamp-python,$(PY3VERS))
-	:
-_build _build-indep: _build-arch doc/_build/html
-	:
-
-debian/build-stamp-python%: debian/build-stamp-pyx
-	PYBUILD_INTERPRETERS=python{version} PYBUILD_VERSIONS=$* dh build-arch --with python$(basename $*) --buildsystem pybuild
-	touch $@
 
 override_dh_clean:
 	dh_clean
@@ -100,37 +86,48 @@ ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
 endif
 endif
 
-debian/build-stamp-pyx:
+#debian/build-stamp-pyx:
+override_dh_auto_configure:
 	-mv PKG-INFO PKG-INFO-BAK
 	python$(PY3VER) setup.py config
+# 	dh_auto_configure
 	mv PKG-INFO-BAK PKG-INFO
-	touch $@
+# 	touch $@
 
-doc/_build/html: debian/build-stamp-python$(PY3VER)
 ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
-	# urllib.error.URLError -- have to ignore
-	# hotfix SPHINXOPTS -- remove in next release
-	-+\
-		PYTHONPATH=`/bin/ls -d $(CURDIR)/.pybuild/*python*_$(PY3VER)/build`:$$(python3 -c 'import sys;print(":".join(sys.path))') \
-		SPHINXBUILD="python$(PY3VER) -m sphinx -j $(JOBS) -D mathjax_path=MathJax.js" \
-		SPHINXOPTS="-j $(JOBS) -D mathjax_path=MathJax.js" \
-		$(MAKE) -C doc html
-	[ -d $@ ]
+# Ensure data for building documentation is copied to .pybuild
+# urllib.error.URLError -- have to ignore
+define PYBUILD_AFTER_BUILD_python$(PY3VER)
+  for d in data descr images; do
+    rm -rf {build_dir}/sklearn/datasets/$$d;
+    ln -s {dir}/sklearn/datasets/$$d {build_dir}/sklearn/datasets/$$d;
+  done;
+  PYTHONPATH={build_dir} \
+  SPHINXBUILD="python$(PY3VER) -m sphinx -j $(JOBS) -D mathjax_path=MathJax.js" \
+  SPHINXOPTS="-j $(JOBS) -D mathjax_path=MathJax.js" \
+  $(MAKE) -C doc html || true;
+  [ -d doc/_build/html ]
+endef
+export PYBUILD_AFTER_BUILD_python$(PY3VER)
 endif
 
-# Test data not copied to .pybuild -- manually link for them
-override_dh_auto_test-arch:
-	for ver in $(PYBUILD_VERSIONS); do \
-		i=`/bin/ls -d $(CURDIR)/.pybuild/*python*_$$ver/build/sklearn`; \
-        ( cd .pybuild; PYTHONPATH=$$(dirname $$i) python$$ver -c 'import sklearn; sklearn.show_versions()'; ); \
-		for dir in data descr images; do \
-			rm -rf $$i/datasets/$$dir || true; \
-			ln -s ../../../../../sklearn/datasets/$$dir $$i/datasets; \
-		done; \
-		rm -rf $$i/datasets/tests/data || true; \
-		ln -s ../../../../../../sklearn/datasets/tests/data $$i/datasets/tests; \
-	done
-	dh_auto_test
+# Ensure test data are copied to .pybuild
+define PYBUILD_AFTER_BUILD
+  for d in data descr images; do
+    rm -rf {build_dir}/sklearn/datasets/$$d;
+    ln -s {dir}/sklearn/datasets/$$d {build_dir}/sklearn/datasets/$$d;
+  done;
+endef
+export PYBUILD_AFTER_BUILD
+
+define PYBUILD_BEFORE_TEST
+  rm -rf {build_dir}/datasets/tests/data;
+  ln -s {dir}/sklearn/datasets/tests/data {build_dir}/sklearn/datasets/tests/;
+  (cd {build_dir} && python{version} -c 'import sklearn;  sklearn.show_versions()')
+endef
+export PYBUILD_BEFORE_TEST
+
+override_dh_auto_test-indep:
 
 override_dh_auto_install:
 	dh_auto_install
