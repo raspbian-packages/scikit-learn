@@ -64,7 +64,6 @@ Click on any estimator in the chart below to see its documentation.
     </style>
 
     <body>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 	<script type="text/javascript" src="../../_static/jquery.maphilight.min.js"></script>
 	<script type="text/javascript" src="../../_static/jquery.min.js"></script>
 	<script type="text/javascript">$(function() {
