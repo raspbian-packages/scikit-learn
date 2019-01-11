@@ -72,7 +72,7 @@ clean:
 # silly distutils does not support parallelism! waste hours of time
 .PHONY: build
 build build-arch build-indep:
-	$(MAKE) -j $(JOBS) -f debian/rules _$@
+	make -j 1 -f debian/rules _$@
 
 _build-arch: $(addprefix debian/build-stamp-python,$(PY2VERS)) $(addprefix debian/build-stamp-python,$(PY3VERS))
 	:
