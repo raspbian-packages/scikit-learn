@@ -59,6 +59,8 @@ export JOBLIB_MULTIPROCESSING := $(shell expr $(JOBS) / $$(expr $(words $(PY2VER
 export http_proxy := http://127.0.0.1:9/
 export https_proxy := http://127.0.0.1:9/
 
+# things in the doc building and tests try to access stuff in HOME ()ttps://bugs.debian.org/915078)
+export HOME=$(CURDIR)
 
 %:
 	dh $@ --with python2,python3,sphinxdoc --buildsystem pybuild  --parallel
