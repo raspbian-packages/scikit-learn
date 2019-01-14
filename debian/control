@@ -106,6 +106,7 @@ Conflicts: python-scikits-learn-doc
 Replaces: python-scikits-learn-doc
 Architecture: all
 Section: doc
+Build-Profiles: <!nodoc>
 Depends: ${misc:Depends},
          ${sphinxdoc:Depends},
          libjs-bootstrap,

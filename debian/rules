@@ -69,7 +69,7 @@ export HOME=$(CURDIR)/tmp
 	dh $@ --with python2,python3 --buildsystem pybuild --parallel
 
 clean:
-	dh $@ --with python2,python3 --buildsystem pybuild
+	dh $@ --with python2,python3 --buildsystem pybuild --parallel
 
 override_dh_clean:
 	dh_clean
@@ -82,10 +82,8 @@ override_dh_clean:
 	for i in $$(find -name '*.pyx.in'); do \
 		rm -f $${i%.*}; \
 	done
-ifeq (,$(findstring -a,$(DH_INTERNAL_OPTIONS)))
-ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+ifneq (,$(filter python-sklearn-doc,$(shell dh_listpackages)))
 	+$(MAKE) -C doc clean
-endif
 endif
 
 #debian/build-stamp-pyx:
@@ -96,7 +94,15 @@ override_dh_auto_configure:
 # 	dh_auto_configure
 	mv PKG-INFO-BAK PKG-INFO
 
-ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+# Ensure test data are copied to .pybuild
+define PYBUILD_AFTER_BUILD
+  for d in data descr images; do
+    rm -rf {build_dir}/sklearn/datasets/$$d;
+    ln -s {dir}/sklearn/datasets/$$d {build_dir}/sklearn/datasets/$$d;
+  done;
+endef
+export PYBUILD_AFTER_BUILD
+
 # Ensure data for building documentation is copied to .pybuild
 # urllib.error.URLError -- have to ignore
 define PYBUILD_AFTER_BUILD_python$(PY3VER)
@@ -111,25 +117,18 @@ define PYBUILD_AFTER_BUILD_python$(PY3VER)
   [ -d doc/_build/html ]
 endef
 export PYBUILD_AFTER_BUILD_python$(PY3VER)
-endif
-
-# Ensure test data are copied to .pybuild
-define PYBUILD_AFTER_BUILD
-  for d in data descr images; do
-    rm -rf {build_dir}/sklearn/datasets/$$d;
-    ln -s {dir}/sklearn/datasets/$$d {build_dir}/sklearn/datasets/$$d;
-  done;
-endef
-export PYBUILD_AFTER_BUILD
 
 define PYBUILD_BEFORE_TEST
-  rm -rf {build_dir}/datasets/tests/data;
-  ln -s {dir}/sklearn/datasets/tests/data {build_dir}/sklearn/datasets/tests/;
+  rm -rf {build_dir}/datasets/tests;
+  cp -a {dir}/sklearn/datasets/tests {build_dir}/sklearn/datasets/;
   (cd {build_dir} && python{version} -c 'import sklearn;  sklearn.show_versions()')
 endef
 export PYBUILD_BEFORE_TEST
 
 export PYBUILD_AFTER_INSTALL = rm -f {install_dir}/_configtest*
+
+override_dh_auto_build-arch:
+	env PYBUILD_AFTER_BUILD_python$(PY3VER)='' dh_auto_build
 
 override_dh_auto_test-indep:
 
@@ -143,7 +142,7 @@ override_dh_installdocs-arch:
 
 override_dh_installdocs-indep:
 	dh_installdocs -A README*.rst
-ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+ifneq (,$(filter python-sklearn-doc,$(shell dh_listpackages)))
     docdir=debian/python-sklearn-doc/usr/share/doc/python-sklearn-doc; \
 	if [ -e $$docdir/stable ] ; then \
 	mv \
@@ -169,9 +168,8 @@ override_dh_compress:
 	dh_compress -X.py -X.html -X.pdf -X.css -X.jpg -X.txt -X.js -X.json -X.rtc
 
 override_dh_sphinxdoc-indep:
-ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+	@# no need to filter out this call, if sphinxdoc is not used it won't be called.
 	dh_sphinxdoc -XMathJax.js -Xjquery.js
-endif
 
 
 ## to prepare next Debian upstream source tarball
