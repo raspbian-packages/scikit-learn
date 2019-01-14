@@ -1,3 +1,23 @@
+scikit-learn (0.20.1+dfsg-2) unstable; urgency=medium
+
+  * Team upload.
+
+  [ Stuart Prescott ]
+  * Remove broken parallel building.  Closes: #911830; MR: !1
+    - remove broken parallel building.
+    - use pybuild replacements rather than trying to second guess
+      pybuild internal details.
+
+  [ Mo Zhou ]
+  * Fix keyword expression for ppc64el.
+
+  [ Mattia Rizzolo ]
+  * d/rules:
+    + Set HOME=$(CURDIR)/tmp.  Closes: #915078
+    + Manually delete some _configtest* files that appeared out of nowhere.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Sat, 12 Jan 2019 10:34:13 +0100
+
 scikit-learn (0.20.1+dfsg-1) unstable; urgency=medium
 
   * New upstream bugfix
