@@ -129,6 +129,8 @@ define PYBUILD_BEFORE_TEST
 endef
 export PYBUILD_BEFORE_TEST
 
+export PYBUILD_AFTER_INSTALL = rm -f {install_dir}/_configtest*
+
 override_dh_auto_test-indep:
 
 override_dh_auto_install:
