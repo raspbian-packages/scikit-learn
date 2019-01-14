@@ -60,7 +60,7 @@ export http_proxy := http://127.0.0.1:9/
 export https_proxy := http://127.0.0.1:9/
 
 # things in the doc building and tests try to access stuff in HOME ()ttps://bugs.debian.org/915078)
-export HOME=$(CURDIR)
+export HOME=$(CURDIR)/tmp
 
 %:
 	dh $@ --with python2,python3,sphinxdoc --buildsystem pybuild  --parallel
@@ -73,7 +73,7 @@ clean:
 
 override_dh_clean:
 	dh_clean
-	rm -rf .pytest_cache build scikit_learn.egg-info
+	rm -rf .pytest_cache build scikit_learn.egg-info tmp
 	-mv PKG-INFO-BAK PKG-INFO
 	rm -f debian/build-stamp-*
 	for i in $$(find -name '*.pyx'); do \
@@ -90,11 +90,11 @@ endif
 
 #debian/build-stamp-pyx:
 override_dh_auto_configure:
+	mkdir -p tmp
 	-mv PKG-INFO PKG-INFO-BAK
 	python$(PY3VER) setup.py config
 # 	dh_auto_configure
 	mv PKG-INFO-BAK PKG-INFO
-# 	touch $@
 
 ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
 # Ensure data for building documentation is copied to .pybuild
