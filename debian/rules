@@ -94,22 +94,20 @@ override_dh_auto_configure:
 # 	dh_auto_configure
 	mv PKG-INFO-BAK PKG-INFO
 
-# Ensure test data are copied to .pybuild
+# Ensure sample and test data are copied to .pybuild
 define PYBUILD_AFTER_BUILD
-  for d in data descr images; do
+  for d in tests/data data descr images; do
     rm -rf {build_dir}/sklearn/datasets/$$d;
     ln -s {dir}/sklearn/datasets/$$d {build_dir}/sklearn/datasets/$$d;
   done;
 endef
 export PYBUILD_AFTER_BUILD
 
-# Ensure data for building documentation is copied to .pybuild
-# urllib.error.URLError -- have to ignore
+# Only with the default Python 3, additionally use pybuild to run
+# sphinx once the build is complete
+# FIXME: urllib.error.URLError -- have to ignore
 define PYBUILD_AFTER_BUILD_python$(PY3VER)
-  for d in data descr images; do
-    rm -rf {build_dir}/sklearn/datasets/$$d;
-    ln -s {dir}/sklearn/datasets/$$d {build_dir}/sklearn/datasets/$$d;
-  done;
+  $(PYBUILD_AFTER_BUILD)
   PYTHONPATH={build_dir} \
   SPHINXBUILD="python$(PY3VER) -m sphinx -j $(JOBS) -D mathjax_path=MathJax.js" \
   SPHINXOPTS="-j $(JOBS) -D mathjax_path=MathJax.js" \
@@ -119,8 +117,6 @@ endef
 export PYBUILD_AFTER_BUILD_python$(PY3VER)
 
 define PYBUILD_BEFORE_TEST
-  rm -rf {build_dir}/datasets/tests;
-  cp -a {dir}/sklearn/datasets/tests {build_dir}/sklearn/datasets/;
   (cd {build_dir} && python{version} -c 'import sklearn;  sklearn.show_versions()')
 endef
 export PYBUILD_BEFORE_TEST
@@ -128,7 +124,9 @@ export PYBUILD_BEFORE_TEST
 export PYBUILD_AFTER_INSTALL = rm -f {destdir}/{install_dir}/_configtest*
 
 override_dh_auto_build-arch:
-	env PYBUILD_AFTER_BUILD_python$(PY3VER)='' dh_auto_build
+	# Don't try to build docs in the arch build, so unset that hook
+	env -u PYBUILD_AFTER_BUILD_python$(PY3VER) \
+		dh_auto_build
 
 override_dh_auto_test-indep:
 
