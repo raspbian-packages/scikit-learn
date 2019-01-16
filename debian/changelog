@@ -1,3 +1,13 @@
+scikit-learn (0.20.1+dfsg-3) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * Update Standards-Version to 4.3.0 (no changes required).
+  * Move source.lintian-overrides to new location.
+  * Fix short descriptions for Python modules packages to not be identical.
+  * Fix location of documentation in doc-base file.
+
+ -- Stuart Prescott <stuart@debian.org>  Wed, 16 Jan 2019 18:27:57 +1100
+
 scikit-learn (0.20.1+dfsg-2) unstable; urgency=medium
 
   * Team upload.
