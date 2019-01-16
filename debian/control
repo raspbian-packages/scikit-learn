@@ -50,7 +50,7 @@ Provides: ${python:Provides}
 Recommends: python-nose, python-pytest, python-matplotlib
 Suggests: python-dap, python-scikits-optimization, python-sklearn-doc, ipython
 Enhances: python-mvpa2, python-mdp
-Description: Python modules for machine learning and data mining
+Description: Python modules for machine learning and data mining - Python 2
  scikit-learn is a collection of Python modules relevant to
  machine/statistical learning and data mining.  Non-exhaustive list of
  included functionality:
@@ -78,7 +78,7 @@ Recommends: python3-nose, python3-pytest, python3-matplotlib
 Suggests: python3-dap, python-sklearn-doc, ipython3
 Enhances: python3-mvpa2, python3-mdp
 Provides: ${python3:Provides}
-Description: Python modules for machine learning and data mining
+Description: Python modules for machine learning and data mining - Python 3
  scikit-learn is a collection of Python modules relevant to
  machine/statistical learning and data mining.  Non-exhaustive list of
  included functionality:
