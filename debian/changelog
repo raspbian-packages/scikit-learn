@@ -1,3 +1,11 @@
+scikit-learn (0.20.2+dfsg-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream version 0.20.2+dfsg
+  * Rediff patches
+
+ -- Ole Streicher <olebole@debian.org>  Sat, 26 Jan 2019 21:48:46 +0100
+
 scikit-learn (0.20.1+dfsg-3) unstable; urgency=medium
 
   * Team upload.
