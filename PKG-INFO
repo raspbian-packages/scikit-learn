@@ -1,13 +1,12 @@
 Metadata-Version: 1.1
 Name: scikit-learn
-Version: 0.20.1
+Version: 0.20.2
 Summary: A set of python modules for machine learning and data mining
 Home-page: http://scikit-learn.org
 Author: Andreas Mueller
 Author-email: amueller@ais.uni-bonn.de
 License: new BSD
 Download-URL: https://pypi.org/project/scikit-learn/#files
-Description-Content-Type: UNKNOWN
 Description: .. -*- mode: rst -*-
         
         |Travis|_ |AppVeyor|_ |Codecov|_ |CircleCI|_ |Python27|_ |Python35|_ |PyPi|_ |DOI|_
