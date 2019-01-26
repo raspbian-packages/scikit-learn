@@ -21,11 +21,11 @@ from sklearn.utils.testing import assert_equal
 from sklearn.utils.testing import assert_greater
 from sklearn.utils.testing import assert_raise_message
 from sklearn.utils.testing import assert_raises
-from sklearn.utils.testing import assert_true
 from sklearn.utils.testing import assert_warns
 from sklearn.utils.testing import ignore_warnings
 from sklearn.utils.testing import assert_warns_message
 from sklearn.utils.testing import assert_no_warnings
+from sklearn.utils.testing import skip_if_no_parallel
 
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.exceptions import ChangedBehaviorWarning
@@ -146,6 +146,7 @@ def test_logistic_cv_score_does_not_warn_by_default():
     assert len(record) == 0
 
 
+@skip_if_no_parallel
 def test_lr_liblinear_warning():
     n_samples, n_features = iris.data.shape
     target = iris.target_names[iris.target]
@@ -312,7 +313,7 @@ def test_sparsify():
     pred_d_d = clf.decision_function(iris.data)
 
     clf.sparsify()
-    assert_true(sp.issparse(clf.coef_))
+    assert sp.issparse(clf.coef_)
     pred_s_d = clf.decision_function(iris.data)
 
     sp_data = sp.coo_matrix(iris.data)
@@ -1149,14 +1150,31 @@ def test_logreg_l1_sparse_data():
 
 @pytest.mark.filterwarnings('ignore: Default multi_class will')  # 0.22
 @pytest.mark.filterwarnings('ignore: You should specify a value')  # 0.22
-def test_logreg_cv_penalty():
-    # Test that the correct penalty is passed to the final fit.
-    X, y = make_classification(n_samples=50, n_features=20, random_state=0)
-    lr_cv = LogisticRegressionCV(penalty="l1", Cs=[1.0], solver='saga')
+@pytest.mark.parametrize("random_seed", [42])
+@pytest.mark.parametrize("penalty", ["l1", "l2"])
+def test_logistic_regression_cv_refit(random_seed, penalty):
+    # Test that when refit=True, logistic regression cv with the saga solver
+    # converges to the same solution as logistic regression with a fixed
+    # regularization parameter.
+    # Internally the LogisticRegressionCV model uses a warm start to refit on
+    # the full data model with the optimal C found by CV. As the penalized
+    # logistic regression loss is convex, we should still recover exactly
+    # the same solution as long as the stopping criterion is strict enough (and
+    # that there are no exactly duplicated features when penalty='l1').
+    X, y = make_classification(n_samples=50, n_features=20,
+                               random_state=random_seed)
+    common_params = dict(
+        solver='saga',
+        penalty=penalty,
+        random_state=random_seed,
+        max_iter=10000,
+        tol=1e-12,
+    )
+    lr_cv = LogisticRegressionCV(Cs=[1.0], refit=True, **common_params)
     lr_cv.fit(X, y)
-    lr = LogisticRegression(penalty="l1", C=1.0, solver='saga')
+    lr = LogisticRegression(C=1.0, **common_params)
     lr.fit(X, y)
-    assert_equal(np.count_nonzero(lr_cv.coef_), np.count_nonzero(lr.coef_))
+    assert_array_almost_equal(lr_cv.coef_, lr.coef_)
 
 
 def test_logreg_predict_proba_multinomial():

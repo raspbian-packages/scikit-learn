@@ -44,7 +44,7 @@ and will store the coefficients :math:`w` of the linear model in its
 
     >>> from sklearn import linear_model
     >>> reg = linear_model.LinearRegression()
-    >>> reg.fit ([[0, 0], [1, 1], [2, 2]], [0, 1, 2])
+    >>> reg.fit([[0, 0], [1, 1], [2, 2]], [0, 1, 2])
     ...                                       # doctest: +NORMALIZE_WHITESPACE
     LinearRegression(copy_X=True, fit_intercept=True, n_jobs=None,
                      normalize=False)
@@ -103,8 +103,8 @@ arrays X, y and will store the coefficients :math:`w` of the linear model in
 its ``coef_`` member::
 
     >>> from sklearn import linear_model
-    >>> reg = linear_model.Ridge (alpha = .5)
-    >>> reg.fit ([[0, 0], [0, 0], [1, 1]], [0, .1, 1]) # doctest: +NORMALIZE_WHITESPACE
+    >>> reg = linear_model.Ridge(alpha=.5)
+    >>> reg.fit([[0, 0], [0, 0], [1, 1]], [0, .1, 1]) # doctest: +NORMALIZE_WHITESPACE
     Ridge(alpha=0.5, copy_X=True, fit_intercept=True, max_iter=None,
           normalize=False, random_state=None, solver='auto', tol=0.001)
     >>> reg.coef_
@@ -152,7 +152,7 @@ as GridSearchCV except that it defaults to Generalized Cross-Validation
     * "Notes on Regularized Least Squares", Rifkin & Lippert (`technical report
       <http://cbcl.mit.edu/publications/ps/MIT-CSAIL-TR-2007-025.pdf>`_,
       `course slides
-      <http://www.mit.edu/~9.520/spring07/Classes/rlsslides.pdf>`_).
+      <https://www.mit.edu/~9.520/spring07/Classes/rlsslides.pdf>`_).
 
 
 .. _lasso:
@@ -184,7 +184,7 @@ the algorithm to fit the coefficients. See :ref:`least_angle_regression`
 for another implementation::
 
     >>> from sklearn import linear_model
-    >>> reg = linear_model.Lasso(alpha = 0.1)
+    >>> reg = linear_model.Lasso(alpha=0.1)
     >>> reg.fit([[0, 0], [1, 1]], [0, 1])
     Lasso(alpha=0.1, copy_X=True, fit_intercept=True, max_iter=1000,
        normalize=False, positive=False, precompute=False, random_state=None,
@@ -646,7 +646,7 @@ Bayesian Ridge Regression is used for regression::
 
 After being fitted, the model can then be used to predict new values::
 
-    >>> reg.predict ([[1, 0.]])
+    >>> reg.predict([[1, 0.]])
     array([0.50000013])
 
 
@@ -751,7 +751,7 @@ are "liblinear", "newton-cg", "lbfgs", "sag" and "saga":
 
 The solver "liblinear" uses a coordinate descent (CD) algorithm, and relies
 on the excellent C++ `LIBLINEAR library
-<http://www.csie.ntu.edu.tw/~cjlin/liblinear/>`_, which is shipped with
+<https://www.csie.ntu.edu.tw/~cjlin/liblinear/>`_, which is shipped with
 scikit-learn. However, the CD algorithm implemented in liblinear cannot learn
 a true multinomial (multiclass) model; instead, the optimization problem is
 decomposed in a "one-vs-rest" fashion so separate binary classifiers are
@@ -775,26 +775,39 @@ The "saga" solver [7]_ is a variant of "sag" that also supports the
 non-smooth `penalty="l1"` option. This is therefore the solver of choice
 for sparse multinomial logistic regression.
 
-In a nutshell, the following table summarizes the solvers characteristics:
+The "lbfgs" is an optimization algorithm that approximates the 
+Broyden–Fletcher–Goldfarb–Shanno algorithm [8]_, which belongs to
+quasi-Newton methods. The "lbfgs" solver is recommended for use for
+small data-sets but for larger datasets its performance suffers. [9]_
 
-============================   ===========  =======  ===========  =====  ======
-solver                         'liblinear'  'lbfgs'  'newton-cg'  'sag'  'saga'
-============================   ===========  =======  ===========  =====  ======
-Multinomial + L2 penalty       no           yes      yes          yes    yes
-OVR + L2 penalty               yes          yes      yes          yes    yes
-Multinomial + L1 penalty       no           no       no           no     yes
-OVR + L1 penalty               yes          no       no           no     yes
-============================   ===========  =======  ===========  =====  ======
-Penalize the intercept (bad)   yes          no       no           no     no
-Faster for large datasets      no           no       no           yes    yes
-Robust to unscaled datasets    yes          yes      yes          no     no
-============================   ===========  =======  ===========  =====  ======
+The following table summarizes the penalties supported by each solver:
 
-The "saga" solver is often the best choice. The "liblinear" solver is
-used by default for historical reasons.
++------------------------------+-----------------+-------------+-----------------+-----------+------------+
+|                              |                       **Solvers**                                        |
++------------------------------+-----------------+-------------+-----------------+-----------+------------+
+| **Penalties**                | **'liblinear'** | **'lbfgs'** | **'newton-cg'** | **'sag'** | **'saga'** |
++------------------------------+-----------------+-------------+-----------------+-----------+------------+
+| Multinomial + L2 penalty     |       no        |     yes     |       yes       |    yes    |    yes     |
++------------------------------+-----------------+-------------+-----------------+-----------+------------+
+| OVR + L2 penalty             |       yes       |     yes     |       yes       |    yes    |    yes     |
++------------------------------+-----------------+-------------+-----------------+-----------+------------+
+| Multinomial + L1 penalty     |       no        |     no      |       no        |    no     |    yes     |
++------------------------------+-----------------+-------------+-----------------+-----------+------------+
+| OVR + L1 penalty             |       yes       |     no      |       no        |    no     |    yes     |
++------------------------------+-----------------+-------------+-----------------+-----------+------------+
+| **Behaviors**                |                                                                          |
++------------------------------+-----------------+-------------+-----------------+-----------+------------+
+| Penalize the intercept (bad) |       yes       |     no      |       no        |    no     |    no      |
++------------------------------+-----------------+-------------+-----------------+-----------+------------+
+| Faster for large datasets    |       no        |     no      |       no        |    yes    |    yes     |
++------------------------------+-----------------+-------------+-----------------+-----------+------------+
+| Robust to unscaled datasets  |       yes       |     yes     |       yes       |    no     |    no      |
++------------------------------+-----------------+-------------+-----------------+-----------+------------+
 
+The "lbfgs" solver is used by default for its robustness. For large datasets
+the "saga" solver is usually faster.
 For large dataset, you may also consider using :class:`SGDClassifier`
-with 'log' loss.
+with 'log' loss, which might be even faster but require more tuning.
 
 .. topic:: Examples:
 
@@ -845,6 +858,12 @@ loss.
     .. [6] Mark Schmidt, Nicolas Le Roux, and Francis Bach: `Minimizing Finite Sums with the Stochastic Average Gradient. <https://hal.inria.fr/hal-00860051/document>`_
 
     .. [7] Aaron Defazio, Francis Bach, Simon Lacoste-Julien: `SAGA: A Fast Incremental Gradient Method With Support for Non-Strongly Convex Composite Objectives. <https://arxiv.org/abs/1407.0202>`_
+
+    .. [8] https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm
+
+    .. [9] `"Performance Evaluation of Lbfgs vs other solvers"
+            <http://www.fuzihao.org/blog/2016/01/16/Comparison-of-Gradient-Descent-Stochastic-Gradient-Descent-and-L-BFGS/>`_
+
 
 Stochastic Gradient Descent - SGD
 =================================

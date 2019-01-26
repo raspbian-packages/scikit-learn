@@ -381,7 +381,7 @@ is updated according to the following equation:
 
 .. math::
 
-    x_i^{t+1} = x_i^t + m(x_i^t)
+    x_i^{t+1} = m(x_i^t)
 
 Where :math:`N(x_i)` is the neighborhood of samples within a given distance
 around :math:`x_i` and :math:`m` is the *mean shift* vector that is computed for each
@@ -1440,7 +1440,7 @@ Advantages
 - **Upper-bounded at 1**:  Values close to zero indicate two label
   assignments that are largely independent, while values close to one
   indicate significant agreement. Further, values of exactly 0 indicate
-  **purely** independent label assignments and a AMI of exactly 1 indicates
+  **purely** independent label assignments and a FMI of exactly 1 indicates
   that the two label assignments are equal (with or without permutation).
 
 - **No assumption is made on the cluster structure**: can be used
@@ -1639,7 +1639,7 @@ symmetric is:
 Then the Davies-Bouldin index is defined as:
 
 .. math::
-   DB = \frac{1}{k} \sum{i=1}^k \max_{i \neq j} R_{ij}
+   DB = \frac{1}{k} \sum_{i=1}^k \max_{i \neq j} R_{ij}
 
 Zero is the lowest possible score. Values closer to zero indicate a better
 partition.
@@ -1680,12 +1680,12 @@ Drawbacks
    "A Cluster Separation Measure"
    IEEE Transactions on Pattern Analysis and Machine Intelligence.
    PAMI-1 (2): 224-227.
-   `doi:10.1109/TPAMI.1979.4766909 <http://dx.doi.org/10.1109/TPAMI.1979.4766909>`_.
+   `doi:10.1109/TPAMI.1979.4766909 <https://doi.org/10.1109/TPAMI.1979.4766909>`_.
 
  * Halkidi, Maria; Batistakis, Yannis; Vazirgiannis, Michalis (2001).
    "On Clustering Validation Techniques"
    Journal of Intelligent Information Systems, 17(2-3), 107-145.
-   `doi:10.1023/A:1012801612483 <http://dx.doi.org/10.1023/A:1012801612483>`_.
+   `doi:10.1023/A:1012801612483 <https://doi.org/10.1023/A:1012801612483>`_.
 
  * `Wikipedia entry for Davies-Bouldin index
    <https://en.wikipedia.org/wiki/Davies–Bouldin_index>`_.
