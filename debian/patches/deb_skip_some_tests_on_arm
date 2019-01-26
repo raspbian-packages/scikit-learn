@@ -1,6 +1,6 @@
 --- a/sklearn/feature_extraction/tests/test_text.py
 +++ b/sklearn/feature_extraction/tests/test_text.py
-@@ -371,6 +371,10 @@ def test_tfidf_no_smoothing():
+@@ -372,6 +372,10 @@
          numpy_provides_div0_warning = len(w) == 1
  
      in_warning_message = 'divide by zero'
