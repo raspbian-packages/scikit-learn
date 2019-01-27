@@ -3,6 +3,8 @@
 # License: BSD 3 clause
 
 from math import sqrt
+import platform
+import pytest
 
 import numpy as np
 from sklearn import neighbors
@@ -207,6 +209,8 @@ def test_hasattr_prediction():
     assert not hasattr(clf, 'score_samples')
 
 
+@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
 def test_novelty_true_common_tests():
 
     # the common tests are run for the default LOF (novelty=False).

@@ -13,6 +13,7 @@ import re
 import pkgutil
 from inspect import isgenerator
 from functools import partial
+import platform
 
 import pytest
 
@@ -47,6 +48,10 @@ def test_all_estimator_no_base_class():
         assert not name.lower().startswith('base'), msg
 
 
+@pytest.mark.skipif(platform.uname()[4] == 'ppc64le',
+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13051")
+@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
 @pytest.mark.parametrize(
         'name, Estimator',
         all_estimators()
