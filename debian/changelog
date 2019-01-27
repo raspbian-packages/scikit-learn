@@ -1,3 +1,12 @@
+scikit-learn (0.20.2+dfsg-3) unstable; urgency=medium
+
+  * Team upload.
+  * Move skipped tests from d/rules into a patch
+  * Remaining fixes
+  * Verbose test output
+
+ -- Ole Streicher <olebole@debian.org>  Sun, 27 Jan 2019 17:29:31 +0100
+
 scikit-learn (0.20.2+dfsg-2) unstable; urgency=medium
 
   * Team upload.
