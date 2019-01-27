@@ -8,6 +8,7 @@ import re
 import scipy.sparse
 import sklearn
 import pytest
+import platform
 
 from sklearn import config_context
 from sklearn.datasets import fetch_openml
@@ -763,6 +764,10 @@ def test_fetch_openml_anneal(monkeypatch, gzip_response):
                                compare_default_target=True)
 
 
+@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13049")
+@pytest.mark.skipif(platform.uname()[4] == 'aarch64',
+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13049")
 def test_decode_anneal(monkeypatch):
     data_id = 2
     _monkey_patch_webbased_functions(monkeypatch, data_id, False)
