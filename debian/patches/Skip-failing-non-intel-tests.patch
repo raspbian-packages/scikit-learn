@@ -146,3 +146,12 @@
  def test_check_estimator_clones():
      # check that check_estimator doesn't modify the estimator it receives
      from sklearn.datasets import load_iris
+@@ -439,6 +443,8 @@
+                         NonConformantEstimatorNoParamSet())
+ 
+ 
++@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
++                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
+ def test_check_estimator_pairwise():
+     # check that check_estimator() works on estimator with _pairwise
+     # kernel or  metric
