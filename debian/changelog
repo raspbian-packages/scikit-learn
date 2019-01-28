@@ -1,3 +1,10 @@
+scikit-learn (0.20.2+dfsg-4) unstable; urgency=medium
+
+  * Team upload.
+  * Skip another armhf test that leads to a segfault
+
+ -- Ole Streicher <olebole@debian.org>  Mon, 28 Jan 2019 09:20:16 +0100
+
 scikit-learn (0.20.2+dfsg-3) unstable; urgency=medium
 
   * Team upload.
