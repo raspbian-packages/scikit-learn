@@ -1,3 +1,10 @@
+scikit-learn (0.20.2+dfsg-5) unstable; urgency=medium
+
+  * Team upload.
+  * Skip test_check_estimator_clones test on armhf (another segfault)
+
+ -- Ole Streicher <olebole@debian.org>  Mon, 28 Jan 2019 14:25:52 +0100
+
 scikit-learn (0.20.2+dfsg-4) unstable; urgency=medium
 
   * Team upload.
