@@ -1,5 +1,7 @@
 import unittest
 import sys
+import platform
+import pytest
 
 import numpy as np
 import scipy.sparse as sp
@@ -371,6 +373,8 @@ def test_check_estimator_transformer_no_mixin():
                         check_estimator, BadTransformerWithoutMixin())
 
 
+@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
 def test_check_estimator_clones():
     # check that check_estimator doesn't modify the estimator it receives
     from sklearn.datasets import load_iris
@@ -439,6 +443,8 @@ def test_check_no_attributes_set_in_init():
                         NonConformantEstimatorNoParamSet())
 
 
+@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
 def test_check_estimator_pairwise():
     # check that check_estimator() works on estimator with _pairwise
     # kernel or  metric

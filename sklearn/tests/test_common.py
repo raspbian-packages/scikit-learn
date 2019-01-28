@@ -13,6 +13,7 @@ import sys
 import re
 import pkgutil
 import functools
+import platform
 
 import pytest
 
@@ -86,6 +87,10 @@ def _rename_partial(val):
         return "{}({})".format(val.func.__name__, kwstring)
 
 
+@pytest.mark.skipif(platform.uname()[4] == 'ppc64le',
+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13051")
+@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
 @pytest.mark.parametrize(
         "name, Estimator, check",
         _generate_checks_per_estimator(_yield_all_checks,

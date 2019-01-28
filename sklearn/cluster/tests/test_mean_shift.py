@@ -9,6 +9,7 @@ import warnings
 from scipy import sparse
 
 from sklearn.utils.testing import assert_equal
+from sklearn.utils.testing import assert_almost_equal
 from sklearn.utils.testing import assert_false
 from sklearn.utils.testing import assert_array_equal
 from sklearn.utils.testing import assert_array_almost_equal
@@ -37,7 +38,8 @@ def test_estimate_bandwidth_1sample():
     # Test estimate_bandwidth when n_samples=1 and quantile<1, so that
     # n_neighbors is set to 1.
     bandwidth = estimate_bandwidth(X, n_samples=1, quantile=0.3)
-    assert_equal(bandwidth, 0.)
+    # https://github.com/scikit-learn/scikit-learn/issues/10561
+    assert_almost_equal(bandwidth, 0., decimal=5)
 
 
 def test_mean_shift():

@@ -3,6 +3,7 @@
 # License: BSD 3 clause
 
 from math import sqrt
+import platform
 
 import pytest
 import numpy as np
@@ -236,6 +237,8 @@ def test_hasattr_prediction():
     assert not hasattr(clf, 'score_samples')
 
 
+@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
 @pytest.mark.filterwarnings(
     'ignore:default contamination parameter 0.1:FutureWarning')
 # XXX: Remove in 0.22

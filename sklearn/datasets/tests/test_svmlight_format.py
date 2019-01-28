@@ -263,8 +263,9 @@ def test_dump():
                             y_dense.astype(dtype), y2, 4)
                     else:
                         # allow a rounding error at the last decimal place
+                        # https://github.com/scikit-learn/scikit-learn/issues/13050
                         assert_array_almost_equal(
-                            X_dense.astype(dtype), X2_dense, 15)
+                            X_dense.astype(dtype), X2_dense, 7)
                         assert_array_almost_equal(
                             y_dense.astype(dtype), y2, 15)
 
