@@ -1,0 +1,24 @@
+#!/bin/sh
+set -efux
+
+pys="$(py3versions -rv 2>/dev/null)"
+pkgbuild=${pkgbuild:-no}
+
+srcdir=$PWD
+
+test_args="-k-test_feature_importance_regression --doctest-modules"
+
+dpkg-architecture -e arm64 && test_args="$test_args -k-test_dump"
+
+for py in $pys; do
+    echo "=== python$py ==="
+    if [ "$pkgbuild" = "yes" ]; then
+        module="$srcdir/debian/tmp/usr/lib/python3/dist-packages/sklearn"
+        cd "$srcdir/build/"
+    else
+        module="/usr/lib/python3/dist-packages/sklearn"
+        cd "$ADTTMP"
+    fi
+
+    python$py -m pytest -s -v $module $test_args 2>&1
+done
