@@ -3,7 +3,6 @@
 
 # See also: skimage
 
-PY2VERS ?= $(shell pyversions -vr)
 PY3VER  ?= $(shell py3versions -vd)
 PY3VERS ?= $(shell py3versions -vr)
 
@@ -30,10 +29,8 @@ ifeq ($(DEB_HOST_ARCH),arm64)
 endif
 
 export PYBUILD_TEST_PYTEST := 1
-# python2 soon deprecated -- doctests unreliable
-export PYBUILD_TEST_ARGS_python2 := $(PYBUILD_TEST_ARGS)
 export PYBUILD_TEST_ARGS_python3 := $(PYBUILD_TEST_ARGS)
-export JOBLIB_MULTIPROCESSING := $(shell expr $(JOBS) / $$(expr $(words $(PY2VERS)) + $(words $(PY3VERS))))
+export JOBLIB_MULTIPROCESSING := $(shell expr $(JOBS) / $(words $(PY3VERS)))
 
 # try to prevent unsunctioned downloads
 export http_proxy := http://127.0.0.1:9/
@@ -43,13 +40,13 @@ export https_proxy := http://127.0.0.1:9/
 export HOME=$(CURDIR)/tmp
 
 %:
-	dh $@ --with python2,python3,sphinxdoc --buildsystem pybuild  --parallel
+	dh $@ --with python3,sphinxdoc --buildsystem pybuild  --parallel
 
 %-arch:
-	dh $@ --with python2,python3 --buildsystem pybuild --parallel
+	dh $@ --with python3 --buildsystem pybuild --parallel
 
 clean:
-	dh $@ --with python2,python3 --buildsystem pybuild --parallel
+	dh $@ --with python3 --buildsystem pybuild --parallel
 
 override_dh_clean:
 	dh_clean
@@ -140,7 +137,6 @@ _dh_python%:
 	dh_numpy$(*:2=) -ppython$(*:2=)-sklearn-lib
 	dh_python$*
 
-override_dh_python2: _dh_python2
 override_dh_python3: _dh_python3
 
 ## immediately useable documentation and exemplar scripts/data

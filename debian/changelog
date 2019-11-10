@@ -1,3 +1,11 @@
+scikit-learn (0.20.3+dfsg-0.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * New upstream release.
+  * Stop building the Python2 package. Closes: #938444.
+
+ -- Matthias Klose <doko@debian.org>  Sun, 10 Nov 2019 14:46:27 +0100
+
 scikit-learn (0.20.2+dfsg-6) unstable; urgency=medium
 
   * Team upload.
