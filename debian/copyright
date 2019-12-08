@@ -19,20 +19,6 @@ Copyright: 2008 Stefan van der Walt <stefan@mentat.za.net>
            2008 Pauli Virtanen <pav@iki.fi>
 License: BSD-2-Clause
 
-Files: sklearn/src/cblas/*
-Copyright: 1996-2006 R. Clint Whaley
-           1998 Jeff Horner
-           2001 Peter Soendergaard
-           1999 Antoine P. Petitet
-           2001 Julian Ruhe
-           2003 Tim Mattox
-           2003 Hank Dietz
-           2003 Camm Maguire
-           1999 The Australian National University
-           2000 Antoine P. Petitet, University of Tennessee
-License: BSD-3-Clause
-Comment: Extract from 3.9.25 atlas
-
 Files: sklearn/svm/src/libsvm/*
        sklearn/svm/src/liblinear/*
 Copyright: 2000-2010 Chih-Chung Chang
