@@ -4,8 +4,9 @@ scikit-learn (0.22.1+dfsg-1) UNRELEASED; urgency=medium
   * Drop python2 autopkgtests, no longer needed
   * debian/copyright
     - update copyright information
+  * Refresh patches for new upstream code
 
- -- Sandro Tosi <morph@debian.org>  Wed, 08 Jan 2020 20:46:08 -0500
+ -- Sandro Tosi <morph@debian.org>  Thu, 09 Jan 2020 00:47:24 -0500
 
 scikit-learn (0.20.3+dfsg-0.1) unstable; urgency=medium
 

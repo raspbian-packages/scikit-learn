@@ -1,6 +1,6 @@
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -232,12 +232,10 @@ trim_doctests_flags = True
+@@ -239,12 +239,10 @@ trim_doctests_flags = True
  # intersphinx configuration
  intersphinx_mapping = {
      'python': ('https://docs.python.org/{.major}'.format(
@@ -16,4 +16,4 @@
 +    'matplotlib': ('https://matplotlib.org/', '/usr/share/doc/python-matplotlib-doc/html/objects.inv'),
  }
  
- sphinx_gallery_conf = {
+ v = parse(release)
