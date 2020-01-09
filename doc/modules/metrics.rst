@@ -91,7 +91,7 @@ is equivalent to :func:`linear_kernel`, only slower.)
 
     * C.D. Manning, P. Raghavan and H. Schütze (2008). Introduction to
       Information Retrieval. Cambridge University Press.
-      http://nlp.stanford.edu/IR-book/html/htmledition/the-vector-space-model-for-scoring-1.html
+      https://nlp.stanford.edu/IR-book/html/htmledition/the-vector-space-model-for-scoring-1.html
 
 .. _linear_kernel:
 
@@ -177,7 +177,7 @@ Manhattan distance between the input vectors.
 
 It has proven useful in ML applied to noiseless data.
 See e.g. `Machine learning for quantum mechanics in a nutshell
-<http://onlinelibrary.wiley.com/doi/10.1002/qua.24954/abstract/>`_.
+<https://onlinelibrary.wiley.com/doi/10.1002/qua.24954/abstract/>`_.
 
 .. _chi2_kernel:
 
@@ -193,7 +193,7 @@ It can be computed using :func:`chi2_kernel` and then passed to an
     >>> X = [[0, 1], [1, 0], [.2, .8], [.7, .3]]
     >>> y = [0, 1, 0, 1]
     >>> K = chi2_kernel(X, gamma=.5)
-    >>> K                        # doctest: +ELLIPSIS
+    >>> K
     array([[1.        , 0.36787944, 0.89483932, 0.58364548],
            [0.36787944, 1.        , 0.51341712, 0.83822343],
            [0.89483932, 0.51341712, 1.        , 0.7768366 ],

@@ -12,12 +12,12 @@
 .. role:: raw-latex(raw)
    :format: latex
 
-.. |MajorFeature| replace:: :raw-html:`<span class="label label-success">Major Feature</span>` :raw-latex:`{\small\sc [Major Feature]}`
-.. |Feature| replace:: :raw-html:`<span class="label label-success">Feature</span>` :raw-latex:`{\small\sc [Feature]}`
-.. |Efficiency| replace:: :raw-html:`<span class="label label-info">Efficiency</span>` :raw-latex:`{\small\sc [Efficiency]}`
-.. |Enhancement| replace:: :raw-html:`<span class="label label-info">Enhancement</span>` :raw-latex:`{\small\sc [Enhancement]}`
-.. |Fix| replace:: :raw-html:`<span class="label label-danger">Fix</span>` :raw-latex:`{\small\sc [Fix]}`
-.. |API| replace:: :raw-html:`<span class="label label-warning">API Change</span>` :raw-latex:`{\small\sc [API Change]}`
+.. |MajorFeature| replace:: :raw-html:`<span class="badge badge-success">Major Feature</span>` :raw-latex:`{\small\sc [Major Feature]}`
+.. |Feature| replace:: :raw-html:`<span class="badge badge-success">Feature</span>` :raw-latex:`{\small\sc [Feature]}`
+.. |Efficiency| replace:: :raw-html:`<span class="badge badge-info">Efficiency</span>` :raw-latex:`{\small\sc [Efficiency]}`
+.. |Enhancement| replace:: :raw-html:`<span class="badge badge-info">Enhancement</span>` :raw-latex:`{\small\sc [Enhancement]}`
+.. |Fix| replace:: :raw-html:`<span class="badge badge-danger">Fix</span>` :raw-latex:`{\small\sc [Fix]}`
+.. |API| replace:: :raw-html:`<span class="badge badge-warning">API Change</span>` :raw-latex:`{\small\sc [API Change]}`
 
 
 .. _Olivier Grisel: https://twitter.com/ogrisel
@@ -52,7 +52,7 @@
 
 .. _Matthieu Perrot: http://brainvisa.info/biblio/lnao/en/Author/PERROT-M.html
 
-.. _Jake Vanderplas: http://staff.washington.edu/jakevdp/
+.. _Jake Vanderplas: https://staff.washington.edu/jakevdp/
 
 .. _Gilles Louppe: http://www.montefiore.ulg.ac.be/~glouppe/
 
@@ -64,7 +64,7 @@
 
 .. _Brian Holt: http://personal.ee.surrey.ac.uk/Personal/B.Holt
 
-.. _Satrajit Ghosh: http://www.mit.edu/~satra/
+.. _Satrajit Ghosh: https://www.mit.edu/~satra/
 
 .. _Robert Layton: https://twitter.com/robertlayton
 
@@ -169,3 +169,11 @@
 .. _Roman Yurchak: https://github.com/rth
 
 .. _Hanmin Qin: https://github.com/qinhanmin2014
+
+.. _Adrin Jalali: https://github.com/adrinjalali
+
+.. _Thomas Fan: https://github.com/thomasjpfan
+
+.. _Nicolas Hug: https://github.com/NicolasHug
+
+.. _Guillaume Lemaitre: https://github.com/glemaitre

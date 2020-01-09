@@ -118,6 +118,8 @@ and tasks.
 
 **Structured learning**
 
+- `sktime <https://github.com/alan-turing-institute/sktime>`_ A scikit-learn compatible toolbox for machine learning with time series including time series classification/regression and (supervised/panel) forecasting.
+
 - `Seqlearn <https://github.com/larsmans/seqlearn>`_  Sequence classification
   using HMMs or structured perceptron.
 
@@ -248,12 +250,34 @@ Other packages useful for data analysis and machine learning.
 - `Sacred <https://github.com/IDSIA/Sacred>`_ Tool to help you configure,
   organize, log and reproduce experiments
 
-- `Seaborn <http://stanford.edu/~mwaskom/software/seaborn/>`_ Visualization library based on
+- `Seaborn <https://stanford.edu/~mwaskom/software/seaborn/>`_ Visualization library based on
   matplotlib. It provides a high-level interface for drawing attractive statistical graphics.
 
 - `Deep Learning <http://deeplearning.net/software_links/>`_ A curated list of deep learning
   software libraries.
 
+Recommendation Engine packages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ - `GraphLab
+   <https://turi.com/products/create/docs/graphlab.toolkits.recommender.html>`_
+   Implementation of classical recommendation techniques (in C++, with
+   Python bindings).
+
+- `implicit <https://github.com/benfred/implicit>`_, Library for implicit
+  feedback datasets.
+
+- `lightfm <https://github.com/lyst/lightfm>`_ A Python/Cython
+  implementation of a hybrid recommender system.
+
+- `OpenRec <https://github.com/ylongqi/openrec>`_ TensorFlow-based
+  neural-network inspired recommendation algorithms.
+
+- `Spotlight <https://github.com/maciejkula/spotlight>`_ Pytorch-based
+  implementation of deep recommender models.
+
+- `Surprise Lib <http://surpriselib.com/>`_ Library for explicit feedback
+  datasets.
 
 Domain specific packages
 ~~~~~~~~~~~~~~~~~~~~~~~~
