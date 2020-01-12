@@ -1,4 +1,4 @@
-scikit-learn (0.22.1+dfsg-1) UNRELEASED; urgency=medium
+scikit-learn (0.22.1+dfsg-1) unstable; urgency=medium
 
   * New upstream release; Closes: #933366, #935315
   * Drop python2 autopkgtests, no longer needed
@@ -13,7 +13,7 @@ scikit-learn (0.22.1+dfsg-1) UNRELEASED; urgency=medium
   * debian/python-sklearn-doc.docs
     - comment out the HTML documentation, which we have disable for now
 
- -- Sandro Tosi <morph@debian.org>  Sun, 12 Jan 2020 01:15:24 -0500
+ -- Sandro Tosi <morph@debian.org>  Sun, 12 Jan 2020 01:17:10 -0500
 
 scikit-learn (0.20.3+dfsg-0.1) unstable; urgency=medium
 
