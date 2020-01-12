@@ -1,27 +1,10 @@
 From: Yaroslav Halchenko <debian@onerussian.com>
 Subject: use system-wide joblib and do not attempt to install joblib/test
 
- Relies on DFSG-ed sources with no joblib present
+Relies on DFSG-ed sources with no joblib present
 
---- /dev/null
-+++ b/sklearn/externals/joblib.py
-@@ -0,0 +1,16 @@
-+import imp
-+import sys
-+
-+
-+def import_non_local(name, custom_name=None):
-+    custom_name = custom_name or name
-+
-+    f, pathname, desc = imp.find_module(name, sys.path[1:])
-+    module = imp.load_module(custom_name, f, pathname, desc)
-+    if f is not None:
-+        f.close()
-+
-+    return module
-+
-+
-+locals().update(import_non_local('joblib').__dict__)
+Last-Update: 2020-01-12
+
 --- a/sklearn/externals/setup.py
 +++ b/sklearn/externals/setup.py
 @@ -4,6 +4,5 @@
