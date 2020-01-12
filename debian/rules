@@ -82,18 +82,18 @@ export PYBUILD_AFTER_BUILD
 
 # Only with the default Python 3, additionally use pybuild to run
 # sphinx once the build is complete
-ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
-# FIXME: urllib.error.URLError -- have to ignore
-define PYBUILD_AFTER_BUILD_python$(PY3VER)
-  $(PYBUILD_AFTER_BUILD)
-  PYTHONPATH={build_dir} \
-  SPHINXBUILD="python$(PY3VER) -m sphinx -j $(JOBS) -D mathjax_path=MathJax.js" \
-  SPHINXOPTS="-j $(JOBS) -D mathjax_path=MathJax.js" \
-  $(MAKE) -C doc html || true;
-  [ -d doc/_build/html ]
-endef
-export PYBUILD_AFTER_BUILD_python$(PY3VER)
-endif
+## ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+## # FIXME: urllib.error.URLError -- have to ignore
+## define PYBUILD_AFTER_BUILD_python$(PY3VER)
+##   $(PYBUILD_AFTER_BUILD)
+##   PYTHONPATH={build_dir} \
+##   SPHINXBUILD="python$(PY3VER) -m sphinx -j $(JOBS) -D mathjax_path=MathJax.js" \
+##   SPHINXOPTS="-j $(JOBS) -D mathjax_path=MathJax.js" \
+##   $(MAKE) -C doc html || true;
+##   [ -d doc/_build/html ]
+## endef
+## export PYBUILD_AFTER_BUILD_python$(PY3VER)
+## endif
 
 define PYBUILD_BEFORE_TEST
   (cd {build_dir} && python{version} -c 'import sklearn;  sklearn.show_versions()')
