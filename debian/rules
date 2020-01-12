@@ -22,6 +22,9 @@ include /usr/share/dpkg/architecture.mk
 
 PYBUILD_TEST_ARGS = -m "not network" -v
 
+# until https://github.com/scikit-learn/scikit-learn/issues/16101 is fixed
+PYBUILD_TEST_ARGS += -k-test_old_pickle
+
 # Some tests are known to fail randomly so need to be excluded ATM
 ifeq ($(DEB_HOST_ARCH),arm64)
   # A bit aggressive exclusion of some tests which exhibit a problem I have no time to deal with on arm64
@@ -96,9 +99,11 @@ export PYBUILD_AFTER_BUILD
 ## endif
 
 define PYBUILD_BEFORE_TEST
-  (cd {build_dir} && python{version} -c 'import sklearn;  sklearn.show_versions()')
+  (mv $(CURDIR)/sklearn/conftest.py $(CURDIR)/sklearn/conftest.py.test ; cd {build_dir} && python{version} -c 'import sklearn;  sklearn.show_versions()')
 endef
 export PYBUILD_BEFORE_TEST
+
+export PYBUILD_AFTER_TEST=mv $(CURDIR)/sklearn/conftest.py.test $(CURDIR)/sklearn/conftest.py
 
 export PYBUILD_AFTER_INSTALL = rm -f {destdir}/{install_dir}/_configtest*
 

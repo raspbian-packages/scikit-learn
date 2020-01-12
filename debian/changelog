@@ -7,8 +7,11 @@ scikit-learn (0.22.1+dfsg-1) UNRELEASED; urgency=medium
   * Refresh patches for new upstream code
   * debian/rules
     - stop building doc until sphinx 2.* is available
+    - update how we run test: move sklearn/conftest.py out of the way (it
+      somehow conflicts with the file {build_dir}) and skip to run
+      test_old_pickle
 
- -- Sandro Tosi <morph@debian.org>  Sat, 11 Jan 2020 15:51:28 -0500
+ -- Sandro Tosi <morph@debian.org>  Sat, 11 Jan 2020 23:28:30 -0500
 
 scikit-learn (0.20.3+dfsg-0.1) unstable; urgency=medium
 
