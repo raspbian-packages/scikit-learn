@@ -1,6 +1,6 @@
 scikit-learn (0.22.1+dfsg-1) UNRELEASED; urgency=medium
 
-  * New upstream release; Closes: #933366
+  * New upstream release; Closes: #933366, #935315
   * Drop python2 autopkgtests, no longer needed
   * debian/copyright
     - update copyright information
