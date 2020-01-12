@@ -42,15 +42,16 @@
          all_estimators()
 --- a/sklearn/neighbors/tests/test_lof.py
 +++ b/sklearn/neighbors/tests/test_lof.py
-@@ -3,6 +3,7 @@
+@@ -3,6 +3,8 @@
  # License: BSD 3 clause
  
  from math import sqrt
 +import platform
++import pytest
  
  import numpy as np
  from sklearn import neighbors
-@@ -207,6 +208,8 @@ def test_hasattr_prediction():
+@@ -207,6 +209,8 @@ def test_hasattr_prediction():
      assert not hasattr(clf, 'score_samples')
  
  
