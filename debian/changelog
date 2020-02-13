@@ -1,3 +1,28 @@
+scikit-learn (0.22.1+dfsg-2) unstable; urgency=medium
+
+  * Team upload.
+
+  * Update patch to skip broken armel test. Resolves a FTBFS on armel
+  * d/control:
+    - Bump Standards-Version to 4.5.0
+    - Set Rules-Requires-Root to no
+  * d/rules
+    - Change attempt to skip failing test_old_pickle
+    - Also skip known-flaky test_ard_accuracy_on_easy_problem
+  * d/copyright:
+    - Fix File pattern for libsvm, liblinear
+    - Drop copyright for no longer included cblas
+    - Fix License names and bodies
+  * autopkgtest: Replace deprecated ADTTMP with AUTOPKGTEST_TMP
+  * Drop obsolete code in patch deb_use_system_joblib
+  * Refresh revision for GitHub source links
+  * Add overrides for lintian warnings re: external patches
+  * Add (temporary) lintian overrides for E: source-is-missing
+    These files are not used, and will be excluded in the next source repack
+  * Add DEP-3 headers to patches missing them
+
+ -- Christian Kastner <ckk@debian.org>  Thu, 13 Feb 2020 16:52:57 +0100
+
 scikit-learn (0.22.1+dfsg-1) unstable; urgency=medium
 
   * New upstream release; Closes: #933366, #935315
