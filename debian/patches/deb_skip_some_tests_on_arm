@@ -1,5 +1,7 @@
---- a/sklearn/feature_extraction/tests/test_text.py
-+++ b/sklearn/feature_extraction/tests/test_text.py
+Index: scikit-learn/sklearn/feature_extraction/tests/test_text.py
+===================================================================
+--- scikit-learn.orig/sklearn/feature_extraction/tests/test_text.py
++++ scikit-learn/sklearn/feature_extraction/tests/test_text.py
 @@ -395,6 +395,10 @@ def test_tfidf_no_smoothing():
          numpy_provides_div0_warning = len(w) == 1
  
@@ -11,21 +13,26 @@
      tfidf = assert_warns_message(RuntimeWarning, in_warning_message,
                                   tr.fit_transform, X).toarray()
      if not numpy_provides_div0_warning:
---- a/sklearn/metrics/tests/test_ranking.py
-+++ b/sklearn/metrics/tests/test_ranking.py
-@@ -802,6 +802,10 @@ def test_precision_recall_curve_toydata(
+Index: scikit-learn/sklearn/metrics/tests/test_ranking.py
+===================================================================
+--- scikit-learn.orig/sklearn/metrics/tests/test_ranking.py
++++ scikit-learn/sklearn/metrics/tests/test_ranking.py
+@@ -802,6 +802,11 @@ def test_precision_recall_curve_toydata(
  
          y_true = [0, 0]
          y_score = [0.25, 0.75]
 +        import platform
 +        if platform.uname()[4].startswith('armv'):
-+            raise SkipTest("no precision-related exceptions get issued on armel")
++            # https://github.com/numpy/numpy/issues/15562
++            pytest.skip("no precision-related exceptions get issued on armel")
 +
          with pytest.raises(Exception):
              precision_recall_curve(y_true, y_score)
          with pytest.raises(Exception):
---- a/sklearn/metrics/tests/test_classification.py
-+++ b/sklearn/metrics/tests/test_classification.py
+Index: scikit-learn/sklearn/metrics/tests/test_classification.py
+===================================================================
+--- scikit-learn.orig/sklearn/metrics/tests/test_classification.py
++++ scikit-learn/sklearn/metrics/tests/test_classification.py
 @@ -711,6 +711,11 @@ def test_matthews_corrcoef_multiclass():
      # Zero variance will result in an mcc of zero and a Runtime Warning
      y_true = [0, 1, 2]
