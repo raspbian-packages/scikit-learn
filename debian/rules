@@ -23,7 +23,7 @@ include /usr/share/dpkg/architecture.mk
 PYBUILD_TEST_ARGS = -m "not network" -v
 
 # until https://github.com/scikit-learn/scikit-learn/issues/16101 is fixed
-PYBUILD_TEST_ARGS += -k-test_old_pickle
+PYBUILD_TEST_ARGS += -k not test_old_pickle
 
 # Some tests are known to fail randomly so need to be excluded ATM
 ifeq ($(DEB_HOST_ARCH),arm64)
