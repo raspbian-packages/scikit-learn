@@ -1,0 +1,114 @@
+From: Ole Streicher <olebole@debian.org>
+Date: Sun, 27 Jan 2019 11:40:22 +0100
+Subject: Skip tests that fail on non-intel platforms
+
+Last-Update: 2020-02-13
+--- a/sklearn/datasets/tests/test_openml.py
++++ b/sklearn/datasets/tests/test_openml.py
+@@ -8,6 +8,7 @@ import re
+ import scipy.sparse
+ import sklearn
+ import pytest
++import platform
+ 
+ from sklearn import config_context
+ from sklearn.datasets import fetch_openml
+@@ -763,6 +764,10 @@ def test_fetch_openml_anneal(monkeypatch
+                                compare_default_target=True)
+ 
+ 
++@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
++                    reason="https://github.com/scikit-learn/scikit-learn/issues/13049")
++@pytest.mark.skipif(platform.uname()[4] == 'aarch64',
++                    reason="https://github.com/scikit-learn/scikit-learn/issues/13049")
+ def test_decode_anneal(monkeypatch):
+     data_id = 2
+     _monkey_patch_webbased_functions(monkeypatch, data_id, False)
+--- a/sklearn/tests/test_common.py
++++ b/sklearn/tests/test_common.py
+@@ -13,6 +13,7 @@ import re
+ import pkgutil
+ from inspect import isgenerator
+ from functools import partial
++import platform
+ 
+ import pytest
+ 
+@@ -47,6 +48,10 @@ def test_all_estimator_no_base_class():
+         assert not name.lower().startswith('base'), msg
+ 
+ 
++@pytest.mark.skipif(platform.uname()[4] == 'ppc64le',
++                    reason="https://github.com/scikit-learn/scikit-learn/issues/13051")
++@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
++                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
+ @pytest.mark.parametrize(
+         'name, Estimator',
+         all_estimators()
+--- a/sklearn/neighbors/tests/test_lof.py
++++ b/sklearn/neighbors/tests/test_lof.py
+@@ -3,6 +3,8 @@
+ # License: BSD 3 clause
+ 
+ from math import sqrt
++import platform
++import pytest
+ 
+ import numpy as np
+ from sklearn import neighbors
+@@ -207,6 +209,8 @@ def test_hasattr_prediction():
+     assert not hasattr(clf, 'score_samples')
+ 
+ 
++@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
++                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
+ def test_novelty_true_common_tests():
+ 
+     # the common tests are run for the default LOF (novelty=False).
+--- a/sklearn/linear_model/tests/test_logistic.py
++++ b/sklearn/linear_model/tests/test_logistic.py
+@@ -3,6 +3,7 @@ import sys
+ import numpy as np
+ import scipy.sparse as sp
+ from scipy import linalg, optimize, sparse
++import platform
+ 
+ import pytest
+ 
+@@ -1689,6 +1690,8 @@ def test_logistic_regression_path_coefs_
+         assert_array_almost_equal(coefs[1], coefs[2], decimal=1)
+ 
+ 
++@pytest.mark.skipif(platform.uname()[4] == 'ppc64le',
++                    reason="https://github.com/scikit-learn/scikit-learn/issues/12448")
+ @pytest.mark.parametrize('est',
+                          [LogisticRegression(random_state=0),
+                           LogisticRegressionCV(random_state=0, cv=3,
+--- a/sklearn/utils/tests/test_estimator_checks.py
++++ b/sklearn/utils/tests/test_estimator_checks.py
+@@ -1,5 +1,7 @@
+ import unittest
+ import sys
++import platform
++import pytest
+ 
+ import numpy as np
+ import scipy.sparse as sp
+@@ -456,6 +458,8 @@ def test_check_estimator_transformer_no_
+                         check_estimator, BadTransformerWithoutMixin())
+ 
+ 
++@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
++                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
+ def test_check_estimator_clones():
+     # check that check_estimator doesn't modify the estimator it receives
+     from sklearn.datasets import load_iris
+@@ -524,6 +528,8 @@ def test_check_no_attributes_set_in_init
+                         NonConformantEstimatorNoParamSet())
+ 
+ 
++@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
++                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
+ def test_check_estimator_pairwise():
+     # check that check_estimator() works on estimator with _pairwise
+     # kernel or metric

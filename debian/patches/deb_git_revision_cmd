@@ -1,0 +1,21 @@
+From: Yaroslav Halchenko <debian@onerussian.com>
+Date: Wed, 11 Mar 2015 12:25:57 -0400
+Subject: Supply GitHub revision for built documentation 
+
+This is used for the [source] links in the documentation.
+
+Last-Update: 2020-02-13
+Index: scikit-learn-0.16.0/doc/sphinxext/github_link.py
+===================================================================
+--- scikit-learn-0.16.0.orig/doc/sphinxext/github_link.py	2015-03-27 16:32:39.000000000 +0000
++++ scikit-learn-0.16.0/doc/sphinxext/github_link.py	2015-03-30 19:46:50.094833459 +0000
+@@ -5,7 +5,8 @@
+ import sys
+ from functools import partial
+ 
+-REVISION_CMD = 'git rev-parse --short HEAD'
++#REVISION_CMD = 'git rev-parse --short HEAD'
++REVISION_CMD = 'cat ../debian/github-revision.txt'
+ 
+ 
+ def _get_git_revision():

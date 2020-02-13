@@ -1,0 +1,16 @@
+From: Yaroslav Halchenko <debian@onerussian.com>
+Subject: use system-wide joblib and do not attempt to install joblib/test
+
+Relies on DFSG-ed sources with no joblib present
+
+Last-Update: 2020-01-12
+
+--- a/sklearn/externals/setup.py
++++ b/sklearn/externals/setup.py
+@@ -4,6 +4,5 @@
+ def configuration(parent_package='', top_path=None):
+     from numpy.distutils.misc_util import Configuration
+     config = Configuration('externals', parent_package, top_path)
+-    config.add_subpackage('joblib')
+ 
+     return config
