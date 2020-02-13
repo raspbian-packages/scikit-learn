@@ -1,3 +1,11 @@
+From: Yaroslav Halchenko <debian@onerussian.com>
+Date: Tue, 7 Oct 2014 21:37:59 -0400
+Subject: Skip three tests on armv to avoid FTBFS
+
+At least one of these issues can be traced back to NumPy:
+https://github.com/numpy/numpy/issues/15562
+
+Last-Update: 2020-02-13
 Index: scikit-learn/sklearn/feature_extraction/tests/test_text.py
 ===================================================================
 --- scikit-learn.orig/sklearn/feature_extraction/tests/test_text.py

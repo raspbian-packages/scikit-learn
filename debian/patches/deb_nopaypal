@@ -1,3 +1,11 @@
+From: Yaroslav Halchenko <debian@onerussian.com>
+Date: Tue, 20 Oct 2015 13:32:25 -0500
+Subject: No Paypal
+
+Remove an embedded Paypal object to avoid phoning home every time the
+documentation is read.
+
+Last-Update: 2020-02-13
 --- a/doc/about.rst
 +++ b/doc/about.rst
 @@ -482,9 +482,11 @@ Donating to the project

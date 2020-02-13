@@ -1,3 +1,12 @@
+From: yangfl <yangfl@users.noreply.github.com>
+Date: Sat, 20 Oct 2018 02:04:22 +0800
+Subject: Get cythonize parallelization from environment
+
+Instead of hard-coding to the CPU count, get the number of jobs for the JOBS
+env var (eg: set in debian/rules), defaulting to 1 if it is not set.
+
+Last-Update: 2020-02-13
+
 --- a/sklearn/_build_utils/__init__.py
 +++ b/sklearn/_build_utils/__init__.py
 @@ -63,14 +63,7 @@ def cythonize_extensions(top_path, confi

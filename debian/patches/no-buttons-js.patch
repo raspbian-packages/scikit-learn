@@ -1,3 +1,6 @@
+From: yangfl <yangfl@users.noreply.github.com>
+Date: Sat, 20 Oct 2018 11:29:21 +0800
+Subject: Disable JavaScript GitHub buttons
 --- a/doc/developers/contributing.rst
 +++ b/doc/developers/contributing.rst
 @@ -75,7 +75,6 @@ and follows the decision-making process
