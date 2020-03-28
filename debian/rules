@@ -25,13 +25,14 @@ PYBUILD_TEST_ARGS = -m "not network" -v
 # until the following are fixed:
 #  https://github.com/scikit-learn/scikit-learn/issues/16101
 #  https://github.com/scikit-learn/scikit-learn/issues/15420
-PYBUILD_TEST_ARGS += -k "not test_old_pickle and not test_ard_accuracy_on_easy_problem"
+EXCLUDE_TESTS = not test_old_pickle and not test_ard_accuracy_on_easy_problem
 
 # Some tests are known to fail randomly so need to be excluded ATM
 ifeq ($(DEB_HOST_ARCH),arm64)
   # A bit aggressive exclusion of some tests which exhibit a problem I have no time to deal with on arm64
-  PYBUILD_TEST_ARGS += -k-test_dump
+  EXCLUDE_TESTS += and not test_dump
 endif
+PYBUILD_TEST_ARGS += -k "$(EXCLUDE_TESTS)"
 
 export PYBUILD_TEST_PYTEST := 1
 export PYBUILD_TEST_ARGS_python3 := $(PYBUILD_TEST_ARGS)
