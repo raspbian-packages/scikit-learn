@@ -1,9 +1,11 @@
 From: yangfl <yangfl@users.noreply.github.com>
 Date: Fri, 19 Oct 2018 23:21:53 +0800
 Subject: No-downloading intersphinx mapping
---- a/doc/conf.py
-+++ b/doc/conf.py
-@@ -239,12 +239,10 @@ trim_doctests_flags = True
+Index: scikit-learn/doc/conf.py
+===================================================================
+--- scikit-learn.orig/doc/conf.py
++++ scikit-learn/doc/conf.py
+@@ -244,12 +244,10 @@ trim_doctests_flags = True
  # intersphinx configuration
  intersphinx_mapping = {
      'python': ('https://docs.python.org/{.major}'.format(
