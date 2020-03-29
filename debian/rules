@@ -44,8 +44,6 @@ endif
 
 PYBUILD_TEST_ARGS += -k "$(EXCLUDE_TESTS)"
 
-PYBUILD_TEST_ARGS += -k "$(EXCLUDE_TESTS)"
-
 export PYBUILD_TEST_PYTEST := 1
 export PYBUILD_TEST_ARGS_python3 := $(PYBUILD_TEST_ARGS)
 export JOBLIB_MULTIPROCESSING := $(shell expr $(JOBS) / $(words $(PY3VERS)))
