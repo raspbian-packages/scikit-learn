@@ -1,3 +1,14 @@
+scikit-learn (0.22.2.post1+dfsg-2) unstable; urgency=medium
+
+  * Team upload.
+
+  * Skip yet another flaky test on ppc64el, hopefully resolving the FTBFS now
+  * autopkgtest:
+    - Disable doctest, as we do at build time
+    - Sync excluded tests with build-time exclusions
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 29 Mar 2020 20:46:08 +0200
+
 scikit-learn (0.22.2.post1+dfsg-1) unstable; urgency=medium
 
   * Team upload.
