@@ -1,3 +1,16 @@
+scikit-learn (0.22.2.post1+dfsg-1) unstable; urgency=medium
+
+  * Team upload.
+
+  * New upstream release.
+    - Refresh patches
+  * debian/rules:
+    - Merge multiple pytest -k expressions into one. Fixes a FTBFS on arm64
+    - Skip a number of failing tests on ppc64el, fixing a FTBFS. Issue has been
+      reported upstream
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 29 Mar 2020 13:11:58 +0200
+
 scikit-learn (0.22.1+dfsg-2) unstable; urgency=medium
 
   * Team upload.
