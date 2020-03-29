@@ -6,7 +6,8 @@ pkgbuild=${pkgbuild:-no}
 
 srcdir=$PWD
 
-test_args="-k-test_feature_importance_regression --doctest-modules"
+# We intentionally do not use --doctest-modules (same as we do during build)
+test_args="-k-test_feature_importance_regression"
 
 dpkg-architecture -e arm64 && test_args="$test_args -k-test_dump"
 
