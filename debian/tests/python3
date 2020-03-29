@@ -6,8 +6,16 @@ pkgbuild=${pkgbuild:-no}
 
 srcdir=$PWD
 
-# We intentionally do not use --doctest-modules (same as we do during build)
-test_args="-k-test_feature_importance_regression"
+# These exclusions should be kept in sync with debian/rules
+exclude_tests="not test_old_pickle and not test_ard_accuracyh_on_easy_problem"
+if dpkg-architecture -e arm64; then
+	exclude_tests="$exclude_tests and not test_dump"
+fi
+if dpkg-architecture -e ppc64el; then
+	exclude_tests="$exclude_tests and not test_precomputed_nearest_neighbors_filtering"
+	exclude_tests="$exclude_tests and not test_stacking_cv_influence"
+	exclude_tests="$exclude_tests and not test_common"
+fi
 
 dpkg-architecture -e arm64 && test_args="$test_args -k-test_dump"
 
@@ -21,5 +29,5 @@ for py in $pys; do
         cd "$AUTOPKGTEST_TMP"
     fi
 
-    python$py -m pytest -s -v $module $test_args 2>&1
+    python$py -m pytest -s -v $module -k "$exclude_tests" 2>&1
 done
