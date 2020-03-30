@@ -1,3 +1,12 @@
+scikit-learn (0.22.2.post1+dfsg-4) unstable; urgency=medium
+
+  * Team upload.
+
+  * Skip another failing test on armhf
+  * Skip a non-deterministically failing ppc64el test
+
+ -- Christian Kastner <ckk@debian.org>  Mon, 30 Mar 2020 11:47:33 +0200
+
 scikit-learn (0.22.2.post1+dfsg-3) unstable; urgency=medium
 
   * Team upload.
