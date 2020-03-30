@@ -15,6 +15,7 @@ if dpkg-architecture -e ppc64el; then
 	exclude_tests="$exclude_tests and not test_precomputed_nearest_neighbors_filtering"
 	exclude_tests="$exclude_tests and not test_stacking_cv_influence"
 	exclude_tests="$exclude_tests and not test_common"
+	exclude_tests="$exclude_tests and not test_stacking_with_sample_weight"
 fi
 if dpkg-architecture -e armhf; then
 	exclude_tests="$exclude_tests and not test_check_estimators_stacking_estimator"
