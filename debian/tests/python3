@@ -20,8 +20,6 @@ if dpkg-architecture -e armhf; then
 	exclude_tests="$exclude_tests and not test_check_estimators_stacking_estimator"
 fi
 
-dpkg-architecture -e arm64 && test_args="$test_args -k-test_dump"
-
 for py in $pys; do
     echo "=== python$py ==="
     if [ "$pkgbuild" = "yes" ]; then
