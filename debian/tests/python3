@@ -20,6 +20,7 @@ fi
 if dpkg-architecture -e armhf; then
 	exclude_tests="$exclude_tests and not test_check_estimators_stacking_estimator"
 	exclude_tests="$exclude_tests and not test_check_estimators_voting_estimator"
+	exclude_tests="$exclude_tests and not test_common"
 fi
 
 for py in $pys; do

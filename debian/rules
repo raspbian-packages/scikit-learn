@@ -49,6 +49,8 @@ endif
 ifeq ($(DEB_HOST_ARCH),armhf)
   EXCLUDE_TESTS += and not test_check_estimators_stacking_estimator
   EXCLUDE_TESTS += and not test_check_estimators_voting_estimator
+  # This is actually a test generator, so this skips a *lot* of tests
+  EXCLUDE_TESTS += and not test_common
 endif
 
 PYBUILD_TEST_ARGS += -k "$(EXCLUDE_TESTS)"
