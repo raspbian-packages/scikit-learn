@@ -3,6 +3,7 @@ import sys
 import numpy as np
 import scipy.sparse as sp
 from scipy import linalg, optimize, sparse
+import platform
 
 import pytest
 
@@ -1417,6 +1418,8 @@ def test_logistic_regression_path_coefs_multinomial():
         assert_array_almost_equal(coefs[1], coefs[2], decimal=1)
 
 
+@pytest.mark.skipif(platform.uname()[4] == 'ppc64le',
+                    reason="https://github.com/scikit-learn/scikit-learn/issues/12448")
 @pytest.mark.parametrize('est', [LogisticRegression(random_state=0),
                                  LogisticRegressionCV(random_state=0, cv=3),
                                  ])
