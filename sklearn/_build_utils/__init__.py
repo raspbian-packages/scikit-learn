@@ -81,4 +81,4 @@ def maybe_cythonize_extensions(top_path, config):
             exc.args += (message,)
             raise
 
-        config.ext_modules = cythonize(config.ext_modules)
+        config.ext_modules = cythonize(config.ext_modules, nthreads=int(os.environ.get('JOBS', 1)))
