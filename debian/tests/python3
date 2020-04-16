@@ -7,7 +7,7 @@ pkgbuild=${pkgbuild:-no}
 srcdir=$PWD
 
 # These exclusions should be kept in sync with debian/rules
-exclude_tests="not test_old_pickle and not test_ard_accuracyh_on_easy_problem"
+exclude_tests="not test_old_pickle and not test_ard_accuracy_on_easy_problem"
 if dpkg-architecture -e arm64; then
 	exclude_tests="$exclude_tests and not test_dump"
 fi
