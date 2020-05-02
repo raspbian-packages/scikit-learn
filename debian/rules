@@ -175,14 +175,3 @@ override_dh_compress:
 override_dh_sphinxdoc-indep:
 	@# no need to filter out this call, if sphinxdoc is not used it won't be called.
 	dh_sphinxdoc -XMathJax.js -Xjquery.js
-
-
-## to prepare next Debian upstream source tarball
-dfsg: dfsg-releases
-dfsg-%:
-	git checkout dfsg
-	-git merge --no-commit $*
-	-git rm -rf sklearn/externals/joblib
-	: # -git rm -f ./sklearn/svm/src/libsvm/svm.*
-	git commit -m "Merge $* into DFSG (pruning externals: joblib)" -a
-	git checkout debian
