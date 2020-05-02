@@ -534,14 +534,6 @@ sphinx_gallery_conf = {
     "gallery_dirs": ["auto_examples"],
     "subsection_order": SubSectionTitleOrder("../examples"),
     "within_subsection_order": SKExampleTitleSortKey,
-    "binder": {
-        "org": "scikit-learn",
-        "repo": "scikit-learn",
-        "binderhub_url": "https://mybinder.org",
-        "branch": binder_branch,
-        "dependencies": "./binder/requirements.txt",
-        "use_jupyter_lab": True,
-    },
     # avoid generating too many cross links
     "inspect_global_variables": False,
     "remove_config_comments": True,
