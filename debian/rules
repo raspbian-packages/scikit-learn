@@ -167,4 +167,4 @@ override_dh_compress:
 
 override_dh_sphinxdoc-indep:
 	@# no need to filter out this call, if sphinxdoc is not used it won't be called.
-	dh_sphinxdoc -XMathJax.js -Xjquery.js
+	dh_sphinxdoc -Xsearchtools.js -Xbootstrap.min.js
