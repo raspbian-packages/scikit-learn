@@ -3,6 +3,8 @@
 
 # See also: skimage
 
+include /usr/share/dpkg/architecture.mk
+
 PY3VER  ?= $(shell py3versions -vd)
 PY3VERS ?= $(shell py3versions -vr)
 
@@ -17,10 +19,11 @@ else
   JOBS := 1
 endif
 export JOBS := $(JOBS)
+export JOBLIB_MULTIPROCESSING := $(shell expr $(JOBS) / $(words $(PY3VERS)))
 
-include /usr/share/dpkg/architecture.mk
+# things in the doc building and tests try to access stuff in HOME (https://bugs.debian.org/915078)
+export HOME=$(CURDIR)/tmp
 
-PYBUILD_TEST_ARGS = -m "not network" -v
 
 # until the following are fixed:
 #  https://github.com/scikit-learn/scikit-learn/issues/16101
@@ -53,18 +56,6 @@ ifeq ($(DEB_HOST_ARCH),armhf)
   EXCLUDE_TESTS += and not test_common
 endif
 
-PYBUILD_TEST_ARGS += -k "$(EXCLUDE_TESTS)"
-
-export PYBUILD_TEST_PYTEST := 1
-export PYBUILD_TEST_ARGS_python3 := $(PYBUILD_TEST_ARGS)
-export JOBLIB_MULTIPROCESSING := $(shell expr $(JOBS) / $(words $(PY3VERS)))
-
-# try to prevent unsunctioned downloads
-export http_proxy := http://127.0.0.1:9/
-export https_proxy := http://127.0.0.1:9/
-
-# things in the doc building and tests try to access stuff in HOME (https://bugs.debian.org/915078)
-export HOME=$(CURDIR)/tmp
 
 %:
 	dh $@ --with python3,sphinxdoc --buildsystem pybuild  --parallel
@@ -90,7 +81,6 @@ ifneq (,$(filter python-sklearn-doc,$(shell dh_listpackages)))
 	+$(MAKE) -C doc clean
 endif
 
-#debian/build-stamp-pyx:
 override_dh_auto_configure:
 	mkdir -p tmp
 	-mv PKG-INFO PKG-INFO-BAK
@@ -106,14 +96,14 @@ define PYBUILD_AFTER_BUILD
   done;
 endef
 export PYBUILD_AFTER_BUILD
-
 # Only with the default Python 3, additionally use pybuild to run
 # sphinx once the build is complete
 ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
-# FIXME: urllib.error.URLError -- have to ignore
 define PYBUILD_AFTER_BUILD_python$(PY3VER)
   $(PYBUILD_AFTER_BUILD)
   PYTHONPATH={build_dir} \
+  http_proxy='127.0.0.1.9' \
+  https_proxy='127.0.0.1.9' \
   SPHINXBUILD="python$(PY3VER) -m sphinx -j $(JOBS) -D mathjax_path=MathJax.js" \
   SPHINXOPTS="-j $(JOBS) -D mathjax_path=MathJax.js" \
   $(MAKE) -C doc html || true;
@@ -121,27 +111,30 @@ define PYBUILD_AFTER_BUILD_python$(PY3VER)
 endef
 export PYBUILD_AFTER_BUILD_python$(PY3VER)
 endif
-
-define PYBUILD_BEFORE_TEST
-  (mv $(CURDIR)/sklearn/conftest.py $(CURDIR)/sklearn/conftest.py.test ; cd {build_dir} && python{version} -c 'import sklearn;  sklearn.show_versions()')
-endef
-export PYBUILD_BEFORE_TEST
-
-export PYBUILD_AFTER_TEST=mv $(CURDIR)/sklearn/conftest.py.test $(CURDIR)/sklearn/conftest.py
-
-export PYBUILD_AFTER_INSTALL = rm -f {destdir}/{install_dir}/_configtest*
-
 override_dh_auto_build-arch:
 	# Don't try to build docs in the arch build, so unset that hook
 	env -u PYBUILD_AFTER_BUILD_python$(PY3VER) \
 		dh_auto_build
 
+
+export PYBUILD_TEST_PYTEST := 1
+export PYBUILD_TEST_ARGS_python3 := -m "not network" -v -k "$(EXCLUDE_TESTS)"
+define PYBUILD_BEFORE_TEST
+  (mv $(CURDIR)/sklearn/conftest.py $(CURDIR)/sklearn/conftest.py.test; \
+   cd {build_dir} && python{version} -c 'import sklearn; sklearn.show_versions()')
+endef
+export PYBUILD_BEFORE_TEST
+export PYBUILD_AFTER_TEST=mv $(CURDIR)/sklearn/conftest.py.test $(CURDIR)/sklearn/conftest.py
+
+# Nothing to do for indep
 override_dh_auto_test-indep:
 
+export PYBUILD_AFTER_INSTALL = rm -f {destdir}/{install_dir}/_configtest*
 override_dh_auto_install:
 	dh_auto_install
 	# cleanup python3 cache (mixing python3 subversions)
 	-find debian/tmp -name "__pycache__" -exec rm -r {} +
+
 
 override_dh_installdocs-arch:
 	dh_installdocs -A README*.rst
