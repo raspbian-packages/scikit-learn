@@ -14,3 +14,4 @@ no-buttons-js.patch
 Skip-failing-non-intel-tests.patch
 Fix-for-test_uniform_grid.patch
 Use-local-MathJax.patch
+Disable-BinderHub-links.patch
