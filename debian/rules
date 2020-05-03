@@ -101,7 +101,7 @@ define PYBUILD_AFTER_BUILD_python$(PY3VER)
   PYTHONPATH={build_dir} \
   http_proxy='127.0.0.1.9' \
   https_proxy='127.0.0.1.9' \
-  SPHINXBUILD="python$(PY3VER) -m sphinx -j $(JOBS)" \
+  SPHINXBUILD="python$(PY3VER) -m sphinx" \
   SPHINXOPTS="-j $(JOBS)" \
   $(MAKE) -C doc html || true;
   [ -d doc/_build/html ]
