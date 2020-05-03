@@ -94,7 +94,7 @@ define PYBUILD_AFTER_BUILD
 endef
 export PYBUILD_AFTER_BUILD
 # Only with the default Python 3, additionally use pybuild to run
-# sphinx once the build is complete
+# sphinx once the build is complete.
 ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
 define PYBUILD_AFTER_BUILD_python$(PY3VER)
   $(PYBUILD_AFTER_BUILD)
@@ -102,8 +102,7 @@ define PYBUILD_AFTER_BUILD_python$(PY3VER)
   http_proxy='127.0.0.1.9' \
   https_proxy='127.0.0.1.9' \
   SPHINXBUILD="python$(PY3VER) -m sphinx" \
-  SPHINXOPTS="-j $(JOBS)" \
-  $(MAKE) -C doc html || true;
+  $(MAKE) -C doc html SPHINXOPTS="-j $(JOBS)" || true;
   [ -d doc/_build/html ]
 endef
 export PYBUILD_AFTER_BUILD_python$(PY3VER)
