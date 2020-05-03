@@ -74,7 +74,7 @@ Section: doc
 Build-Profiles: <!nodoc>
 Depends: ${misc:Depends},
          ${sphinxdoc:Depends},
-         libjs-bootstrap,
+         libjs-bootstrap4,
          libjs-mathjax,
 Built-Using: ${sphinxdoc:Built-Using},
 Suggests: python-sklearn
