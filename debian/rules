@@ -139,7 +139,7 @@ override_dh_installdocs-arch:
 override_dh_installdocs-indep:
 	dh_installdocs -A README*.rst
 ifneq (,$(filter python-sklearn-doc,$(shell dh_listpackages)))
-    docdir=debian/python-sklearn-doc/usr/share/doc/python-sklearn-doc; \
+	docdir=debian/python-sklearn-doc/usr/share/doc/python-sklearn-doc; \
 	if [ -e $$docdir/stable ] ; then \
 	mv \
 		$$docdir/stable $$docdir/html; \
