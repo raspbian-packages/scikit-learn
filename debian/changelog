@@ -1,3 +1,21 @@
+scikit-learn (0.22.2.post1+dfsg-6) unstable; urgency=medium
+
+  * Team upload.
+
+  * Add Fix-for-test_uniform_grid.patch
+    Cherry-picked from upstream. (Closes: #959139)
+  * Bump debhelper to 12 and switch to debhelper-compat
+  * Mark python3-sklearn-lib as Multi-Arch: same
+  * Re-enable build of documentation, which the following updates needed for
+    the new scikit-learn-modern theme:
+    - Update update python-sklearn-doc.{doc-base, links)
+    - Bump Depends from libjs-bootstrap to libjs-bootstrap4
+    - Add Use-local-MathJax.patch
+    - Add Disable-BinderHub-links.patch
+  * debian/rules refactoring and minor improvements
+
+ -- Christian Kastner <ckk@debian.org>  Mon, 04 May 2020 08:36:38 +0200
+
 scikit-learn (0.22.2.post1+dfsg-5) unstable; urgency=medium
 
   * Team upload.
