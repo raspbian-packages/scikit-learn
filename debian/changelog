@@ -1,3 +1,12 @@
+scikit-learn (0.22.2.post1+dfsg-7) unstable; urgency=medium
+
+  * Team upload.
+
+  * Re-add a clean target that excludes dh_sphinxdoc.
+    Fixes FTBFS for arch:any, as sphinx is in Build-Depends-Indep.
+
+ -- Christian Kastner <ckk@debian.org>  Mon, 04 May 2020 12:13:10 +0200
+
 scikit-learn (0.22.2.post1+dfsg-6) unstable; urgency=medium
 
   * Team upload.
