@@ -63,6 +63,9 @@ endif
 %-arch:
 	dh $@ --with python3 --buildsystem pybuild
 
+clean:
+	dh $@ --with python3 --buildsystem pybuild
+
 override_dh_clean:
 	dh_clean
 	rm -rf .pytest_cache build scikit_learn.egg-info tmp
