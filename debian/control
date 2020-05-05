@@ -70,6 +70,7 @@ Package: python-sklearn-doc
 Conflicts: python-scikits-learn-doc
 Replaces: python-scikits-learn-doc
 Architecture: all
+Multi-Arch: foreign
 Section: doc
 Build-Profiles: <!nodoc>
 Depends: ${misc:Depends},
