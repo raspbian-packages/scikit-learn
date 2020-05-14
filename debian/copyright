@@ -66,10 +66,6 @@ Files: sklearn/externals/_pep562.py
 Copyright: 2018 Isaac Muse <isaacmuse@gmail.com>
 License: Expat
 
-Files: sklearn/externals/_scipy_linalg.py
-Copyright: Copyright (c) 2001-2002 Enthought, Inc.  2003-2019, SciPy Developers.
-License: BSD-3-Clause
-
 Files: sklearn/neighbors/_base.py sklearn/neighbors/_classification.py sklearn/neighbors/_graph.py
 Copyright: (C) INRIA, University of Amsterdam
 License: BSD-3-Clause
