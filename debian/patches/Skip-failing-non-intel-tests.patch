@@ -3,6 +3,16 @@ Date: Sun, 27 Jan 2019 11:40:22 +0100
 Subject: Skip tests that fail on non-intel platforms
 
 Last-Update: 2020-02-13
+---
+ sklearn/datasets/tests/test_openml.py        | 5 +++++
+ sklearn/linear_model/tests/test_logistic.py  | 3 +++
+ sklearn/neighbors/tests/test_lof.py          | 4 ++++
+ sklearn/tests/test_common.py                 | 5 +++++
+ sklearn/utils/tests/test_estimator_checks.py | 6 ++++++
+ 5 files changed, 23 insertions(+)
+
+diff --git a/sklearn/datasets/tests/test_openml.py b/sklearn/datasets/tests/test_openml.py
+index 44fe392..31f59cc 100644
 --- a/sklearn/datasets/tests/test_openml.py
 +++ b/sklearn/datasets/tests/test_openml.py
 @@ -8,6 +8,7 @@ import re
@@ -13,7 +23,7 @@ Last-Update: 2020-02-13
  
  from sklearn import config_context
  from sklearn.datasets import fetch_openml
-@@ -763,6 +764,10 @@ def test_fetch_openml_anneal(monkeypatch
+@@ -774,6 +775,10 @@ def test_fetch_openml_anneal(monkeypatch, gzip_response):
                                 compare_default_target=True)
  
  
@@ -24,27 +34,29 @@ Last-Update: 2020-02-13
  def test_decode_anneal(monkeypatch):
      data_id = 2
      _monkey_patch_webbased_functions(monkeypatch, data_id, False)
---- a/sklearn/tests/test_common.py
-+++ b/sklearn/tests/test_common.py
-@@ -13,6 +13,7 @@ import re
- import pkgutil
- from inspect import isgenerator
- from functools import partial
+diff --git a/sklearn/linear_model/tests/test_logistic.py b/sklearn/linear_model/tests/test_logistic.py
+index 3590793..7bb26eb 100644
+--- a/sklearn/linear_model/tests/test_logistic.py
++++ b/sklearn/linear_model/tests/test_logistic.py
+@@ -3,6 +3,7 @@ import sys
+ import numpy as np
+ import scipy.sparse as sp
+ from scipy import linalg, optimize, sparse
 +import platform
  
  import pytest
  
-@@ -47,6 +48,10 @@ def test_all_estimator_no_base_class():
-         assert not name.lower().startswith('base'), msg
+@@ -1688,6 +1689,8 @@ def test_logistic_regression_path_coefs_multinomial():
+         assert_array_almost_equal(coefs[1], coefs[2], decimal=1)
  
  
 +@pytest.mark.skipif(platform.uname()[4] == 'ppc64le',
-+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13051")
-+@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
-+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
- @pytest.mark.parametrize(
-         'name, Estimator',
-         all_estimators()
++                    reason="https://github.com/scikit-learn/scikit-learn/issues/12448")
+ @pytest.mark.parametrize('est',
+                          [LogisticRegression(random_state=0),
+                           LogisticRegressionCV(random_state=0, cv=3,
+diff --git a/sklearn/neighbors/tests/test_lof.py b/sklearn/neighbors/tests/test_lof.py
+index 750fc57..8a78d6f 100644
 --- a/sklearn/neighbors/tests/test_lof.py
 +++ b/sklearn/neighbors/tests/test_lof.py
 @@ -3,6 +3,8 @@
@@ -56,7 +68,7 @@ Last-Update: 2020-02-13
  
  import numpy as np
  from sklearn import neighbors
-@@ -207,6 +209,8 @@ def test_hasattr_prediction():
+@@ -208,6 +210,8 @@ def test_hasattr_prediction():
      assert not hasattr(clf, 'score_samples')
  
  
@@ -65,25 +77,31 @@ Last-Update: 2020-02-13
  def test_novelty_true_common_tests():
  
      # the common tests are run for the default LOF (novelty=False).
---- a/sklearn/linear_model/tests/test_logistic.py
-+++ b/sklearn/linear_model/tests/test_logistic.py
-@@ -3,6 +3,7 @@ import sys
- import numpy as np
- import scipy.sparse as sp
- from scipy import linalg, optimize, sparse
+diff --git a/sklearn/tests/test_common.py b/sklearn/tests/test_common.py
+index 73c99b0..ab87410 100644
+--- a/sklearn/tests/test_common.py
++++ b/sklearn/tests/test_common.py
+@@ -13,6 +13,7 @@ import re
+ import pkgutil
+ from inspect import isgenerator
+ from functools import partial
 +import platform
  
  import pytest
  
-@@ -1689,6 +1690,8 @@ def test_logistic_regression_path_coefs_
-         assert_array_almost_equal(coefs[1], coefs[2], decimal=1)
+@@ -68,6 +69,10 @@ def test_mark_xfail_checks_with_unconsructable_estimator():
+     assert check == 42
  
  
 +@pytest.mark.skipif(platform.uname()[4] == 'ppc64le',
-+                    reason="https://github.com/scikit-learn/scikit-learn/issues/12448")
- @pytest.mark.parametrize('est',
-                          [LogisticRegression(random_state=0),
-                           LogisticRegressionCV(random_state=0, cv=3,
++                    reason="https://github.com/scikit-learn/scikit-learn/issues/13051")
++@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
++                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
+ @pytest.mark.parametrize(
+         'name, Estimator',
+         all_estimators()
+diff --git a/sklearn/utils/tests/test_estimator_checks.py b/sklearn/utils/tests/test_estimator_checks.py
+index 594ff65..89396cf 100644
 --- a/sklearn/utils/tests/test_estimator_checks.py
 +++ b/sklearn/utils/tests/test_estimator_checks.py
 @@ -1,5 +1,7 @@
@@ -94,7 +112,7 @@ Last-Update: 2020-02-13
  
  import numpy as np
  import scipy.sparse as sp
-@@ -456,6 +458,8 @@ def test_check_estimator_transformer_no_
+@@ -483,6 +485,8 @@ def test_check_estimator_transformer_no_mixin():
                          check_estimator, BadTransformerWithoutMixin())
  
  
@@ -103,7 +121,7 @@ Last-Update: 2020-02-13
  def test_check_estimator_clones():
      # check that check_estimator doesn't modify the estimator it receives
      from sklearn.datasets import load_iris
-@@ -524,6 +528,8 @@ def test_check_no_attributes_set_in_init
+@@ -551,6 +555,8 @@ def test_check_no_attributes_set_in_init():
                          NonConformantEstimatorNoParamSet())
  
  

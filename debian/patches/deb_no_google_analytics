@@ -1,4 +1,5 @@
 From: Yaroslav Halchenko <debian@onerussian.com>
+Date: Thu, 14 May 2020 12:54:06 +0200
 Subject: Disable google analytics referrals in the -doc
 
   if we were to provide some information from just reading  documentation we
@@ -11,12 +12,16 @@ Bug: 730259
 Bug-Debian: http://bugs.debian.org/730259
 Bug-Ubuntu: https://launchpad.net/bugs/
 Last-Update: 2013-11-24
+---
+ doc/conf.py                        | 2 +-
+ doc/themes/scikit-learn/theme.conf | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Index: scikit-learn/doc/conf.py
-===================================================================
---- scikit-learn.orig/doc/conf.py
-+++ scikit-learn/doc/conf.py
-@@ -141,7 +141,7 @@ html_theme = 'scikit-learn-modern'
+diff --git a/doc/conf.py b/doc/conf.py
+index 74e37d0..9ce191a 100644
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -142,7 +142,7 @@ html_theme = 'scikit-learn-modern'
  # Theme options are theme-specific and customize the look and feel of a theme
  # further.  For a list of options available for each theme, see the
  # documentation.
@@ -25,10 +30,10 @@ Index: scikit-learn/doc/conf.py
                        'mathjax_path': mathjax_path}
  
  # Add any paths that contain custom themes here, relative to this directory.
-Index: scikit-learn/doc/themes/scikit-learn/theme.conf
-===================================================================
---- scikit-learn.orig/doc/themes/scikit-learn/theme.conf
-+++ scikit-learn/doc/themes/scikit-learn/theme.conf
+diff --git a/doc/themes/scikit-learn/theme.conf b/doc/themes/scikit-learn/theme.conf
+index 716b82a..af1c34d 100644
+--- a/doc/themes/scikit-learn/theme.conf
++++ b/doc/themes/scikit-learn/theme.conf
 @@ -6,6 +6,6 @@ pygments_style = tango
  [options]
  oldversion = False

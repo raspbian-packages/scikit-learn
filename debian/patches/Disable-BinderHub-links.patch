@@ -8,10 +8,10 @@ Forwarded: not needed
  1 file changed, 8 deletions(-)
 
 diff --git a/doc/conf.py b/doc/conf.py
-index f106f63..efd4b1a 100644
+index 3917600..a7ea817 100644
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -300,14 +300,6 @@ sphinx_gallery_conf = {
+@@ -324,14 +324,6 @@ sphinx_gallery_conf = {
      'examples_dirs': ['../examples'],
      'gallery_dirs': ['auto_examples'],
      'subsection_order': SubSectionTitleOrder('../examples'),
@@ -25,4 +25,4 @@ index f106f63..efd4b1a 100644
 -    },
      # avoid generating too many cross links
      'inspect_global_variables': False,
- }
+     'remove_config_comments': True,

@@ -8,10 +8,10 @@ Forwarded: not-needed
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/doc/conf.py b/doc/conf.py
-index b83e767..f106f63 100644
+index 70badca..3917600 100644
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -54,8 +54,7 @@ if os.environ.get('NO_MATHJAX'):
+@@ -55,8 +55,7 @@ if os.environ.get('NO_MATHJAX'):
      mathjax_path = ''
  else:
      extensions.append('sphinx.ext.mathjax')

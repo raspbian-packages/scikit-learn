@@ -6,9 +6,15 @@ Remove an embedded Paypal object to avoid phoning home every time the
 documentation is read.
 
 Last-Update: 2020-02-13
+---
+ doc/about.rst | 26 +++++---------------------
+ 1 file changed, 5 insertions(+), 21 deletions(-)
+
+diff --git a/doc/about.rst b/doc/about.rst
+index 814a472..bdc4e38 100644
 --- a/doc/about.rst
 +++ b/doc/about.rst
-@@ -482,9 +482,11 @@ Donating to the project
+@@ -484,9 +484,11 @@ Donating to the project
  .......................
  
  If you are interested in donating to the project or to one of our code-sprints,
@@ -23,7 +29,7 @@ Last-Update: 2020-02-13
  
  All donations will be handled by `NumFOCUS
  <https://numfocus.org/>`_, a non-profit-organization which is
-@@ -498,24 +500,6 @@ The received donations for the scikit-le
+@@ -500,24 +502,6 @@ The received donations for the scikit-learn project mostly will go towards
  covering travel-expenses for code sprints, as well as towards the organization
  budget of the project [#f1]_.
  
@@ -47,4 +53,4 @@ Last-Update: 2020-02-13
 -
  .. rubric:: Notes
  
- .. [#f1] Regarding the organization budget in particular, we might use some of
+ .. [#f1] Regarding the organization budget, in particular, we might use some of
