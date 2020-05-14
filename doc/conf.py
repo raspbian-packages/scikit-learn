@@ -195,7 +195,7 @@ html_theme = "scikit-learn-modern"
 # documentation.
 html_theme_options = {
     "legacy_google_analytics": True,
-    "analytics": True,
+    "analytics": False,
     "mathjax_path": mathjax_path,
     "link_to_live_contributing_page": not parsed_version.is_devrelease,
 }
