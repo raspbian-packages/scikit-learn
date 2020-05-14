@@ -160,7 +160,7 @@ html_theme = "scikit-learn-modern"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "google_analytics": True,
+    "google_analytics": False,
     "mathjax_path": mathjax_path,
     "link_to_live_contributing_page": not parsed_version.is_devrelease,
 }
