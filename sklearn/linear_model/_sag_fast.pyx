@@ -28,6 +28,7 @@ from ..utils._seq_dataset cimport SequentialDataset32, SequentialDataset64
 
 from libc.stdio cimport printf
 
+np.import_array()
 
 
 cdef extern from "_sgd_fast_helpers.h":
