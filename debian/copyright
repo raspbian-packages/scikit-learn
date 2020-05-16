@@ -2,13 +2,6 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: scikit-learn
 Upstream-Contact: Fabian Pedregosa <fabian.pedregosa@inria.fr>
 Source: http://github.com/scikit-learn/scikit-learn
-Files-Excluded: sklearn/externals/joblib
-                */__pycache__
-                */*.pyc
-                doc/_build
-                doc/auto_examples
-                doc/generated
-                doc/modules/generated
 
 Files: *
 Copyright: 2007-2019 Scikit-Learn Developers
