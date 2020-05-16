@@ -1,3 +1,21 @@
+scikit-learn (0.23.0-1) unstable; urgency=medium
+
+  * New upstream release.
+    - Refresh patches
+    - Drop obsolete patches
+      + Fix-for-test_uniform_grid.patch
+      + debian/patches/deb_use_system_joblib
+
+  * Set python-sklearn-doc to Multi-Arch: foreign
+  * Drop Files-Excluded from d/copyright. None of the patterns match anymore.
+  * Drop no longer necessary +dfsg suffix and repacking
+  * Add python-pandas-doc to Build-Depends-Indep for intersphinx mapping
+  * Update lintian source overrides
+  * Drop obsolete copyright stanza
+  * Add myself to Uploaders
+
+ -- Christian Kastner <ckk@debian.org>  Sat, 16 May 2020 19:16:21 +0200
+
 scikit-learn (0.22.2.post1+dfsg-7) unstable; urgency=medium
 
   * Team upload.
