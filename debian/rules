@@ -120,10 +120,15 @@ export PYBUILD_TEST_PYTEST := 1
 export PYBUILD_TEST_ARGS_python3 := -m "not network" -v -k "$(EXCLUDE_TESTS)"
 define PYBUILD_BEFORE_TEST
   (mv $(CURDIR)/sklearn/conftest.py $(CURDIR)/sklearn/conftest.py.test; \
+   mv $(CURDIR)/sklearn/datasets/tests/conftest.py $(CURDIR)/sklearn/datasets/tests/conftest.py.test; \
    cd {build_dir} && python{version} -c 'import sklearn; sklearn.show_versions()')
 endef
 export PYBUILD_BEFORE_TEST
-export PYBUILD_AFTER_TEST=mv $(CURDIR)/sklearn/conftest.py.test $(CURDIR)/sklearn/conftest.py
+define PYBUILD_AFTER_TEST
+  (mv $(CURDIR)/sklearn/conftest.py.test $(CURDIR)/sklearn/conftest.py; \
+   mv $(CURDIR)/sklearn/datasets/tests/conftest.py.test $(CURDIR)/sklearn/datasets/tests/conftest.py)
+endef
+export PYBUILD_AFTER_TEST
 
 # Nothing to do for indep
 override_dh_auto_test-indep:
