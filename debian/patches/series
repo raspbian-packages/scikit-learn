@@ -13,3 +13,4 @@ no-buttons-js.patch
 Skip-failing-non-intel-tests.patch
 Use-local-MathJax.patch
 Disable-BinderHub-links.patch
+Skip-two-tests-when-SciPy-1.5.patch
