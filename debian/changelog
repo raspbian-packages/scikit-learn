@@ -2,6 +2,8 @@ scikit-learn (0.23.0-1) unstable; urgency=medium
 
   * New upstream release.
     - Refresh patches
+    - Add patches
+      + Skip-two-tests-when-SciPy-1.5.patch
     - Drop obsolete patches
       + Fix-for-test_uniform_grid.patch
       + debian/patches/deb_use_system_joblib
@@ -10,6 +12,8 @@ scikit-learn (0.23.0-1) unstable; urgency=medium
   * Drop Files-Excluded from d/copyright. None of the patterns match anymore.
   * Drop no longer necessary +dfsg suffix and repacking
   * Add python-pandas-doc to Build-Depends-Indep for intersphinx mapping
+  * Add python3-threadpoolctl to Build-Depends and Depends
+  * Bump python3-numpydoc dependency to 0.9.0
   * Update lintian source overrides
   * Drop obsolete copyright stanza
   * Add myself to Uploaders
