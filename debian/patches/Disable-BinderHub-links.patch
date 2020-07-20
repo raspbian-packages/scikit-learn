@@ -8,7 +8,7 @@ Forwarded: not needed
  1 file changed, 8 deletions(-)
 
 diff --git a/doc/conf.py b/doc/conf.py
-index 3917600..a7ea817 100644
+index a475e72..4acc885 100644
 --- a/doc/conf.py
 +++ b/doc/conf.py
 @@ -324,14 +324,6 @@ sphinx_gallery_conf = {
