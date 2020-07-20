@@ -172,6 +172,7 @@ def test_kmeans_elkan_results(distribution, array_constr, tol):
     assert km_elkan.inertia_ == pytest.approx(km_full.inertia_, rel=1e-6)
 
 
+@pytest.mark.skip(reason='GH 17428')
 @pytest.mark.parametrize("algorithm", ["full", "elkan"])
 def test_kmeans_convergence(algorithm):
     # Check that KMeans stops when convergence is reached when tol=0. (#16075)
