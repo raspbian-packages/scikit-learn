@@ -359,6 +359,11 @@ def test_voting_classifier_set_params():
 
 
 # TODO: Remove parametrization in 0.24 when None is removed in Voting*
+# Debian: This test fails with scipy < 1.5 because of
+#         https://github.com/scipy/scipy/pull/11755
+import scipy
+svers = scipy.__version__.split('.')
+@pytest.mark.skipif(int(svers[0]) <= 1 and int(svers[1]) < 5, reason='outdated SciPy')
 @pytest.mark.parametrize("drop", [None, 'drop'])
 def test_set_estimator_none(drop):
     """VotingClassifier set_params should be able to set estimators as None or
