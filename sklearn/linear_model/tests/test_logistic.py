@@ -382,7 +382,11 @@ def test_consistency_path():
         assert_array_almost_equal(lr_coef, coefs[0], decimal=4,
                                   err_msg="with solver = %s" % solver)
 
-
+# Debian: This test fails with scipy < 1.5 because of
+#         https://github.com/scipy/scipy/pull/11755
+import scipy
+svers = scipy.__version__.split('.')
+@pytest.mark.skipif(int(svers[0]) <= 1 and int(svers[1]) < 5, reason='outdated SciPy')
 def test_logistic_regression_path_convergence_fail():
     rng = np.random.RandomState(0)
     X = np.concatenate((rng.randn(100, 2) + [1, 1], rng.randn(100, 2)))
