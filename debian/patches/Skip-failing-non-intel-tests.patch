@@ -35,7 +35,7 @@ index 44fe392..31f59cc 100644
      data_id = 2
      _monkey_patch_webbased_functions(monkeypatch, data_id, False)
 diff --git a/sklearn/linear_model/tests/test_logistic.py b/sklearn/linear_model/tests/test_logistic.py
-index 3590793..7bb26eb 100644
+index 9687f0b..647e5ba 100644
 --- a/sklearn/linear_model/tests/test_logistic.py
 +++ b/sklearn/linear_model/tests/test_logistic.py
 @@ -3,6 +3,7 @@ import sys
@@ -101,7 +101,7 @@ index 73c99b0..ab87410 100644
          'name, Estimator',
          all_estimators()
 diff --git a/sklearn/utils/tests/test_estimator_checks.py b/sklearn/utils/tests/test_estimator_checks.py
-index 594ff65..89396cf 100644
+index ade575f..f50f10b 100644
 --- a/sklearn/utils/tests/test_estimator_checks.py
 +++ b/sklearn/utils/tests/test_estimator_checks.py
 @@ -1,5 +1,7 @@
@@ -112,7 +112,7 @@ index 594ff65..89396cf 100644
  
  import numpy as np
  import scipy.sparse as sp
-@@ -483,6 +485,8 @@ def test_check_estimator_transformer_no_mixin():
+@@ -484,6 +486,8 @@ def test_check_estimator_transformer_no_mixin():
                          check_estimator, BadTransformerWithoutMixin())
  
  
@@ -121,7 +121,7 @@ index 594ff65..89396cf 100644
  def test_check_estimator_clones():
      # check that check_estimator doesn't modify the estimator it receives
      from sklearn.datasets import load_iris
-@@ -551,6 +555,8 @@ def test_check_no_attributes_set_in_init():
+@@ -552,6 +556,8 @@ def test_check_no_attributes_set_in_init():
                          NonConformantEstimatorNoParamSet())
  
  

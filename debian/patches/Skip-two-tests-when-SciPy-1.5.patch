@@ -24,7 +24,7 @@ index f81b9e5..fe93e63 100644
  def test_set_estimator_none(drop):
      """VotingClassifier set_params should be able to set estimators as None or
 diff --git a/sklearn/linear_model/tests/test_logistic.py b/sklearn/linear_model/tests/test_logistic.py
-index 7bb26eb..a6c2fde 100644
+index 647e5ba..63d681e 100644
 --- a/sklearn/linear_model/tests/test_logistic.py
 +++ b/sklearn/linear_model/tests/test_logistic.py
 @@ -383,7 +383,11 @@ def test_consistency_path():
