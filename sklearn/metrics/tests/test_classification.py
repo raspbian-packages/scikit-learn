@@ -96,6 +96,12 @@ def make_prediction(dataset=None, binary=False):
     return y_true, y_pred, probas_pred
 
 
+# This has been observed on 32-bit ARM with soft float, for example
+with warnings.catch_warnings(record=True) as w:
+    1. / np.array([0.])
+    numpy_lacks_div0_warning = len(w) == 0
+
+
 ###############################################################################
 # Tests
 
@@ -719,6 +725,7 @@ def test_matthews_corrcoef():
         assert_almost_equal(matthews_corrcoef(y_1, y_2, sample_weight=mask), 0.0)
 
 
+@pytest.mark.skipif(numpy_lacks_div0_warning, reason='No div_by_zero warning')
 def test_matthews_corrcoef_multiclass():
     rng = np.random.RandomState(0)
     ord_a = ord("a")
