@@ -1,0 +1,34 @@
+From: Christian Kastner <ckk@debian.org>
+Date: Thu, 30 Jul 2020 16:58:06 +0200
+Subject: Revert removal of NumPy div-by-zero check
+
+---
+ sklearn/feature_extraction/tests/test_text.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/sklearn/feature_extraction/tests/test_text.py b/sklearn/feature_extraction/tests/test_text.py
+index 86ae2fd..aef29c6 100644
+--- a/sklearn/feature_extraction/tests/test_text.py
++++ b/sklearn/feature_extraction/tests/test_text.py
+@@ -1,6 +1,7 @@
+ # -*- coding: utf-8 -*-
+ from collections.abc import Mapping
+ import re
++import warnings
+ 
+ import pytest
+ from scipy import sparse
+@@ -380,6 +381,13 @@ def test_tfidf_no_smoothing():
+          [1, 0, 0]]
+     tr = TfidfTransformer(smooth_idf=False, norm='l2')
+ 
++    # This has been observed on 32-bit ARM with soft float, for example
++    with warnings.catch_warnings(record=True) as w:
++        1. / np.array([0.])
++        numpy_provides_div0_warning = len(w) == 1
++        if not numpy_provides_div0_warning:
++            raise SkipTest("Numpy does not provide div 0 warnings.")
++
+     in_warning_message = 'divide by zero'
+     assert_warns_message(RuntimeWarning, in_warning_message,
+                          tr.fit_transform, X).toarray()
