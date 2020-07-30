@@ -45,6 +45,9 @@ ifeq ($(DEB_HOST_ARCH),ppc64el)
   EXCLUDE_TESTS += and not test_common
   # This one is flaky (appears to be non-deterministic)
   EXCLUDE_TESTS += and not test_stacking_with_sample_weight
+  # To be analazed
+  EXCLUDE_TESTS += and not test_assess_dimension_rank_one
+  EXCLUDE_TESTS += and test_ransac_final_model_fit_sample_weight
 endif
 
 # These consistently fail on the buildds, but could not be reproduced on a
