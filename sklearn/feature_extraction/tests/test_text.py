@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from collections.abc import Mapping
 import re
+import warnings
 
 import pytest
 from scipy import sparse
@@ -74,6 +75,12 @@ def split_tokenize(s):
 
 def lazy_analyze(s):
     return ['the_ultimate_feature']
+
+
+# This has been observed on 32-bit ARM with soft float, for example
+with warnings.catch_warnings(record=True) as w:
+    1. / np.array([0.])
+    numpy_lacks_div0_warning = len(w) == 0
 
 
 def test_strip_accents():
@@ -362,6 +369,7 @@ def test_tf_idf_smoothing():
     assert (tfidf >= 0).all()
 
 
+@pytest.mark.skipif(numpy_lacks_div0_warning, reason='No div_by_zero warning')
 def test_tfidf_no_smoothing():
     X = [[1, 1, 1],
          [1, 1, 0],
