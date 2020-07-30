@@ -90,6 +90,11 @@ def make_prediction(dataset=None, binary=False):
     y_true = y[half:]
     return y_true, y_pred, y_score
 
+# This has been observed on 32-bit ARM with soft float, for example
+with warnings.catch_warnings(record=True) as w:
+    1. / np.array([0.])
+    numpy_lacks_div0_warning = len(w) == 0
+
 
 ###############################################################################
 # Tests
@@ -857,6 +862,7 @@ def _test_precision_recall_curve(y_true, y_score):
     assert p.size == thresholds.size + 1
 
 
+@pytest.mark.skipif(numpy_lacks_div0_warning, reason='No div_by_zero warning')
 def test_precision_recall_curve_toydata():
     with np.errstate(all="raise"):
         # Binary classification
