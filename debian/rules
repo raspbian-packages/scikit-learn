@@ -28,7 +28,10 @@ export HOME=$(CURDIR)/tmp
 # until the following are fixed:
 #  https://github.com/scikit-learn/scikit-learn/issues/16101
 #  https://github.com/scikit-learn/scikit-learn/issues/15420
-EXCLUDE_TESTS = not test_old_pickle and not test_ard_accuracy_on_easy_problem
+#  https://github.com/scikit-learn/scikit-learn/issues/18031
+EXCLUDE_TESTS = not test_old_pickle
+EXCLUDE_TESTS += and not test_ard_accuracy_on_easy_problem
+EXCLUDE_TESTS += and not test_assess_dimesion_rank_one
 
 # Some tests are known to fail randomly so need to be excluded ATM
 ifeq ($(DEB_HOST_ARCH),arm64)
