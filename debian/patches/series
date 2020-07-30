@@ -16,3 +16,4 @@ Disable-BinderHub-links.patch
 Skip-two-tests-when-SciPy-1.5.patch
 Skip-k-means-convergence-tests.patch
 matplotlib-3.3-fix.patch
+Fix-test_float_precision-fails.patch
