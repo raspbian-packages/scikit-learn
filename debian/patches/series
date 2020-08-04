@@ -18,3 +18,4 @@ Skip-k-means-convergence-tests.patch
 matplotlib-3.3-fix.patch
 Fix-test_float_precision-fails.patch
 Revert-removal-of-NumPy-div-by-zero-check.patch
+Use-assert_allclose-instead-of-equality-in-FP-comparison.patch
