@@ -3,11 +3,11 @@ Date: Thu, 30 Jul 2020 16:58:06 +0200
 Subject: Revert removal of NumPy div-by-zero check
 
 ---
- sklearn/feature_extraction/tests/test_text.py | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ sklearn/feature_extraction/tests/test_text.py | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/sklearn/feature_extraction/tests/test_text.py b/sklearn/feature_extraction/tests/test_text.py
-index 86ae2fd..aef29c6 100644
+index 86ae2fd..2538c13 100644
 --- a/sklearn/feature_extraction/tests/test_text.py
 +++ b/sklearn/feature_extraction/tests/test_text.py
 @@ -1,6 +1,7 @@
@@ -18,7 +18,15 @@ index 86ae2fd..aef29c6 100644
  
  import pytest
  from scipy import sparse
-@@ -380,6 +381,13 @@ def test_tfidf_no_smoothing():
+@@ -34,6 +35,7 @@ from sklearn.utils._testing import (assert_almost_equal,
+                                     assert_no_warnings,
+                                     fails_if_pypy,
+                                     assert_allclose_dense_sparse,
++                                    SkipTest,
+                                     skip_if_32bit)
+ from collections import defaultdict
+ from functools import partial
+@@ -380,6 +382,13 @@ def test_tfidf_no_smoothing():
           [1, 0, 0]]
      tr = TfidfTransformer(smooth_idf=False, norm='l2')
  
