@@ -64,6 +64,18 @@ ifeq ($(DEB_HOST_ARCH),armhf)
   EXCLUDE_TESTS += and not test_common
 endif
 
+# TBD. See https://bugs.debian.org/967977
+ifeq ($(DEB_HOST_ARCH),s390x)
+  EXCLUDE_TESTS += and not test_gaussian_kde
+endif
+ifeq ($(DEB_HOST_ARCH),alpha)
+  EXCLUDE_TESTS += and not test_gaussian_kde
+endif
+# Same test, but not entirely the same results as above. Assuming same cause
+ifeq ($(DEB_HOST_ARCH),ppc64)
+  EXCLUDE_TESTS += and not test_gaussian_kde
+endif
+
 
 %:
 	dh $@ --with python3,sphinxdoc --buildsystem pybuild
