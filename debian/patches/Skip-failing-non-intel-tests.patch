@@ -2,14 +2,13 @@ From: Ole Streicher <olebole@debian.org>
 Date: Sun, 27 Jan 2019 11:40:22 +0100
 Subject: Skip tests that fail on non-intel platforms
 
-Last-Update: 2020-02-13
+Last-Update: 2020-08-07
 ---
  sklearn/datasets/tests/test_openml.py        | 5 +++++
- sklearn/linear_model/tests/test_logistic.py  | 3 +++
  sklearn/neighbors/tests/test_lof.py          | 4 ++++
- sklearn/tests/test_common.py                 | 5 +++++
+ sklearn/tests/test_common.py                 | 3 +++
  sklearn/utils/tests/test_estimator_checks.py | 6 ++++++
- 5 files changed, 23 insertions(+)
+ 4 files changed, 18 insertions(+)
 
 diff --git a/sklearn/datasets/tests/test_openml.py b/sklearn/datasets/tests/test_openml.py
 index 44fe392..31f59cc 100644
@@ -34,27 +33,6 @@ index 44fe392..31f59cc 100644
  def test_decode_anneal(monkeypatch):
      data_id = 2
      _monkey_patch_webbased_functions(monkeypatch, data_id, False)
-diff --git a/sklearn/linear_model/tests/test_logistic.py b/sklearn/linear_model/tests/test_logistic.py
-index 9687f0b..647e5ba 100644
---- a/sklearn/linear_model/tests/test_logistic.py
-+++ b/sklearn/linear_model/tests/test_logistic.py
-@@ -3,6 +3,7 @@ import sys
- import numpy as np
- import scipy.sparse as sp
- from scipy import linalg, optimize, sparse
-+import platform
- 
- import pytest
- 
-@@ -1688,6 +1689,8 @@ def test_logistic_regression_path_coefs_multinomial():
-         assert_array_almost_equal(coefs[1], coefs[2], decimal=1)
- 
- 
-+@pytest.mark.skipif(platform.uname()[4] == 'ppc64le',
-+                    reason="https://github.com/scikit-learn/scikit-learn/issues/12448")
- @pytest.mark.parametrize('est',
-                          [LogisticRegression(random_state=0),
-                           LogisticRegressionCV(random_state=0, cv=3,
 diff --git a/sklearn/neighbors/tests/test_lof.py b/sklearn/neighbors/tests/test_lof.py
 index 750fc57..8a78d6f 100644
 --- a/sklearn/neighbors/tests/test_lof.py
@@ -78,7 +56,7 @@ index 750fc57..8a78d6f 100644
  
      # the common tests are run for the default LOF (novelty=False).
 diff --git a/sklearn/tests/test_common.py b/sklearn/tests/test_common.py
-index 73c99b0..ab87410 100644
+index 73c99b0..7bf397a 100644
 --- a/sklearn/tests/test_common.py
 +++ b/sklearn/tests/test_common.py
 @@ -13,6 +13,7 @@ import re
@@ -89,12 +67,10 @@ index 73c99b0..ab87410 100644
  
  import pytest
  
-@@ -68,6 +69,10 @@ def test_mark_xfail_checks_with_unconsructable_estimator():
+@@ -68,6 +69,8 @@ def test_mark_xfail_checks_with_unconsructable_estimator():
      assert check == 42
  
  
-+@pytest.mark.skipif(platform.uname()[4] == 'ppc64le',
-+                    reason="https://github.com/scikit-learn/scikit-learn/issues/13051")
 +@pytest.mark.skipif(platform.uname()[4].startswith('armv'),
 +                    reason="https://github.com/scikit-learn/scikit-learn/issues/13052")
  @pytest.mark.parametrize(
