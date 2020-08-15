@@ -1,6 +1,6 @@
-deb_no_google_analytics
-deb_git_revision_cmd
-deb_nopaypal
+remove-google-analytics.patch
+git-revision-cmd.patch
+remove-paypal.patch
 no-download-intersphinx-mapping.patch
 disable-doctest.patch
 parallel-cythonize.patch
