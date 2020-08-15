@@ -1,0 +1,99 @@
+From: Christian Kastner <ckk@debian.org>
+Date: Thu, 30 Jul 2020 16:58:06 +0200
+Subject: NumPy div-by-zero check
+
+Skip some tests where NumPy does not report FP division-by-zero, which
+has been observed on armel (soft-float).
+
+This is not a bug in NumPy, but rather originates with the underlying
+platform. See also
+ * https://lists.debian.org/debian-arm/2020/02/msg00076.html.
+ * https://github.com/numpy/numpy/issues/15562
+---
+ sklearn/feature_extraction/tests/test_text.py | 8 ++++++++
+ sklearn/metrics/tests/test_classification.py  | 7 +++++++
+ sklearn/metrics/tests/test_ranking.py         | 6 ++++++
+ 3 files changed, 21 insertions(+)
+
+diff --git a/sklearn/feature_extraction/tests/test_text.py b/sklearn/feature_extraction/tests/test_text.py
+index 4770080..d798335 100644
+--- a/sklearn/feature_extraction/tests/test_text.py
++++ b/sklearn/feature_extraction/tests/test_text.py
+@@ -1,6 +1,7 @@
+ # -*- coding: utf-8 -*-
+ from collections.abc import Mapping
+ import re
++import warnings
+ 
+ import pytest
+ from scipy import sparse
+@@ -76,6 +77,12 @@ def lazy_analyze(s):
+     return ['the_ultimate_feature']
+ 
+ 
++# This has been observed on 32-bit ARM with soft float, for example
++with warnings.catch_warnings(record=True) as w:
++    1. / np.array([0.])
++    numpy_lacks_div0_warning = len(w) == 0
++
++
+ def test_strip_accents():
+     # check some classical latin accentuated symbols
+     a = 'àáâãäåçèéêë'
+@@ -362,6 +369,7 @@ def test_tf_idf_smoothing():
+     assert (tfidf >= 0).all()
+ 
+ 
++@pytest.mark.skipif(numpy_lacks_div0_warning, reason='No div_by_zero warning')
+ def test_tfidf_no_smoothing():
+     X = [[1, 1, 1],
+          [1, 1, 0],
+diff --git a/sklearn/metrics/tests/test_classification.py b/sklearn/metrics/tests/test_classification.py
+index 1f959d9..bdecf2d 100644
+--- a/sklearn/metrics/tests/test_classification.py
++++ b/sklearn/metrics/tests/test_classification.py
+@@ -99,6 +99,12 @@ def make_prediction(dataset=None, binary=False):
+     return y_true, y_pred, probas_pred
+ 
+ 
++# This has been observed on 32-bit ARM with soft float, for example
++with warnings.catch_warnings(record=True) as w:
++    1. / np.array([0.])
++    numpy_lacks_div0_warning = len(w) == 0
++
++
+ ###############################################################################
+ # Tests
+ 
+@@ -685,6 +691,7 @@ def test_matthews_corrcoef():
+                                               sample_weight=mask), 0.)
+ 
+ 
++@pytest.mark.skipif(numpy_lacks_div0_warning, reason='No div_by_zero warning')
+ def test_matthews_corrcoef_multiclass():
+     rng = np.random.RandomState(0)
+     ord_a = ord('a')
+diff --git a/sklearn/metrics/tests/test_ranking.py b/sklearn/metrics/tests/test_ranking.py
+index a66ff95..423526f 100644
+--- a/sklearn/metrics/tests/test_ranking.py
++++ b/sklearn/metrics/tests/test_ranking.py
+@@ -78,6 +78,11 @@ def make_prediction(dataset=None, binary=False):
+     y_true = y[half:]
+     return y_true, y_pred, probas_pred
+ 
++# This has been observed on 32-bit ARM with soft float, for example
++with warnings.catch_warnings(record=True) as w:
++    1. / np.array([0.])
++    numpy_lacks_div0_warning = len(w) == 0
++
+ 
+ ###############################################################################
+ # Tests
+@@ -755,6 +760,7 @@ def test_precision_recall_curve_errors():
+         precision_recall_curve([0, 1, 2], [[0.0], [1.0], [1.0]])
+ 
+ 
++@pytest.mark.skipif(numpy_lacks_div0_warning, reason='No div_by_zero warning')
+ def test_precision_recall_curve_toydata():
+     with np.errstate(all="raise"):
+         # Binary classification

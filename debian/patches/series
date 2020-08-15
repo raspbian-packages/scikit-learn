@@ -1,4 +1,3 @@
-deb_skip_some_tests_on_arm
 deb_no_google_analytics
 deb_git_revision_cmd
 deb_nopaypal
@@ -11,7 +10,7 @@ Use-local-MathJax.patch
 Disable-BinderHub-links.patch
 Skip-two-tests-when-SciPy-1.5.patch
 Skip-k-means-convergence-tests.patch
-Revert-removal-of-NumPy-div-by-zero-check.patch
+NumPy-div-by-zero-check.patch
 Use-assert_allclose-instead-of-equality-in-FP-comparison.patch
 Change-expected-result-type-to-pass-on-32-bit.patch
 Increase-tolerance-for-RANSACRegressor-test.patch
