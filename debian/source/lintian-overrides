@@ -1,8 +1,5 @@
 # It is the source
 scikit-learn source: source-is-missing doc/themes/scikit-learn/static/jquery.maphilight.js *
-# The following two are just patches for a non-official-Debian context
-scikit-learn source: patch-file-present-but-not-mentioned-in-series debhelper9-dsc-patch
-scikit-learn source: patch-file-present-but-not-mentioned-in-series xenial-dsc-patch
 # The following files are not used, they are replaced with links to the system-wide ones
 scikit-learn source: source-is-missing doc/themes/scikit-learn-modern/static/js/vendor/bootstrap.min.js
 scikit-learn source: source-contains-prebuilt-javascript-object doc/themes/scikit-learn-modern/static/js/vendor/bootstrap.min.js
