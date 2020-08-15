@@ -18,7 +18,7 @@ Last-Update: 2013-11-24
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/doc/conf.py b/doc/conf.py
-index 74e37d0..9ce191a 100644
+index 539229a..7b90870 100644
 --- a/doc/conf.py
 +++ b/doc/conf.py
 @@ -142,7 +142,7 @@ html_theme = 'scikit-learn-modern'

@@ -8,7 +8,7 @@ Subject: No-downloading intersphinx mapping
  1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/doc/conf.py b/doc/conf.py
-index 9ce191a..bcf3042 100644
+index 7b90870..6a3e8a8 100644
 --- a/doc/conf.py
 +++ b/doc/conf.py
 @@ -262,13 +262,11 @@ trim_doctests_flags = True

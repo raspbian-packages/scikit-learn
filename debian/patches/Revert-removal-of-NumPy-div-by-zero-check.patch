@@ -7,7 +7,7 @@ Subject: Revert removal of NumPy div-by-zero check
  1 file changed, 9 insertions(+)
 
 diff --git a/sklearn/feature_extraction/tests/test_text.py b/sklearn/feature_extraction/tests/test_text.py
-index 86ae2fd..2538c13 100644
+index 4770080..596d4b8 100644
 --- a/sklearn/feature_extraction/tests/test_text.py
 +++ b/sklearn/feature_extraction/tests/test_text.py
 @@ -1,6 +1,7 @@
