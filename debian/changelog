@@ -1,3 +1,19 @@
+scikit-learn (0.23.2-1) unstable; urgency=medium
+
+  * New upstream version 0.23.2
+    - Refresh patches
+  * Patch cleanup:
+    - Drop non-used patches from series.
+      These patches address things that are no longer relevant to the code, or
+      have been addressed in other patches
+    - Drop two more unused patches, remove their lintian overrides
+    - Unify armel div-by-zero patches
+    - Drop Skip-failing-non-intel-tests.patch, fixed upstream
+    - Rename patches
+  * Update ppc64el test skips
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 16 Aug 2020 12:43:04 +0200
+
 scikit-learn (0.23.1-4) unstable; urgency=medium
 
   * Add Increase-tolerance-for-RANSACRegressor-test.patch
