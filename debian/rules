@@ -48,13 +48,17 @@ ifeq ($(DEB_HOST_ARCH),ppc64el)
   EXCLUDE_TESTS += and not test_stacking_with_sample_weight
 endif
 
-# Until this is fixed:
+# Until these are fixed:
 # https://github.com/scikit-learn/scikit-learn/issues/16443
+# https://github.com/scikit-learn/scikit-learn/issues/13052
 ifeq ($(DEB_HOST_ARCH),armhf)
   EXCLUDE_TESTS += and not test_check_estimators_stacking_estimator
   EXCLUDE_TESTS += and not test_check_estimators_voting_estimator
   EXCLUDE_TESTS += and not test_apply_path_readonly_all_trees
   EXCLUDE_TESTS += and not test_check_estimator
+  EXCLUDE_TESTS += and not test_check_estimator_clones
+  EXCLUDE_TESTS += and not test_check_estimator_pairwise
+  EXCLUDE_TESTS += and not test_novelty_true_common_tests
   # This is actually a test generator, so this skips a *lot* of tests
   EXCLUDE_TESTS += and not test_common
 endif
