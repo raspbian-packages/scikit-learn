@@ -1,3 +1,10 @@
+scikit-learn (0.23.2-2) unstable; urgency=medium
+
+  * Exclude armhf tests again erroneously assumed to be fixed
+  * Sync autopkgtest test exclusions with d/rules
+
+ -- Christian Kastner <ckk@debian.org>  Mon, 17 Aug 2020 00:05:08 +0200
+
 scikit-learn (0.23.2-1) unstable; urgency=medium
 
   * New upstream version 0.23.2
