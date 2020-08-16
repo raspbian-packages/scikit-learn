@@ -2,6 +2,7 @@ From: Christian Kastner <ckk@debian.org>
 Date: Mon, 20 Jul 2020 13:14:32 +0200
 Subject: Skip two tests when SciPy < 1.5
 
+Forwarded: not-needed
 ---
  sklearn/ensemble/tests/test_voting.py       | 5 +++++
  sklearn/linear_model/tests/test_logistic.py | 6 +++++-

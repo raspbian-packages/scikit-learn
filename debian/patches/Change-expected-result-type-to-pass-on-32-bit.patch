@@ -2,7 +2,7 @@ From: Christian Kastner <ckk@debian.org>
 Date: Tue, 4 Aug 2020 13:47:28 +0200
 Subject: Change expected result type to pass on 32-bit
 
-Origin: https://github.com/scikit-learn/scikit-learn/issues/18084
+Origin: upstream, https://github.com/scikit-learn/scikit-learn/issues/18084
 ---
  sklearn/datasets/tests/test_base.py | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
