@@ -13,13 +13,28 @@ if dpkg-architecture -e arm64; then
 fi
 if dpkg-architecture -e ppc64el; then
 	exclude_tests="$exclude_tests and not test_precomputed_nearest_neighbors_filtering"
-	exclude_tests="$exclude_tests and not test_stacking_cv_influence"
 	exclude_tests="$exclude_tests and not test_common"
+	exclude_tests="$exclude_tests and not test_stacking_cv_influence"
 	exclude_tests="$exclude_tests and not test_stacking_with_sample_weight"
 fi
 if dpkg-architecture -e armhf; then
 	exclude_tests="$exclude_tests and not test_check_estimators_stacking_estimator"
 	exclude_tests="$exclude_tests and not test_check_estimators_voting_estimator"
+	exclude_tests="$exclude_tests and not test_apply_path_readonly_all_trees"
+	exclude_tests="$exclude_tests and not test_check_estimator"
+	exclude_tests="$exclude_tests and not test_check_estimator_clones"
+	exclude_tests="$exclude_tests and not test_check_estimator_pairwise"
+	exclude_tests="$exclude_tests and not test_novelty_true_common_tests"
+	exclude_tests="$exclude_tests and not test_common"
+fi
+if dpkg-architecture -e s390x || dpkg-architecture -e alpha || dpkg-architecture -e ppc64; then
+	exclude_tests="$exclude_tests and not test_check_estimators_stacking_estimator"
+	exclude_tests="$exclude_tests and not test_check_estimators_voting_estimator"
+	exclude_tests="$exclude_tests and not test_apply_path_readonly_all_trees"
+	exclude_tests="$exclude_tests and not test_check_estimator"
+	exclude_tests="$exclude_tests and not test_check_estimator_clones"
+	exclude_tests="$exclude_tests and not test_check_estimator_pairwise"
+	exclude_tests="$exclude_tests and not test_novelty_true_common_tests"
 	exclude_tests="$exclude_tests and not test_common"
 fi
 
