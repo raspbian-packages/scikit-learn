@@ -1,0 +1,193 @@
+#!/usr/bin/make -f
+# -*- mode: makefile; coding: utf-8 -*-
+
+# See also: skimage
+
+include /usr/share/dpkg/architecture.mk
+
+PY3VER  ?= $(shell py3versions -vd)
+PY3VERS ?= $(shell py3versions -vr)
+
+export DEB_BUILD_MAINT_OPTIONS := hardening=+all
+
+export DEB_CFLAGS_MAINT_APPEND :=
+export DEB_LDFLAGS_MAINT_APPEND := -Wl,--as-needed
+
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+  JOBS := $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+else
+  JOBS := 1
+endif
+export JOBS := $(JOBS)
+export JOBLIB_MULTIPROCESSING := $(shell expr $(JOBS) / $(words $(PY3VERS)))
+
+# things in the doc building and tests try to access stuff in HOME (https://bugs.debian.org/915078)
+export HOME=$(CURDIR)/tmp
+
+
+# until the following are fixed:
+#  https://github.com/scikit-learn/scikit-learn/issues/16101
+#  https://github.com/scikit-learn/scikit-learn/issues/15420
+EXCLUDE_TESTS = not test_old_pickle
+EXCLUDE_TESTS += and not test_ard_accuracy_on_easy_problem
+
+# Some tests are known to fail randomly so need to be excluded ATM
+ifeq ($(DEB_HOST_ARCH),arm64)
+  # A bit aggressive exclusion of some tests which exhibit a problem I have no time to deal with on arm64
+  EXCLUDE_TESTS += and not test_dump
+endif
+
+# Until this is fixed:
+# https://github.com/scikit-learn/scikit-learn/issues/16794
+ifeq ($(DEB_HOST_ARCH),ppc64el)
+  EXCLUDE_TESTS += and not test_precomputed_nearest_neighbors_filtering
+  # This is actually a test generator, so this skips a *lot* of tests
+  EXCLUDE_TESTS += and not test_common
+  # These are is flaky
+  EXCLUDE_TESTS += and not test_stacking_cv_influence
+  EXCLUDE_TESTS += and not test_stacking_with_sample_weight
+endif
+
+# Until these are fixed:
+# https://github.com/scikit-learn/scikit-learn/issues/16443
+# https://github.com/scikit-learn/scikit-learn/issues/13052
+ifeq ($(DEB_HOST_ARCH),armhf)
+  EXCLUDE_TESTS += and not test_check_estimators_stacking_estimator
+  EXCLUDE_TESTS += and not test_check_estimators_voting_estimator
+  EXCLUDE_TESTS += and not test_apply_path_readonly_all_trees
+  EXCLUDE_TESTS += and not test_check_estimator
+  EXCLUDE_TESTS += and not test_check_estimator_clones
+  EXCLUDE_TESTS += and not test_check_estimator_pairwise
+  EXCLUDE_TESTS += and not test_novelty_true_common_tests
+  # This is actually a test generator, so this skips a *lot* of tests
+  EXCLUDE_TESTS += and not test_common
+endif
+
+# TBD. See https://bugs.debian.org/967977
+ifeq ($(DEB_HOST_ARCH),s390x)
+  EXCLUDE_TESTS += and not test_gaussian_kde
+endif
+ifeq ($(DEB_HOST_ARCH),alpha)
+  EXCLUDE_TESTS += and not test_gaussian_kde
+endif
+# Same test, but not entirely the same results as above. Assuming same cause
+ifeq ($(DEB_HOST_ARCH),ppc64)
+  EXCLUDE_TESTS += and not test_gaussian_kde
+endif
+
+
+%:
+	dh $@ --with python3,sphinxdoc --buildsystem pybuild
+
+%-arch:
+	dh $@ --with python3 --buildsystem pybuild
+
+clean:
+	dh $@ --with python3 --buildsystem pybuild
+
+override_dh_clean:
+	dh_clean
+	rm -rf .pytest_cache build scikit_learn.egg-info tmp
+	-mv PKG-INFO-BAK PKG-INFO
+	rm -f debian/build-stamp-*
+	for i in $$(find -name '*.pyx'); do \
+		rm -f $${i%.*}.c $${i%.*}.cpp; \
+	done
+	for i in $$(find -name '*.pyx.in'); do \
+		rm -f $${i%.*}; \
+	done
+ifneq (,$(filter python-sklearn-doc,$(shell dh_listpackages)))
+	+$(MAKE) -C doc clean
+endif
+
+override_dh_auto_configure:
+	mkdir -p tmp
+	-mv PKG-INFO PKG-INFO-BAK
+	python$(PY3VER) setup.py config
+# 	dh_auto_configure
+	mv PKG-INFO-BAK PKG-INFO
+
+# Ensure sample and test data are copied to .pybuild
+define PYBUILD_AFTER_BUILD
+  for d in tests/data data descr images; do
+    rm -rf {build_dir}/sklearn/datasets/$$d;
+    ln -s {dir}/sklearn/datasets/$$d {build_dir}/sklearn/datasets/$$d;
+  done;
+endef
+export PYBUILD_AFTER_BUILD
+# Only with the default Python 3, additionally use pybuild to run
+# sphinx once the build is complete.
+ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+define PYBUILD_AFTER_BUILD_python$(PY3VER)
+  $(PYBUILD_AFTER_BUILD)
+  PYTHONPATH={build_dir} \
+  http_proxy='127.0.0.1.9' \
+  https_proxy='127.0.0.1.9' \
+  SPHINXBUILD="python$(PY3VER) -m sphinx" \
+  $(MAKE) -C doc html SPHINXOPTS="-j $(JOBS)" || true;
+  [ -d doc/_build/html ]
+endef
+export PYBUILD_AFTER_BUILD_python$(PY3VER)
+endif
+override_dh_auto_build-arch:
+	# Don't try to build docs in the arch build, so unset that hook
+	env -u PYBUILD_AFTER_BUILD_python$(PY3VER) \
+		dh_auto_build
+
+
+export PYBUILD_TEST_PYTEST := 1
+export PYBUILD_TEST_ARGS_python3 := -m "not network" -v -k "$(EXCLUDE_TESTS)"
+define PYBUILD_BEFORE_TEST
+  (mv $(CURDIR)/sklearn/conftest.py $(CURDIR)/sklearn/conftest.py.test; \
+   mv $(CURDIR)/sklearn/datasets/tests/conftest.py $(CURDIR)/sklearn/datasets/tests/conftest.py.test; \
+   cd {build_dir} && python{version} -c 'import sklearn; sklearn.show_versions()')
+endef
+export PYBUILD_BEFORE_TEST
+define PYBUILD_AFTER_TEST
+  (mv $(CURDIR)/sklearn/conftest.py.test $(CURDIR)/sklearn/conftest.py; \
+   mv $(CURDIR)/sklearn/datasets/tests/conftest.py.test $(CURDIR)/sklearn/datasets/tests/conftest.py)
+endef
+export PYBUILD_AFTER_TEST
+
+# Nothing to do for indep
+override_dh_auto_test-indep:
+
+export PYBUILD_AFTER_INSTALL = rm -f {destdir}/{install_dir}/_configtest*
+override_dh_auto_install:
+	dh_auto_install
+	# cleanup python3 cache (mixing python3 subversions)
+	-find debian/tmp -name "__pycache__" -exec rm -r {} +
+
+
+override_dh_installdocs-arch:
+	dh_installdocs -A README*.rst
+
+override_dh_installdocs-indep:
+	dh_installdocs -A README*.rst
+ifneq (,$(filter python-sklearn-doc,$(shell dh_listpackages)))
+	docdir=debian/python-sklearn-doc/usr/share/doc/python-sklearn-doc; \
+	if [ -e $$docdir/stable ] ; then \
+	mv \
+		$$docdir/stable $$docdir/html; \
+    fi
+endif
+
+override_dh_installchangelogs:
+	dh_installchangelogs doc/whats_new.rst
+
+# remove .so libraries from main package, and call dh_numpy*
+_dh_python%:
+	-find debian/python$(*:2=)-sklearn/usr/lib -name "*.so" -delete;
+
+	dh_numpy$(*:2=) -ppython$(*:2=)-sklearn-lib
+	dh_python$*
+
+override_dh_python3: _dh_python3
+
+## immediately useable documentation and exemplar scripts/data
+override_dh_compress:
+	dh_compress -X.py -X.html -X.pdf -X.css -X.jpg -X.txt -X.js -X.json -X.rtc
+
+override_dh_sphinxdoc-indep:
+	@# no need to filter out this call, if sphinxdoc is not used it won't be called.
+	dh_sphinxdoc -Xsearchtools.js
