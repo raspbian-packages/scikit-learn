@@ -1,3 +1,11 @@
+scikit-learn (0.23.2-3) unstable; urgency=medium
+
+  * autopkgtest: Fix exclusion of test_gaussian_kde on s390x, alpha, ppc64
+    (Closes: #969523)
+  * Add lintian override for embedded-javascript-library in python-sklearn-doc
+
+ -- Christian Kastner <ckk@debian.org>  Sat, 05 Sep 2020 20:43:10 +0200
+
 scikit-learn (0.23.2-2) unstable; urgency=medium
 
   * Exclude armhf tests again erroneously assumed to be fixed
