@@ -1,4 +1,4 @@
-scikit-learn (0.23.2-4) UNRELEASED; urgency=medium
+scikit-learn (0.23.2-4) unstable; urgency=medium
 
   * Team upload.
   * debian patch fix_scipy1.6_PR18711.patch applies parts of upstream
@@ -7,7 +7,7 @@ scikit-learn (0.23.2-4) UNRELEASED; urgency=medium
   * debhelper compatibility level 13
   * Standards-Version: 4.5.1
 
- -- Drew Parsons <dparsons@debian.org>  Mon, 18 Jan 2021 02:39:28 +1100
+ -- Drew Parsons <dparsons@debian.org>  Mon, 18 Jan 2021 02:47:23 +1100
 
 scikit-learn (0.23.2-3) unstable; urgency=medium
 
