@@ -1,3 +1,12 @@
+scikit-learn (0.23.2-4) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * debian patch fix_scipy1.6_PR18711.patch applies parts of upstream
+    PR#18711 to fix handling with scipy 1.6 (in particular fixes
+    sklearn/utils/optimize.py)
+
+ -- Drew Parsons <dparsons@debian.org>  Mon, 18 Jan 2021 02:39:28 +1100
+
 scikit-learn (0.23.2-3) unstable; urgency=medium
 
   * autopkgtest: Fix exclusion of test_gaussian_kde on s390x, alpha, ppc64

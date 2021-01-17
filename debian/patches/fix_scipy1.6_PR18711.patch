@@ -1,0 +1,64 @@
+From eb685d534f06c8fe45de1c29db7d2ff58e011100 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Juan=20Carlos=20Alfaro=20Jim=C3=A9nez?=
+ <JuanCarlos.Alfaro@uclm.es>
+Date: Fri, 30 Oct 2020 09:20:36 +0100
+Subject: [PATCH 01/10] CI Fix Travis CRON job failures
+
+---
+ sklearn/metrics/_ranking.py            | 2 +-
+ sklearn/metrics/cluster/_supervised.py | 4 ++--
+ sklearn/metrics/tests/test_ranking.py  | 2 +-
+ sklearn/naive_bayes.py                 | 2 +-
+ sklearn/utils/estimator_checks.py      | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
+
+Index: scikit-learn/sklearn/utils/_seq_dataset.pyx.tp
+===================================================================
+--- scikit-learn.orig/sklearn/utils/_seq_dataset.pyx.tp	2021-01-18 02:37:08.698404725 +1100
++++ scikit-learn/sklearn/utils/_seq_dataset.pyx.tp	2021-01-18 02:37:08.690404605 +1100
+@@ -262,7 +262,7 @@
+         self.feature_indices_ptr = <int *> feature_indices.data
+ 
+         self.current_index = -1
+-        self.X_stride = X.strides[0] / X.itemsize
++        self.X_stride = X.strides[0] // X.itemsize
+         self.X_data_ptr = <{{c_type}} *>X.data
+         self.Y_data_ptr = <{{c_type}} *>Y.data
+         self.sample_weight_data = <{{c_type}} *>sample_weights.data
+Index: scikit-learn/sklearn/neighbors/_binary_tree.pxi
+===================================================================
+--- scikit-learn.orig/sklearn/neighbors/_binary_tree.pxi	2021-01-18 02:37:08.698404725 +1100
++++ scikit-learn/sklearn/neighbors/_binary_tree.pxi	2021-01-18 02:37:08.690404605 +1100
+@@ -1071,7 +1071,7 @@
+         # determine number of levels in the tree, and from this
+         # the number of nodes in the tree.  This results in leaf nodes
+         # with numbers of points between leaf_size and 2 * leaf_size
+-        self.n_levels = np.log2(fmax(1, (n_samples - 1) / self.leaf_size)) + 1
++        self.n_levels = int(np.log2(fmax(1, (n_samples - 1) / self.leaf_size)) + 1)
+         self.n_nodes = (2 ** self.n_levels) - 1
+ 
+         # allocate arrays for storage
+Index: scikit-learn/sklearn/utils/optimize.py
+===================================================================
+--- scikit-learn.orig/sklearn/utils/optimize.py	2021-01-18 02:37:08.698404725 +1100
++++ scikit-learn/sklearn/utils/optimize.py	2021-01-18 02:37:08.698404725 +1100
+@@ -234,13 +234,18 @@
+     # handle both scipy and scikit-learn solver names
+     if solver == "lbfgs":
+         if result.status != 0:
++            try:
++                # The message is already decoded in scipy>=1.6.0
++                result_message = result.message.decode("latin1")
++            except AttributeError:
++                result_message = result.message
+             warning_msg = (
+                 "{} failed to converge (status={}):\n{}.\n\n"
+                 "Increase the number of iterations (max_iter) "
+                 "or scale the data as shown in:\n"
+                 "    https://scikit-learn.org/stable/modules/"
+                 "preprocessing.html"
+-            ).format(solver, result.status, result.message.decode("latin1"))
++            ).format(solver, result.status, result_message)
+             if extra_warning_msg is not None:
+                 warning_msg += "\n" + extra_warning_msg
+             warnings.warn(warning_msg, ConvergenceWarning, stacklevel=2)
