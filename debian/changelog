@@ -5,6 +5,7 @@ scikit-learn (0.23.2-4) UNRELEASED; urgency=medium
     PR#18711 to fix handling with scipy 1.6 (in particular fixes
     sklearn/utils/optimize.py)
   * debhelper compatibility level 13
+  * Standards-Version: 4.5.1
 
  -- Drew Parsons <dparsons@debian.org>  Mon, 18 Jan 2021 02:39:28 +1100
 
