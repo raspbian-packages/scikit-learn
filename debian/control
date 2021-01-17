@@ -5,7 +5,7 @@ Maintainer: Debian Science Team <debian-science-maintainers@lists.alioth.debian.
 Uploaders: Yaroslav Halchenko <debian@onerussian.com>,
            Michael Hanke <michael.hanke@gmail.com>,
            Christian Kastner <ckk@debian.org>,
-Build-Depends: debhelper-compat (= 12),
+Build-Depends: debhelper-compat (= 13),
                dh-python,
                python3-all-dev,
                cython3,
