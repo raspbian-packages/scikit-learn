@@ -14,3 +14,4 @@ Use-assert_allclose-instead-of-equality-in-FP-comparison.patch
 Change-expected-result-type-to-pass-on-32-bit.patch
 Increase-tolerance-for-RANSACRegressor-test.patch
 fix_scipy1.6_PR18711.patch
+skip_test_ELKI_PR19115.patch

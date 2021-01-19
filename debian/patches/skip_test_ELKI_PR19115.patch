@@ -1,0 +1,82 @@
+From 0387afba0758b833ca6a30af7fde75f82f4ae96a Mon Sep 17 00:00:00 2001
+From: "Thomas J. Fan" <thomasjpfan@gmail.com>
+Date: Tue, 5 Jan 2021 10:25:22 -0500
+Subject: [PATCH 1/2] TST Skips test for arm [cd build]
+
+---
+ sklearn/cluster/tests/test_optics.py | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/sklearn/cluster/tests/test_optics.py b/sklearn/cluster/tests/test_optics.py
+index 03ca4995c044..1f9b872752fc 100644
+--- a/sklearn/cluster/tests/test_optics.py
++++ b/sklearn/cluster/tests/test_optics.py
+@@ -1,6 +1,7 @@
+ # Authors: Shane Grigsby <refuge@rocktalus.com>
+ #          Adrin Jalali <adrin.jalali@gmail.com>
+ # License: BSD 3 clause
++import platform
+ 
+ import numpy as np
+ import pytest
+@@ -15,6 +16,7 @@
+ from sklearn.utils._testing import assert_array_equal
+ from sklearn.utils._testing import assert_raise_message
+ from sklearn.utils._testing import assert_allclose
++from sklearn.utils.fixes import sp_version, parse_version
+ 
+ from sklearn.cluster.tests.common import generate_clustered_data
+ 
+@@ -314,6 +316,9 @@ def test_processing_order():
+     assert_array_equal(clust.ordering_, [0, 1, 2, 3])
+ 
+ 
++@pytest.mark.skipif(sp_version >= parse_version("1.6.0")
++                    and platform.machine() == 'aarch64',
++                    reason="Test fails for SciPy 1.6.0 on ARM. See #19111")
+ def test_compare_to_ELKI():
+     # Expected values, computed with (future) ELKI 0.7.5 using:
+     # java -jar elki.jar cli -dbc.in csv -dbc.filter FixedDBIDsFilter
+
+From 0ebc78ad0b96b01de47ee8c39556c761b805cb50 Mon Sep 17 00:00:00 2001
+From: "Thomas J. Fan" <thomasjpfan@gmail.com>
+Date: Tue, 5 Jan 2021 15:59:19 -0500
+Subject: [PATCH 2/2] CI Skip for 32bit linux [cd build]
+
+---
+ sklearn/cluster/tests/test_optics.py | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/sklearn/cluster/tests/test_optics.py b/sklearn/cluster/tests/test_optics.py
+index 1f9b872752fc..4428b6c00d7e 100644
+--- a/sklearn/cluster/tests/test_optics.py
++++ b/sklearn/cluster/tests/test_optics.py
+@@ -2,6 +2,7 @@
+ #          Adrin Jalali <adrin.jalali@gmail.com>
+ # License: BSD 3 clause
+ import platform
++import sys
+ 
+ import numpy as np
+ import pytest
+@@ -19,6 +20,7 @@
+ from sklearn.utils.fixes import sp_version, parse_version
+ 
+ from sklearn.cluster.tests.common import generate_clustered_data
++from sklearn.utils import _IS_32BIT
+ 
+ 
+ rng = np.random.RandomState(0)
+@@ -317,8 +319,10 @@ def test_processing_order():
+ 
+ 
+ @pytest.mark.skipif(sp_version >= parse_version("1.6.0")
+-                    and platform.machine() == 'aarch64',
+-                    reason="Test fails for SciPy 1.6.0 on ARM. See #19111")
++                    and (platform.machine() == "aarch64" or
++                         (sys.platform == "linux" and _IS_32BIT)),
++                    reason=("Test fails for SciPy 1.6.0 on ARM and on 32-bit "
++                            "linux. See #19111"))
+ def test_compare_to_ELKI():
+     # Expected values, computed with (future) ELKI 0.7.5 using:
+     # java -jar elki.jar cli -dbc.in csv -dbc.filter FixedDBIDsFilter
