@@ -1,0 +1,966 @@
+scikit-learn (0.23.2-5) unstable; urgency=medium
+
+  * Team upload.
+  * debian patch skip_test_ELKI_PR19115.patch applies upstream
+    PR19115 to skip the flaky ELKI test on arm and 32 bit systems.
+
+ -- Drew Parsons <dparsons@debian.org>  Tue, 19 Jan 2021 22:20:59 +1100
+
+scikit-learn (0.23.2-4) unstable; urgency=medium
+
+  * Team upload.
+  * debian patch fix_scipy1.6_PR18711.patch applies parts of upstream
+    PR#18711 to fix handling with scipy 1.6 (in particular fixes
+    sklearn/utils/optimize.py)
+  * debhelper compatibility level 13
+  * Standards-Version: 4.5.1
+
+ -- Drew Parsons <dparsons@debian.org>  Mon, 18 Jan 2021 02:47:23 +1100
+
+scikit-learn (0.23.2-3) unstable; urgency=medium
+
+  * autopkgtest: Fix exclusion of test_gaussian_kde on s390x, alpha, ppc64
+    (Closes: #969523)
+  * Add lintian override for embedded-javascript-library in python-sklearn-doc
+
+ -- Christian Kastner <ckk@debian.org>  Sat, 05 Sep 2020 20:43:10 +0200
+
+scikit-learn (0.23.2-2) unstable; urgency=medium
+
+  * Exclude armhf tests again erroneously assumed to be fixed
+  * Sync autopkgtest test exclusions with d/rules
+
+ -- Christian Kastner <ckk@debian.org>  Mon, 17 Aug 2020 00:05:08 +0200
+
+scikit-learn (0.23.2-1) unstable; urgency=medium
+
+  * New upstream version 0.23.2
+    - Refresh patches
+  * Patch cleanup:
+    - Drop non-used patches from series.
+      These patches address things that are no longer relevant to the code, or
+      have been addressed in other patches
+    - Drop two more unused patches, remove their lintian overrides
+    - Unify armel div-by-zero patches
+    - Drop Skip-failing-non-intel-tests.patch, fixed upstream
+    - Rename patches
+  * Update ppc64el test skips
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 16 Aug 2020 12:43:04 +0200
+
+scikit-learn (0.23.1-4) unstable; urgency=medium
+
+  * Add Increase-tolerance-for-RANSACRegressor-test.patch
+  * Update Change-expected-result-type-to-pass-on-32-bit.patch
+  * Fix Revert-removal-of-NumPy-div-by-zero-check.patch on armel
+  * Exclude another armhf test (Bus error)
+  * Exclude tests failing with SciPy >= 1.5 on s390x, alpha, ppc64
+
+ -- Christian Kastner <ckk@debian.org>  Thu, 06 Aug 2020 11:03:59 +0200
+
+scikit-learn (0.23.1-3) unstable; urgency=medium
+
+  * Exclude two failing ppc64el tests for now
+  * Exclude test_assess_dimesion_rank_one
+  * Exclude failing test (memory) on armhf
+  * Add Fix-test_float_precision-fails.patch
+  * Add Revert-removal-of-NumPy-div-by-zero-check.patch
+  * Add Use-assert_allclose-instead-of-equality-in-FP-comparison.patch
+  * Add Change-expected-result-type-to-pass-on-32-bit.patch
+
+ -- Christian Kastner <ckk@debian.org>  Tue, 04 Aug 2020 18:45:11 +0200
+
+scikit-learn (0.23.1-2) unstable; urgency=medium
+
+  * Add matplotlib-3.3-fix.patch
+    Fixes FTBFS from test failures with matplotlib >= 3.3
+
+ -- Christian Kastner <ckk@debian.org>  Wed, 29 Jul 2020 17:34:09 +0200
+
+scikit-learn (0.23.1-1) unstable; urgency=medium
+
+  * New upstream release.
+    - Refresh patches
+    - Add patches
+      + Skip-two-tests-when-SciPy-1.5.patch
+      + Add Skip-k-means-convergence-tests.patch
+    - Drop obsolete patches
+      + Fix-for-test_uniform_grid.patch
+      + debian/patches/deb_use_system_joblib
+
+  * Set python-sklearn-doc to Multi-Arch: foreign
+  * Drop Files-Excluded from d/copyright. None of the patterns match anymore.
+  * Drop no longer necessary +dfsg suffix and repacking
+  * Add python-pandas-doc to Build-Depends-Indep for intersphinx mapping
+  * Add python3-threadpoolctl to Build-Depends and Depends
+  * Bump python3-numpydoc dependency to 0.9.0
+  * Update lintian source overrides
+  * Drop obsolete copyright stanza
+  * Add myself to Uploaders
+
+ -- Christian Kastner <ckk@debian.org>  Sat, 16 May 2020 19:16:21 +0200
+
+scikit-learn (0.22.2.post1+dfsg-7) unstable; urgency=medium
+
+  * Team upload.
+
+  * Re-add a clean target that excludes dh_sphinxdoc.
+    Fixes FTBFS for arch:any, as sphinx is in Build-Depends-Indep.
+
+ -- Christian Kastner <ckk@debian.org>  Mon, 04 May 2020 12:13:10 +0200
+
+scikit-learn (0.22.2.post1+dfsg-6) unstable; urgency=medium
+
+  * Team upload.
+
+  * Add Fix-for-test_uniform_grid.patch
+    Cherry-picked from upstream. (Closes: #959139)
+  * Bump debhelper to 12 and switch to debhelper-compat
+  * Mark python3-sklearn-lib as Multi-Arch: same
+  * Re-enable build of documentation, which the following updates needed for
+    the new scikit-learn-modern theme:
+    - Update update python-sklearn-doc.{doc-base, links)
+    - Bump Depends from libjs-bootstrap to libjs-bootstrap4
+    - Add Use-local-MathJax.patch
+    - Add Disable-BinderHub-links.patch
+  * debian/rules refactoring and minor improvements
+
+ -- Christian Kastner <ckk@debian.org>  Mon, 04 May 2020 08:36:38 +0200
+
+scikit-learn (0.22.2.post1+dfsg-5) unstable; urgency=medium
+
+  * Team upload.
+
+  * Skip another failing test on armhf. This should resolve the last of the
+  * current FTBFS.
+
+ -- Christian Kastner <ckk@debian.org>  Tue, 31 Mar 2020 17:10:32 +0200
+
+scikit-learn (0.22.2.post1+dfsg-4) unstable; urgency=medium
+
+  * Team upload.
+
+  * Skip another failing test on armhf
+  * Skip a non-deterministically failing ppc64el test
+
+ -- Christian Kastner <ckk@debian.org>  Mon, 30 Mar 2020 11:47:33 +0200
+
+scikit-learn (0.22.2.post1+dfsg-3) unstable; urgency=medium
+
+  * Team upload.
+
+  * Skip another failing test on armhf
+  * autopkgtest: Disable tests requiring network
+
+ -- Christian Kastner <ckk@debian.org>  Mon, 30 Mar 2020 09:25:31 +0200
+
+scikit-learn (0.22.2.post1+dfsg-2) unstable; urgency=medium
+
+  * Team upload.
+
+  * Skip yet another flaky test on ppc64el, hopefully resolving the FTBFS now
+  * autopkgtest:
+    - Disable doctest, as we do at build time
+    - Sync excluded tests with build-time exclusions
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 29 Mar 2020 20:46:08 +0200
+
+scikit-learn (0.22.2.post1+dfsg-1) unstable; urgency=medium
+
+  * Team upload.
+
+  * New upstream release.
+    - Refresh patches
+  * debian/rules:
+    - Merge multiple pytest -k expressions into one. Fixes a FTBFS on arm64
+    - Skip a number of failing tests on ppc64el, fixing a FTBFS. Issue has been
+      reported upstream
+
+ -- Christian Kastner <ckk@debian.org>  Sun, 29 Mar 2020 13:11:58 +0200
+
+scikit-learn (0.22.1+dfsg-2) unstable; urgency=medium
+
+  * Team upload.
+
+  * Update patch to skip broken armel test. Resolves a FTBFS on armel
+  * d/control:
+    - Bump Standards-Version to 4.5.0
+    - Set Rules-Requires-Root to no
+  * d/rules
+    - Change attempt to skip failing test_old_pickle
+    - Also skip known-flaky test_ard_accuracy_on_easy_problem
+  * d/copyright:
+    - Fix File pattern for libsvm, liblinear
+    - Drop copyright for no longer included cblas
+    - Fix License names and bodies
+  * autopkgtest: Replace deprecated ADTTMP with AUTOPKGTEST_TMP
+  * Drop obsolete code in patch deb_use_system_joblib
+  * Refresh revision for GitHub source links
+  * Add overrides for lintian warnings re: external patches
+  * Add (temporary) lintian overrides for E: source-is-missing
+    These files are not used, and will be excluded in the next source repack
+  * Add DEP-3 headers to patches missing them
+
+ -- Christian Kastner <ckk@debian.org>  Thu, 13 Feb 2020 16:52:57 +0100
+
+scikit-learn (0.22.1+dfsg-1) unstable; urgency=medium
+
+  * New upstream release; Closes: #933366, #935315
+  * Drop python2 autopkgtests, no longer needed
+  * debian/copyright
+    - update copyright information
+  * Refresh patches for new upstream code
+  * debian/rules
+    - stop building doc until sphinx 2.* is available
+    - update how we run test: move sklearn/conftest.py out of the way (it
+      somehow conflicts with the file {build_dir}) and skip to run
+      test_old_pickle
+  * debian/python-sklearn-doc.docs
+    - comment out the HTML documentation, which we have disable for now
+
+ -- Sandro Tosi <morph@debian.org>  Sun, 12 Jan 2020 01:17:10 -0500
+
+scikit-learn (0.20.3+dfsg-0.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * New upstream release.
+  * Stop building the Python2 package. Closes: #938444.
+
+ -- Matthias Klose <doko@debian.org>  Sun, 10 Nov 2019 14:46:27 +0100
+
+scikit-learn (0.20.2+dfsg-6) unstable; urgency=medium
+
+  * Team upload.
+  * Skip test_check_estimator_pairwise test on armhf (another segfault)
+
+ -- Ole Streicher <olebole@debian.org>  Mon, 28 Jan 2019 20:26:29 +0100
+
+scikit-learn (0.20.2+dfsg-5) unstable; urgency=medium
+
+  * Team upload.
+  * Skip test_check_estimator_clones test on armhf (another segfault)
+
+ -- Ole Streicher <olebole@debian.org>  Mon, 28 Jan 2019 14:25:52 +0100
+
+scikit-learn (0.20.2+dfsg-4) unstable; urgency=medium
+
+  * Team upload.
+  * Skip another armhf test that leads to a segfault
+
+ -- Ole Streicher <olebole@debian.org>  Mon, 28 Jan 2019 09:20:16 +0100
+
+scikit-learn (0.20.2+dfsg-3) unstable; urgency=medium
+
+  * Team upload.
+  * Move skipped tests from d/rules into a patch
+  * Remaining fixes
+  * Verbose test output
+
+ -- Ole Streicher <olebole@debian.org>  Sun, 27 Jan 2019 17:29:31 +0100
+
+scikit-learn (0.20.2+dfsg-2) unstable; urgency=medium
+
+  * Team upload.
+  * Skip tests that fail on non-intel platforms. Closes: #919918
+
+ -- Ole Streicher <olebole@debian.org>  Sun, 27 Jan 2019 11:41:13 +0100
+
+scikit-learn (0.20.2+dfsg-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream version 0.20.2+dfsg
+  * Rediff patches
+
+ -- Ole Streicher <olebole@debian.org>  Sat, 26 Jan 2019 21:48:46 +0100
+
+scikit-learn (0.20.1+dfsg-3) unstable; urgency=medium
+
+  * Team upload.
+
+  [ Stuart Prescott ]
+  * Update Standards-Version to 4.3.0 (no changes required).
+  * Move source.lintian-overrides to new location.
+  * Fix short descriptions for Python modules packages to not be identical.
+  * Fix location of documentation in doc-base file.
+
+  [ Mattia Rizzolo ]
+  * Fix FTBFS of the binary-arch targets.  Closes: 919409
+
+ -- Mattia Rizzolo <mattia@debian.org>  Wed, 16 Jan 2019 14:57:47 +0100
+
+scikit-learn (0.20.1+dfsg-2) unstable; urgency=medium
+
+  * Team upload.
+
+  [ Stuart Prescott ]
+  * Remove broken parallel building.  Closes: #911830; MR: !1
+    - remove broken parallel building.
+    - use pybuild replacements rather than trying to second guess
+      pybuild internal details.
+
+  [ Mo Zhou ]
+  * Fix keyword expression for ppc64el.
+
+  [ Mattia Rizzolo ]
+  * d/rules:
+    + Set HOME=$(CURDIR)/tmp.  Closes: #915078
+    + Manually delete some _configtest* files that appeared out of nowhere.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Sat, 12 Jan 2019 10:34:13 +0100
+
+scikit-learn (0.20.1+dfsg-1) unstable; urgency=medium
+
+  * New upstream bugfix
+  * debian/patches
+    - dropping all 00* which were cherrypicked or upstream, and refreshing
+      the rest
+  * cd to .pybuild to run show_versions()
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 28 Nov 2018 20:44:02 -0500
+
+scikit-learn (0.20.0+dfsg-2) unstable; urgency=medium
+
+  [ Yaroslav Halchenko ]
+  * dump debhelper compat to 9 to ease backportability. Added a note to
+    debian/README.source
+    - with that it correctly places numerous examples within -doc package
+      instead of a selected pure python- one
+  * debian/rules
+    - removed running doctests on python3 as well -- output fluctuates across
+      platforms and releases
+    - skip tests marked "network" (requiring download of some test datasets)
+    - invoke show_versions() for all pythons before running tests
+  * debian/patches
+    + Skip some tests if joblib is forced into serial mode
+      (from https://github.com/scikit-learn/scikit-learn/pull/12496)
+      0001-BF-skip-test_backend_respected-if-joblib-is-forced-i.patch
+      0002-BF-TST-skip-test_lr_liblinear_warning-in-joblib-seri.patch
+
+  [ Mo Zhou <cdluminate@gmail.com>]
+  * debian/rules
+    - skip some tests which show problems on some architectures
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 07 Nov 2018 21:29:46 -0500
+
+scikit-learn (0.20.0+dfsg-1) unstable; urgency=medium
+
+  * Team upload.
+
+  [ Andreas Tille <tille@debian.org> ]
+  * New upstream release
+    Closes: #907806
+  * Move to Debian Science team maintenance
+  * Maintained at salsa.debian.org
+  * d/watch:
+     - Point to pypi since releases are not tagged reliably at Github
+     - Use repacksuffix=+dfsg, compression=xz
+     - Inject '~' between version number and rc to sort real release highter
+  * d/control: Use Files-Excluded to remove files from upstream source
+  * d/gbp.conf: Strip default and unusual options
+
+  [ Yangfl <mmyangfl@gmail.com> ]
+  * Introduce dh_sphinxdoc (Closes: #859149)
+  * Refresh d/copyright
+  * Add autopkgtests
+  * d/compat
+    - bump debhelper compat to 11
+  * d/control
+    - remove deprecated X-Python*-Version fields
+    - remove build dep dh-autoreconf and cython
+    - add build dep dh-python
+    - add build dep librsvg2-bin, python3-sphinx-gallery, python3-numpydoc,
+      python3-pandas and python3-skimage, required by doc building
+    - add build dep python3-doc, python-numpy-doc, python-scipy-doc and
+      python-matplotlib-doc for intersphinx mappings
+    - add dep libjs-{bootstrap,mathjax} for python-sklearn-doc
+    - fix Recommends python3-pytest of python3-sklearn
+    - switch to Python 3 doc build dep
+    - bump standard to 4.2.1
+  * d/patches
+    - add disable-doctest.patch to prevent Python 2 doctest failure
+    - add no-buttons-js.patch
+    - add no-download-intersphinx-mapping.patch
+    - add parallel-cythonize.patch
+    - update deb_use_system_joblib to fix test failure
+    - update deb_no_online_jquery
+    - remove deb_optional_linkcode
+  * d/rules
+    - switch from python_distutils to pybuild
+    - rewrite
+
+  [ Mo Zhou <cdluminate@gmail.com> ]
+  * Fixup autopkgtest for python3.
+
+ -- Yangfl <mmyangfl@gmail.com>  Mon, 22 Oct 2018 13:34:15 +0000
+
+scikit-learn (0.19.2-1) unstable; urgency=medium
+
+  * Fresh upstream bugfix release (Closes: #904636)
+    - supports Python 3.7
+  * debian/control
+    - removed transitional python-scikits-learn (Closes: #878863)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 26 Jul 2018 10:12:10 -0400
+
+scikit-learn (0.19.1-4) unstable; urgency=medium
+
+  * debian/control
+    - build-depends on python-pil not deprecating -imaging (Closes: #894526)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sun, 08 Apr 2018 10:02:12 -0400
+
+scikit-learn (0.19.1-3) unstable; urgency=medium
+
+  * debian/patches/changeset_6c99d797d7c71d216503612a242bffb8d006582d.diff
+    to avoid regression due to forgotten in the release fix
+    (see https://github.com/scikit-learn/scikit-learn/issues/9393)
+    It seems that the issue is not deterministic, and although did not
+    reveal itself on a buildd server, might come back.
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 04 Jan 2018 08:02:20 -0500
+
+scikit-learn (0.19.1-2) unstable; urgency=medium
+
+  * debian/patches/deb_precisionloss
+    - to mitigate a minor failing unittest on BE platforms
+      (Closes: #883473)
+  * debian/control
+    - boosted policy to 4.1.2 (if something to be done, report a bug)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 04 Dec 2017 22:42:37 -0500
+
+scikit-learn (0.19.1-1) unstable; urgency=medium
+
+  * Fresh upstream release
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 23 Oct 2017 15:59:32 -0400
+
+scikit-learn (0.19.0-1) unstable; urgency=medium
+
+  * Fresh upstream release
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 11 Aug 2017 18:12:48 -0400
+
+scikit-learn (0.19~b2-1) experimental; urgency=medium
+
+  * Upcoming release beta
+    - some deprecations in API
+  * d/
+    - boost compat to 9
+    - boost policy to 3.9.8 (for now)
+  * d/control
+    - added pytest to b-depends and recommends
+  * d/rules
+    - for cython < 0.24 use pre-cythonized sources (to avoid FTBFS on 16.04)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 18 Jul 2017 15:35:44 -0400
+
+scikit-learn (0.18.1-1) unstable; urgency=medium
+
+  * Fresh bugfix (strongly advised to upgrade) release
+  * debian/patches
+    - many patches updated
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sun, 13 Nov 2016 18:52:53 -0500
+
+scikit-learn (0.18-4) unstable; urgency=medium
+
+  * debian/rules
+    - added cythonization (from pandas) since upstream no longer stores
+      pre-generated files under GIT
+    - skip test_non_meta_estimators on ppc64el to avoid FTBFS
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 25 Oct 2016 08:24:18 -0400
+
+scikit-learn (0.18-3) unstable; urgency=medium
+
+  * debian/rules
+    - skip some minor failing tests on i386 and armel for now
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 04 Oct 2016 09:41:01 -0400
+
+scikit-learn (0.18-2) unstable; urgency=medium
+
+  * debian/patches/deb_use_system_joblib
+    sklearn started to use other submodules of joblib directly, so previous
+    stub for import did not work.  Now update local namespace of the stub
+    entirely with definitions from joblib.__dict__  (Closes: #839348)
+  * debian/rules
+    - allow joblib to parallelize to 2 processes, to overcome recent joblib
+      (0.10.2) bug with 0 value
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sun, 02 Oct 2016 09:36:31 -0400
+
+scikit-learn (0.18-1) unstable; urgency=medium
+
+  * Fresh upstream release
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 29 Sep 2016 21:29:45 -0400
+
+scikit-learn (0.17.1-2) unstable; urgency=medium
+
+  * debian/rules
+    - skip test_dump tests on arm64 to prevent FTBFS - actual resolution
+      is TODO
+    - robustify use of xargs to not fail if no matches (e.g. upon rebuild)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 08 Apr 2016 09:29:22 -0400
+
+scikit-learn (0.17.1-1) unstable; urgency=medium
+
+  * Fresh upstream bugfix release
+    - few patches were picked up from upstream branch to stay compatible with
+      recent scipy/numpy in debian sid.
+      See https://github.com/scikit-learn/scikit-learn/pull/6401
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 18 Feb 2016 20:22:31 -0500
+
+scikit-learn (0.17.0-4) unstable; urgency=medium
+
+  * debian/tests/deb_tests_lower_precision
+    - lowering further to 4 decimals
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 22 Dec 2015 08:51:29 -0500
+
+scikit-learn (0.17.0-3) unstable; urgency=medium
+
+  * debian/control
+    - recommend python3- versions of packages for python3-sklearn. Thanks
+      Christopher Baines
+  * debian/rules
+    - boost minimal Cython version for recythonization to 0.23.1.
+      Should enable back bakckports on older Debian/Ubuntus
+  * debian/tests/deb_tests_lower_precision
+    - to lower precision of test_feature_importances to avoid FTBFS on some
+      (BE) platforms
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 21 Dec 2015 21:02:16 -0500
+
+scikit-learn (0.17.0-2) unstable; urgency=medium
+
+  * debian/copyright
+    - extended list of copyrights/licenses (Thanks Thorsten Alteholz for
+      review)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 13 Nov 2015 23:11:12 -0500
+
+scikit-learn (0.17.0-1) unstable; urgency=medium
+
+  * Fresh upstream release
+    - should address FTBFS on 32bit and other platforms due to failing
+      tests
+  * debian/patches/deb_no_tinyclues_external_image
+    - to not link to external images inthe documentation (privacy concern)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 05 Nov 2015 20:47:00 -0500
+
+scikit-learn (0.17.0~b1+git14-g4e6829c-1) unstable; urgency=medium
+
+  * Fresh beta release + post-release fixes -- test build
+    - requires joblib >= 0.9.2 (Closes: #792483)
+    - if succeeds, means that failing test fixed (Closes: #797507)
+  * debian/patches
+    - deb_disable_google_anals to disable google tracking
+    - deb_nopaypal  to refer to upstream website and not incorporate
+      paypal form in the doc
+    - deb_no_online_jquery  to avoid referring to online jquery
+  * debian/{control,rules}
+    - heavy refactoring to support python3-sklearn (Closes: #730532)
+    - point to the debian branch for git repo (Closes: #792476)
+    - use system-wide libjs-underscore
+  * debian/compat raise to level 7 from elderly 5
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 27 Oct 2015 11:11:00 -0400
+
+scikit-learn (0.16.1-2) unstable; urgency=medium
+
+  * Upload to unstable (Closes: #792074)
+  * debian/control
+    - boosted policy to 3.9.6
+    - properly dropped python-support, debian/rules was already
+      using dh_ helpers (Closes: #786185)
+  * debian/patches
+    - Picked up from usptream 2 fixes:
+      - changeset_190fe7347cfd6fab67f37c7535c4fa9b8f0870de.diff
+        FIX Include PyFuncDistance attributes while pickling.
+      - changeset_5e502596460014ed3adebe61e8189a60e72d3623.diff
+        Fix signature not compatible with previous declaration
+        (Closes: #791615)
+    - deb_skip_some_tests_on_arm
+      fixed it up (missing nose imports). Thanks Logan Rosen!
+      (Closes: #773862)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 10 Jul 2015 23:26:48 -0400
+
+scikit-learn (0.16.1-1) experimental; urgency=medium
+
+  * Fresh upstream bugfix release
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 14 Apr 2015 19:04:54 -0400
+
+scikit-learn (0.16.0-1) experimental; urgency=medium
+
+  * Fresh upstream release
+  * debian/patches
+    - deb_git_revision_cmd - use debian/github-revision.txt with github
+      treeish for this release (TODO: automate)
+    - deb_no_plot_gallery - do not build gallery of example plots (some
+      require network and otherwise memory/cpu intensive etc)
+    - deb_optional_linkcode - would not use linkcode extension if not
+      available
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 30 Mar 2015 16:11:59 -0400
+
+scikit-learn (0.15.2-3) unstable; urgency=medium
+
+  * debian/patches
+    - deb_skip_some_tests_on_arm -- skip two tests on armv to avoid FTBFS
+    - up_workaround_buggy_pil -- workaround a bug in PIL
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 07 Oct 2014 21:37:46 -0400
+
+scikit-learn (0.15.2-2) unstable; urgency=medium
+
+  * debian/rules
+    - fixed version for comparison against sphinx. Now documentation should
+      get built on recent releases (Closes: #760730).
+      Thanks Federico Ceratto for the report
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 08 Sep 2014 09:47:41 -0400
+
+scikit-learn (0.15.2-1) unstable; urgency=medium
+
+  * Fresh upstream minor release
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sat, 06 Sep 2014 20:11:37 -0400
+
+scikit-learn (0.15.1-1) unstable; urgency=medium
+
+  * Fresh upstream minor release
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 04 Aug 2014 14:10:50 -0400
+
+scikit-learn (0.15.0-1) unstable; urgency=medium
+
+  * Fresh upstream release
+  * Build-depend on libatlas3-base
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 15 Jul 2014 08:39:08 -0400
+
+scikit-learn (0.14.1-3) unstable; urgency=medium
+
+  * Cherry-pick a workaround for FTBFS due to error in current scipy
+    (Closes: #746096)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 13 May 2014 10:07:58 -0400
+
+scikit-learn (0.14.1-2) unstable; urgency=low
+
+  * Disable reporting to google analytics -- we haven't got any permission from
+    the users allowing to report back to 3rd party services
+    (thanks Ambrose Andrews, Closes: #730259)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sun, 24 Nov 2013 10:17:29 -0500
+
+scikit-learn (0.14.1-1) unstable; urgency=low
+
+  * The freshiest upstream release
+    - addressed 'clean -a' issue, thus removing the dh_auto_clean override
+  * debian/rules
+    - if available cython >= 0.19 -- re-build Cythonized sources while
+      monitoring for changes using dh_autoreconf
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 08 Aug 2013 14:06:48 -0400
+
+scikit-learn (0.14-1) UNRELEASED; urgency=low
+
+  * The fresh upstream release
+  * debian/rules
+    - overload dh_auto_clean to call "clean" without -a
+      (see https://github.com/scikit-learn/scikit-learn/issues/2351)
+  * debian/control
+    - Build-Depends:
+      - multilined
+      - dropped swig (not needed since awhile)
+      - moved sphinx, PIL, and graphviz to Build-Depends-Indep since
+        needed only for -doc package
+      - do not build documentation when sphinx < 1.1.3 due to problems
+        with unicode in earlier present on older Debian/Ubuntu's versions
+    - boosted policy to 3.9.4 (no further changes)
+    - migrate from python-support to dh_python2
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 07 Aug 2013 20:16:04 -0400
+
+scikit-learn (0.14~a1+git20-gc9ba2c3-1) UNRELEASED; urgency=low
+
+  * Fresh pre-release snapshot
+  * debian/control
+    - python-imaing to build-depends (for documentation) and removed not
+      needed XS-DM-Upload-Allowed
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 05 Aug 2013 10:56:38 -0400
+
+scikit-learn (0.13.1-1) unstable; urgency=low
+
+  * "Fresh" bugfix release:
+    - dropping all cherry picked changesets
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sat, 01 Jun 2013 11:36:44 -0400
+
+scikit-learn (0.13-3) unstable; urgency=low
+
+  * Upload to unstable
+  * debian/control
+    - move joblib to Depends from Recommends (Closes: #709056)
+  	- remove unused AFAIK XB-Python-Version
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 20 May 2013 11:01:00 -0400
+
+scikit-learn (0.13-2) experimental; urgency=low
+
+  * CP from upstream commits to fix a problem with ROC curves lacking
+    (0,0), (1,1) trailing points in some cases (gh-1658)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 18 Feb 2013 12:31:57 -0500
+
+scikit-learn (0.13-1) experimental; urgency=low
+
+  * Fresh upstream release
+    - dropping CP-ed changesets and deb_disable_test_spectral_old_scipy patch
+  * debian/rules
+    - removing exclusion of tests previously failed
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 22 Jan 2013 21:37:24 -0500
+
+scikit-learn (0.12.1-1) experimental; urgency=low
+
+  * Fresh upstream bugfix release
+    - for now excluded some labile tests from testing
+    - picked up after release fix: 552833 Robustify LARS. Fixes issue #487
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 31 Oct 2012 16:17:41 -0400
+
+scikit-learn (0.12.0-1) experimental; urgency=low
+
+  * Fresh upstream release:
+    - all debian/up_ patches removed, deb_ patched updated
+  * Boosted policy to 3.9.3 (should be ok without changes)
+  * patches/deb_disable_test_spectral_old_scipy
+    - disable unittest on older scipy's due to failure
+  * debian/control
+    - removed obsolete (and not used any longer) python-psyco from
+      Recommends
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 06 Sep 2012 21:30:31 -0400
+
+scikit-learn (0.11.0-2) unstable; urgency=low
+
+  * Patches to resolve FTBFS'es (Closes: #680246)
+    - armel: up_inconsistent_numpy_warnings (adopted upstream)
+    - mipsel: up_MinCovDet_test_seeding (picked up from upstream)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 04 Jul 2012 11:26:24 -0400
+
+scikit-learn (0.11.0-1) unstable; urgency=low
+
+  * Fresh upstream release
+  * Adjusted patches/deb_use_system_joblib to avoid submodule
+    import
+  * debian/rules:
+    - run unittests in verbose mode
+    - exclude 1 test with known failures (reported upstream)
+      to avoid FTBFS
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 07 May 2012 22:40:04 -0400
+
+scikit-learn (0.10.0-1) unstable; urgency=low
+
+  * Snapshot of upstream release branch
+    - Python 2.5 compatibility dropped
+  * Dropping .dfsg suffix since it is not adequate.  Sources are
+    repackaged only to remove joblib shipped in a separate package in Debian
+    main
+  * Adjusted dfsg and other rules to operate on sklearn directory
+  * Dropping cherry-picked fix up_release_sv_coef_memory
+  * Operate on 'requested' not all supported Python versions
+  * Added 'set -e' to composite cmdline constructs in debian/rules to
+    prevent swallowing errors. Thanks to Jakub Wilk for citing me the relevant
+    exerpt from Debian policy ;-)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 12 Jan 2012 22:42:03 -0500
+
+scikit-learn (0.9.0.dfsg-1) unstable; urgency=low
+
+  * New upstream release:
+    - renamed module to sklearn,
+      scikits.learn adapter was provided to ease migration
+    - there is no strict dependency on IPython any longer.  Thus removed
+      IPython from build-depends and Suggest it now for binary package
+      (Closes: #636472)
+  * Enabled all unittests and ignored failures on doctests:
+    https://github.com/scikit-learn/scikit-learn/issues/401
+  * Adjusted debian/copyright to be fresh DEP5-compliant
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 17 Oct 2011 23:49:47 -0400
+
+scikit-learn (0.8.1.dfsg-1) unstable; urgency=low
+
+  * New upstream maintenance release
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 01 Jul 2011 14:37:28 -0400
+
+scikit-learn (0.8.0.dfsg-1) unstable; urgency=low
+
+  * New upstream release
+  * [97bc011] Boost policy compliance to 3.9.2 -- no changes
+  * Included post-release fixes:
+    - [f7d5317] FIX: reflect SVC API change (eps -> tol) in doc/tutorial.rst
+  * Disabled unittest test_fit_works_on_sequences_of_different_length
+    due to test failure during build
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 11 May 2011 10:08:13 -0400
+
+scikit-learn (0.7.1.dfsg-3) unstable; urgency=low
+
+  * Do not build documentation in -a mode, to prevent timeouts on buildd
+    servers
+  * Use JOBLIB_MULTIPROCESSING=0 to suppress use of multiprocessing by
+    joblib while running tests to prevent failures in chroots without
+    /dev/shm mounted
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 13 Apr 2011 17:18:46 -0400
+
+scikit-learn (0.7.1.dfsg-2) unstable; urgency=low
+
+  * Upload to unstable
+  * Exclude objects.inv from being compressed (Closes: #608775)
+  * Restrict numpy versioned dependency only to -lib package. Thanks Jakub
+    Wilk
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 06 Apr 2011 14:24:35 -0400
+
+scikit-learn (0.7.1.dfsg-1) experimental; urgency=low
+
+  * [8972010] New upstream release
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sat, 19 Mar 2011 11:31:00 -0400
+
+scikit-learn (0.6.0.dfsg-1) experimental; urgency=low
+
+  * [05f0870] Disabled use of system libsvm - scikits.learn has its own
+    fork
+  * [104eb54] Adjusted dfsg rule -- do not prune libsvm
+  * [6b4e757] Updated copyright: DEP5 rev153, entries for cblas/ and
+    lib{linear/svm}
+  * [489f3a2] Extended TODO (in emacs-org mode): consider system's
+    liblinear (need 1.7 with a fix)
+  * Introduced .dfsg suffix to signal for difference from the pristine
+    distribution of scikits.learn
+  * [5dc61b3] Added README.source to describe reason(s) for .dfsg
+  * [81e7f16] debian/watch: mangle debian version - remove .dfsg for
+    comparisons
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sun, 09 Jan 2011 21:01:33 -0500
+
+scikit-learn (0.5-1) experimental; urgency=low
+
+  * New upstream release.  Absorbed patches:
+    - up_libsvm_verbosity_control
+    - up_system_libsvm_no_svmhdepends
+    - deb_libsvm_cythoning
+  * Boost policy compliance to 3.9.1 -- no changes
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 11 Oct 2010 10:00:11 -0400
+
+scikit-learn (0.5~rc3-1) UNRELEASED; urgency=low
+
+  * New upstream release-candidate
+    - pruning joblib in favor of external package
+      added patch deb_use_system_joblib
+  * New patches for upstream
+    - up_libsvm_verbosity_control -- API for controlling libsvm verbosity
+    - up_system_libsvm_no_svmhdepends -- do not use shipped svm.h
+  * Deprecated patches:
+    - up_workaround_numpy_cython_issue589652
+    - deb_cython_0.12.1
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 06 Oct 2010 15:05:40 -0400
+
+scikit-learn (0.4-3) unstable; urgency=low
+
+  * Acknowledging Nico's NMU
+  * Restricting for Python versions >= 2.5
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 06 Aug 2010 10:12:38 -0400
+
+scikit-learn (0.4-2.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Call dh_numpy from debian/rules to add the correct depends for numpy in
+    python:Depends (Closes: #590762)
+
+ -- Nico Golde <nion@debian.org>  Thu, 05 Aug 2010 13:34:19 +0200
+
+scikit-learn (0.4-2) unstable; urgency=low
+
+  * deb_cython_0.12.1 to use code cythoned with up-to-date cython
+    0.12.1
+  * Build-Depend on python-numpy providing numpy-ext (Closes: #589590)
+  * Policy compliance 3.9.0:
+    - providing BSD license verbatim and removing references
+      to deprecated BSD license file on Debian systems
+  * Nosetesting without suppressing output from code
+  * Workaround to allow BFS (Closes: #588595)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 19 Jul 2010 12:32:06 -0400
+
+scikit-learn (0.4-1) unstable; urgency=low
+
+  * Fresh upstream release:
+    - no boost library used any longer (removed from Build-Depends)
+  * Moving under NeuroDebian umbrella
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 29 Jun 2010 09:32:18 -0400
+
+scikit-learn (0.3-4) unstable; urgency=low
+
+  * Disabling test_gmm_em unittests while building (Closes: #580879).
+    Actual reason for failing tests lies within NumPy -- see #581043,
+    which should be fixed there, but should not prevent building of
+    this package atm.
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 10 May 2010 23:59:49 -0400
+
+scikit-learn (0.3-3) unstable; urgency=low
+
+  * Set HOME and MPLCONFIGDIR while unittesting as well (Closes: #580727)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sat, 08 May 2010 12:47:07 -0400
+
+scikit-learn (0.3-2) unstable; urgency=low
+
+  * Setting both HOME and MPLCONFIGDIR while building documentation
+    (slipped through fingers somehow) (Closes: #580727).
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sat, 08 May 2010 00:35:59 -0400
+
+scikit-learn (0.3-1) unstable; urgency=low
+
+  * Fresh upstream release.
+  * Switching to use quilt for patches, debian/* tags point to detached
+    debian branch
+  * debian/rules:
+    + build docs after python modules got built
+    + additional cleanups
+  * debian/control:
+    + additional build-depends: python-matplotlib, ipython, swig,
+      libboost-dev
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 03 May 2010 12:25:21 -0400
+
+scikit-learn (0.2+svn625-1) unstable; urgency=low
+
+  * Initial Debian release (Closes: #567036)
+  * First ever package by me to adhere to use fresh and shiny dh.
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 07 Apr 2010 23:38:06 -0400

@@ -1,0 +1,43 @@
+From: Christian Kastner <ckk@debian.org>
+Date: Mon, 20 Jul 2020 13:14:32 +0200
+Subject: Skip two tests when SciPy < 1.5
+
+Forwarded: not-needed
+---
+ sklearn/ensemble/tests/test_voting.py       | 5 +++++
+ sklearn/linear_model/tests/test_logistic.py | 6 +++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/sklearn/ensemble/tests/test_voting.py b/sklearn/ensemble/tests/test_voting.py
+index f81b9e5..fe93e63 100644
+--- a/sklearn/ensemble/tests/test_voting.py
++++ b/sklearn/ensemble/tests/test_voting.py
+@@ -359,6 +359,11 @@ def test_voting_classifier_set_params():
+ 
+ 
+ # TODO: Remove parametrization in 0.24 when None is removed in Voting*
++# Debian: This test fails with scipy < 1.5 because of
++#         https://github.com/scipy/scipy/pull/11755
++import scipy
++svers = scipy.__version__.split('.')
++@pytest.mark.skipif(int(svers[0]) <= 1 and int(svers[1]) < 5, reason='outdated SciPy')
+ @pytest.mark.parametrize("drop", [None, 'drop'])
+ def test_set_estimator_none(drop):
+     """VotingClassifier set_params should be able to set estimators as None or
+diff --git a/sklearn/linear_model/tests/test_logistic.py b/sklearn/linear_model/tests/test_logistic.py
+index 9687f0b..2b7d5ac 100644
+--- a/sklearn/linear_model/tests/test_logistic.py
++++ b/sklearn/linear_model/tests/test_logistic.py
+@@ -382,7 +382,11 @@ def test_consistency_path():
+         assert_array_almost_equal(lr_coef, coefs[0], decimal=4,
+                                   err_msg="with solver = %s" % solver)
+ 
+-
++# Debian: This test fails with scipy < 1.5 because of
++#         https://github.com/scipy/scipy/pull/11755
++import scipy
++svers = scipy.__version__.split('.')
++@pytest.mark.skipif(int(svers[0]) <= 1 and int(svers[1]) < 5, reason='outdated SciPy')
+ def test_logistic_regression_path_convergence_fail():
+     rng = np.random.RandomState(0)
+     X = np.concatenate((rng.randn(100, 2) + [1, 1], rng.randn(100, 2)))

@@ -1,0 +1,28 @@
+From: Christian Kastner <ckk@debian.org>
+Date: Sun, 3 May 2020 00:59:42 +0200
+Subject: Disable BinderHub links
+
+Forwarded: not needed
+---
+ doc/conf.py | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/doc/conf.py b/doc/conf.py
+index 701fcee..57fe0bc 100644
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -324,14 +324,6 @@ sphinx_gallery_conf = {
+     'examples_dirs': ['../examples'],
+     'gallery_dirs': ['auto_examples'],
+     'subsection_order': SubSectionTitleOrder('../examples'),
+-    'binder': {
+-        'org': 'scikit-learn',
+-        'repo': 'scikit-learn',
+-        'binderhub_url': 'https://mybinder.org',
+-        'branch': binder_branch,
+-        'dependencies': './binder/requirements.txt',
+-        'use_jupyter_lab': True
+-    },
+     # avoid generating too many cross links
+     'inspect_global_variables': False,
+     'remove_config_comments': True,
