@@ -1,0 +1,88 @@
+Source: scikit-learn
+Section: python
+Priority: optional
+Maintainer: Debian Science Team <debian-science-maintainers@lists.alioth.debian.org>
+Uploaders: Yaroslav Halchenko <debian@onerussian.com>,
+           Michael Hanke <michael.hanke@gmail.com>,
+           Christian Kastner <ckk@debian.org>,
+Build-Depends: debhelper-compat (= 13),
+               dh-python,
+               python3-all-dev,
+               cython3,
+               python3-setuptools,
+               python3-numpy, python3-scipy,
+               python3-nose, python3-pytest,
+               python3-matplotlib,
+               python3-joblib (>= 0.9.2),
+               python3-threadpoolctl (>= 2.0.0),
+               libsvm-dev (>= 2.84.0),
+               libblas-dev | libblas.so,
+               libatlas-base-dev,
+               python3-pandas <!nocheck>,
+               python3-pil <!nocheck>,
+Build-Depends-Indep: python3-sphinx (>= 1.0),
+                     python3-sphinx-gallery,
+                     python3-numpydoc (>= 0.9),
+                     python3-pandas,
+                     python3-skimage,
+                     python3-pil,
+                     librsvg2-bin,
+                     graphviz,
+                     python3-doc,
+                     python-numpy-doc,
+                     python-scipy-doc,
+                     python-matplotlib-doc,
+                     python-pandas-doc,
+Rules-Requires-Root: no
+Standards-Version: 4.5.1
+Vcs-Browser: https://salsa.debian.org/science-team/scikit-learn
+Vcs-Git: https://salsa.debian.org/science-team/scikit-learn.git
+Homepage: http://scikit-learn.sourceforge.net
+
+Package: python3-sklearn
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}, python3-numpy, python3-scipy, python3-sklearn-lib(>= ${source:Version}),
+         python3-joblib (>= 0.9.2), python3-threadpoolctl (>= 2.0.0),
+Recommends: python3-nose, python3-pytest, python3-matplotlib
+Suggests: python3-dap, python-sklearn-doc, ipython3
+Enhances: python3-mvpa2, python3-mdp
+Provides: ${python3:Provides}
+Description: Python modules for machine learning and data mining - Python 3
+ scikit-learn is a collection of Python modules relevant to
+ machine/statistical learning and data mining.  Non-exhaustive list of
+ included functionality:
+  - Gaussian Mixture Models
+  - Manifold learning
+  - kNN
+  - SVM (via LIBSVM)
+ .
+ This package contains the Python 3 version.
+
+Package: python3-sklearn-lib
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends}, ${shlibs:Depends}, ${python3:Depends}, python3-numpy
+Provides: ${python3:Provides}
+Description: low-level implementations and bindings for scikit-learn - Python 3
+ This is an add-on package for python-sklearn. It provides
+ low-level implementations and custom Python bindings for the LIBSVM
+ library.
+ .
+ This package contains the Python 3 version.
+
+Package: python-sklearn-doc
+Conflicts: python-scikits-learn-doc
+Replaces: python-scikits-learn-doc
+Architecture: all
+Multi-Arch: foreign
+Section: doc
+Build-Profiles: <!nodoc>
+Depends: ${misc:Depends},
+         ${sphinxdoc:Depends},
+         libjs-bootstrap4,
+         libjs-mathjax,
+Built-Using: ${sphinxdoc:Built-Using},
+Suggests: python-sklearn
+Description: documentation and examples for scikit-learn
+ This package contains documentation and example scripts for
+ python-sklearn.

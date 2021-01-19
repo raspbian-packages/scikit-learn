@@ -1,0 +1,23 @@
+From: Christian Kastner <ckk@debian.org>
+Date: Sun, 3 May 2020 00:58:59 +0200
+Subject: Use local MathJax
+
+Forwarded: not-needed
+---
+ doc/conf.py | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/doc/conf.py b/doc/conf.py
+index 6a3e8a8..701fcee 100644
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -55,8 +55,7 @@ if os.environ.get('NO_MATHJAX'):
+     mathjax_path = ''
+ else:
+     extensions.append('sphinx.ext.mathjax')
+-    mathjax_path = ('https://cdn.jsdelivr.net/npm/mathjax@3/es5/'
+-                    'tex-chtml.js')
++    mathjax_path = 'file:///usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS_CHTML'
+ 
+ autodoc_default_options = {
+     'members': True,

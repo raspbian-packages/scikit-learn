@@ -1,0 +1,17 @@
+remove-google-analytics.patch
+git-revision-cmd.patch
+remove-paypal.patch
+no-download-intersphinx-mapping.patch
+disable-doctest.patch
+parallel-cythonize.patch
+no-buttons-js.patch
+Use-local-MathJax.patch
+Disable-BinderHub-links.patch
+Skip-two-tests-when-SciPy-1.5.patch
+Skip-k-means-convergence-tests.patch
+NumPy-div-by-zero-check.patch
+Use-assert_allclose-instead-of-equality-in-FP-comparison.patch
+Change-expected-result-type-to-pass-on-32-bit.patch
+Increase-tolerance-for-RANSACRegressor-test.patch
+fix_scipy1.6_PR18711.patch
+skip_test_ELKI_PR19115.patch
