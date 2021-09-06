@@ -1,3 +1,10 @@
+scikit-learn (0.23.2-6) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * Created d/u/metadata
+
+ -- Steffen Moeller <moeller@debian.org>  Mon, 06 Sep 2021 20:08:58 +0200
+
 scikit-learn (0.23.2-5) unstable; urgency=medium
 
   * Team upload.
