@@ -15,6 +15,8 @@ scikit-learn (1.0.1-1) UNRELEASED; urgency=medium
        Increase-tolerance-for-RANSACRegressor-test.patch
        fix_scipy1.6_PR18711.patch
        skip_test_ELKI_PR19115.patch
+  * Build-Depends-Indep: python3-sphinx-prompt,
+    python3-sphinxext-opengraph
   * Versioned Build-Depends: cython3 (>= 0.28.5~),
      python3-numpy (>= 1.14.6~), python3-scipy (>= 1.1.10~)
   * Drop Build-Depends: libatlas-base-dev.
