@@ -1,0 +1,11 @@
+---
+Registry:
+ - Name: conda:conda-forge
+   Entry: scikit-learn
+ - Name: bio.tools
+   Entry: NA
+   Checked: 2021-09-06
+ - Name: guix:machine-learning
+   Entry: python-scikit-learn
+ - Name: SciCrunch
+   Entry: SCR_002577
