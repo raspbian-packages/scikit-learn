@@ -1,0 +1,2 @@
+# Not the vanilla Sphinx file, but a modified version of it
+python-sklearn-doc: embedded-javascript-library usr/share/doc/python-sklearn-doc/html/_static/searchtools.js please use sphinx

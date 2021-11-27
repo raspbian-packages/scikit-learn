@@ -1,0 +1,111 @@
+From b2f75a5ff353028e82e4878b05d6e6a902a8fbc5 Mon Sep 17 00:00:00 2001
+From: Julien Jerphanion <git@jjerphan.xyz>
+Date: Wed, 17 Nov 2021 14:57:58 +0100
+Subject: [PATCH 1/2] Unify AxesSubplot string representation for labels across
+ matplotlib versions
+
+This was changed in matplotlib 3.5.0 by:
+https://github.com/matplotlib/matplotlib/commit/e7e6c8cea7dd174751be335f89369aeb3c1f40f0#diff-501b7013d3efa42e08d1cc8dc7a27ee6944fcddb062cd7032249a0031bb01ff4R1641
+---
+ sklearn/calibration.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+Index: scikit-learn/sklearn/calibration.py
+===================================================================
+--- scikit-learn.orig/sklearn/calibration.py	2021-11-27 11:43:54.593494393 +0100
++++ scikit-learn/sklearn/calibration.py	2021-11-27 11:43:54.585494176 +0100
+@@ -1094,8 +1094,8 @@
+             ax.plot([0, 1], [0, 1], "k:", label=ref_line_label)
+         self.line_ = ax.plot(self.prob_pred, self.prob_true, "s-", **line_kwargs)[0]
+ 
+-        if "label" in line_kwargs:
+-            ax.legend(loc="lower right")
++        # We always have to show the legend for at least the reference line
++        ax.legend(loc="lower right")
+ 
+         ax.set(xlabel="Mean predicted probability", ylabel="Fraction of positives")
+ 
+Index: scikit-learn/sklearn/tests/test_calibration.py
+===================================================================
+--- scikit-learn.orig/sklearn/tests/test_calibration.py	2021-11-27 11:43:54.593494393 +0100
++++ scikit-learn/sklearn/tests/test_calibration.py	2021-11-27 11:45:23.187784897 +0100
+@@ -705,7 +705,12 @@
+ 
+     assert viz.ax_.get_xlabel() == "Mean predicted probability"
+     assert viz.ax_.get_ylabel() == "Fraction of positives"
+-    assert viz.line_.get_label() == "LogisticRegression"
++
++    expected_legend_labels = ["LogisticRegression", "Perfectly calibrated"]
++    legend_labels = viz.ax_.get_legend().get_texts()
++    assert len(legend_labels) == len(expected_legend_labels)
++    for labels in legend_labels:
++        assert labels.get_text() in expected_legend_labels
+ 
+ 
+ def test_plot_calibration_curve_pipeline(pyplot, iris_data_binary):
+@@ -714,8 +719,12 @@
+     clf = make_pipeline(StandardScaler(), LogisticRegression())
+     clf.fit(X, y)
+     viz = CalibrationDisplay.from_estimator(clf, X, y)
+-    assert clf.__class__.__name__ in viz.line_.get_label()
+-    assert viz.estimator_name == clf.__class__.__name__
++
++    expected_legend_labels = [viz.estimator_name, "Perfectly calibrated"]
++    legend_labels = viz.ax_.get_legend().get_texts()
++    assert len(legend_labels) == len(expected_legend_labels)
++    for labels in legend_labels:
++        assert labels.get_text() in expected_legend_labels
+ 
+ 
+ @pytest.mark.parametrize(
+@@ -728,7 +737,13 @@
+ 
+     viz = CalibrationDisplay(prob_true, prob_pred, y_prob, estimator_name=name)
+     viz.plot()
+-    assert viz.line_.get_label() == expected_label
++
++    expected_legend_labels = [] if name is None else [name]
++    expected_legend_labels.append("Perfectly calibrated")
++    legend_labels = viz.ax_.get_legend().get_texts()
++    assert len(legend_labels) == len(expected_legend_labels)
++    for labels in legend_labels:
++        assert labels.get_text() in expected_legend_labels
+ 
+ 
+ def test_calibration_display_label_class_plot(pyplot):
+@@ -743,7 +758,12 @@
+     assert viz.estimator_name == name
+     name = "name two"
+     viz.plot(name=name)
+-    assert viz.line_.get_label() == name
++
++    expected_legend_labels = [name, "Perfectly calibrated"]
++    legend_labels = viz.ax_.get_legend().get_texts()
++    assert len(legend_labels) == len(expected_legend_labels)
++    for labels in legend_labels:
++        assert labels.get_text() in expected_legend_labels
+ 
+ 
+ @pytest.mark.parametrize("constructor_name", ["from_estimator", "from_predictions"])
+@@ -766,11 +786,19 @@
+     assert viz.estimator_name == clf_name
+     pyplot.close("all")
+     viz.plot()
+-    assert clf_name == viz.line_.get_label()
++
++    expected_legend_labels = [clf_name, "Perfectly calibrated"]
++    legend_labels = viz.ax_.get_legend().get_texts()
++    assert len(legend_labels) == len(expected_legend_labels)
++    for labels in legend_labels:
++        assert labels.get_text() in expected_legend_labels
++
+     pyplot.close("all")
+     clf_name = "another_name"
+     viz.plot(name=clf_name)
+-    assert clf_name == viz.line_.get_label()
++    assert len(legend_labels) == len(expected_legend_labels)
++    for labels in legend_labels:
++        assert labels.get_text() in expected_legend_labels
+ 
+ 
+ def test_calibration_display_ref_line(pyplot, iris_data_binary):

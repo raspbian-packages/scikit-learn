@@ -1,0 +1,13 @@
+# It is the source
+scikit-learn source: source-is-missing doc/themes/scikit-learn/static/jquery.maphilight.js *
+# The following files are not used, they are replaced with links to the system-wide ones
+scikit-learn source: source-is-missing doc/themes/scikit-learn-modern/static/js/vendor/bootstrap.min.js
+scikit-learn source: source-contains-prebuilt-javascript-object doc/themes/scikit-learn-modern/static/js/vendor/bootstrap.min.js
+# The following files are not used/shipped (they are from an obsolete theme)
+scikit-learn source: source-is-missing doc/themes/scikit-learn/static/jquery.js line length is 32030 characters (>512)
+scikit-learn source: source-contains-prebuilt-javascript-object doc/themes/scikit-learn/static/jquery.js line length is 32030 characters (>512)
+scikit-learn source: source-contains-prebuilt-javascript-object doc/themes/scikit-learn/static/jquery.maphilight.js line length is 337 characters (>256)
+scikit-learn source: source-contains-prebuilt-javascript-object doc/themes/scikit-learn/static/jquery.maphilight.min.js
+scikit-learn source: source-contains-prebuilt-javascript-object doc/themes/scikit-learn/static/js/bootstrap.min.js
+scikit-learn source: very-long-line-length-in-source-file doc/themes/scikit-learn/static/jquery.js line length is 32030 characters (>512)
+
