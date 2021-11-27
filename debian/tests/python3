@@ -41,5 +41,5 @@ for py in $pys; do
         cd "$AUTOPKGTEST_TMP"
     fi
 
-    python$py -m pytest -m 'not network' -s -v $module -k "$exclude_tests" 2>&1
+    python$py -m pytest -m 'not network' -s -v --color=no $module -k "$exclude_tests" 2>&1
 done
