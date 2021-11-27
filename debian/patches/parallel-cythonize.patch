@@ -10,17 +10,18 @@ Last-Update: 2020-02-13
  sklearn/_build_utils/__init__.py | 9 +--------
  1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/sklearn/_build_utils/__init__.py b/sklearn/_build_utils/__init__.py
-index 8c57982..cc98a6b 100644
---- a/sklearn/_build_utils/__init__.py
-+++ b/sklearn/_build_utils/__init__.py
-@@ -63,14 +63,7 @@ def cythonize_extensions(top_path, config):
+Index: scikit-learn/sklearn/_build_utils/__init__.py
+===================================================================
+--- scikit-learn.orig/sklearn/_build_utils/__init__.py	2021-11-27 10:04:48.685317374 +0100
++++ scikit-learn/sklearn/_build_utils/__init__.py	2021-11-27 10:05:23.675454008 +0100
+@@ -60,15 +60,7 @@
      #   to actually build the compiled extensions with OpenMP flags if needed.
      sklearn._OPENMP_SUPPORTED = check_openmp_support()
  
 -    n_jobs = 1
 -    with contextlib.suppress(ImportError):
 -        import joblib
+-
 -        if LooseVersion(joblib.__version__) > LooseVersion("0.13.0"):
 -            # earlier joblib versions don't account for CPU affinity
 -            # constraints, and may over-estimate the number of available

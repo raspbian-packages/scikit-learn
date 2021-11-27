@@ -15,10 +15,10 @@ platform. See also
  sklearn/metrics/tests/test_ranking.py         | 6 ++++++
  3 files changed, 21 insertions(+)
 
-diff --git a/sklearn/feature_extraction/tests/test_text.py b/sklearn/feature_extraction/tests/test_text.py
-index 4770080..d798335 100644
---- a/sklearn/feature_extraction/tests/test_text.py
-+++ b/sklearn/feature_extraction/tests/test_text.py
+Index: scikit-learn/sklearn/feature_extraction/tests/test_text.py
+===================================================================
+--- scikit-learn.orig/sklearn/feature_extraction/tests/test_text.py	2021-11-27 10:10:51.351463143 +0100
++++ scikit-learn/sklearn/feature_extraction/tests/test_text.py	2021-11-27 10:10:51.347462899 +0100
 @@ -1,6 +1,7 @@
  # -*- coding: utf-8 -*-
  from collections.abc import Mapping
@@ -27,8 +27,8 @@ index 4770080..d798335 100644
  
  import pytest
  from scipy import sparse
-@@ -76,6 +77,12 @@ def lazy_analyze(s):
-     return ['the_ultimate_feature']
+@@ -75,6 +76,12 @@
+     return ["the_ultimate_feature"]
  
  
 +# This has been observed on 32-bit ARM with soft float, for example
@@ -39,20 +39,20 @@ index 4770080..d798335 100644
 +
  def test_strip_accents():
      # check some classical latin accentuated symbols
-     a = 'àáâãäåçèéêë'
-@@ -362,6 +369,7 @@ def test_tf_idf_smoothing():
+     a = "àáâãäåçèéêë"
+@@ -482,6 +489,7 @@
      assert (tfidf >= 0).all()
  
  
 +@pytest.mark.skipif(numpy_lacks_div0_warning, reason='No div_by_zero warning')
  def test_tfidf_no_smoothing():
-     X = [[1, 1, 1],
-          [1, 1, 0],
-diff --git a/sklearn/metrics/tests/test_classification.py b/sklearn/metrics/tests/test_classification.py
-index 1f959d9..bdecf2d 100644
---- a/sklearn/metrics/tests/test_classification.py
-+++ b/sklearn/metrics/tests/test_classification.py
-@@ -99,6 +99,12 @@ def make_prediction(dataset=None, binary=False):
+     X = [[1, 1, 1], [1, 1, 0], [1, 0, 0]]
+     tr = TfidfTransformer(smooth_idf=False, norm="l2")
+Index: scikit-learn/sklearn/metrics/tests/test_classification.py
+===================================================================
+--- scikit-learn.orig/sklearn/metrics/tests/test_classification.py	2021-11-27 10:10:51.351463143 +0100
++++ scikit-learn/sklearn/metrics/tests/test_classification.py	2021-11-27 10:10:51.347462899 +0100
+@@ -96,6 +96,12 @@
      return y_true, y_pred, probas_pred
  
  
@@ -65,21 +65,21 @@ index 1f959d9..bdecf2d 100644
  ###############################################################################
  # Tests
  
-@@ -685,6 +691,7 @@ def test_matthews_corrcoef():
-                                               sample_weight=mask), 0.)
+@@ -719,6 +725,7 @@
+         assert_almost_equal(matthews_corrcoef(y_1, y_2, sample_weight=mask), 0.0)
  
  
 +@pytest.mark.skipif(numpy_lacks_div0_warning, reason='No div_by_zero warning')
  def test_matthews_corrcoef_multiclass():
      rng = np.random.RandomState(0)
-     ord_a = ord('a')
-diff --git a/sklearn/metrics/tests/test_ranking.py b/sklearn/metrics/tests/test_ranking.py
-index a66ff95..423526f 100644
---- a/sklearn/metrics/tests/test_ranking.py
-+++ b/sklearn/metrics/tests/test_ranking.py
-@@ -78,6 +78,11 @@ def make_prediction(dataset=None, binary=False):
+     ord_a = ord("a")
+Index: scikit-learn/sklearn/metrics/tests/test_ranking.py
+===================================================================
+--- scikit-learn.orig/sklearn/metrics/tests/test_ranking.py	2021-11-27 10:10:51.351463143 +0100
++++ scikit-learn/sklearn/metrics/tests/test_ranking.py	2021-11-27 10:10:51.351463143 +0100
+@@ -90,6 +90,11 @@
      y_true = y[half:]
-     return y_true, y_pred, probas_pred
+     return y_true, y_pred, y_score
  
 +# This has been observed on 32-bit ARM with soft float, for example
 +with warnings.catch_warnings(record=True) as w:
@@ -89,8 +89,8 @@ index a66ff95..423526f 100644
  
  ###############################################################################
  # Tests
-@@ -755,6 +760,7 @@ def test_precision_recall_curve_errors():
-         precision_recall_curve([0, 1, 2], [[0.0], [1.0], [1.0]])
+@@ -857,6 +862,7 @@
+     assert p.size == thresholds.size + 1
  
  
 +@pytest.mark.skipif(numpy_lacks_div0_warning, reason='No div_by_zero warning')

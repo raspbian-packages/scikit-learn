@@ -10,11 +10,11 @@ Last-Update: 2020-02-13
  doc/about.rst | 26 +++++---------------------
  1 file changed, 5 insertions(+), 21 deletions(-)
 
-diff --git a/doc/about.rst b/doc/about.rst
-index 814a472..bdc4e38 100644
---- a/doc/about.rst
-+++ b/doc/about.rst
-@@ -484,9 +484,11 @@ Donating to the project
+Index: scikit-learn/doc/about.rst
+===================================================================
+--- scikit-learn.orig/doc/about.rst	2021-11-27 09:55:11.086045457 +0100
++++ scikit-learn/doc/about.rst	2021-11-27 09:55:11.082045212 +0100
+@@ -594,9 +594,11 @@
  .......................
  
  If you are interested in donating to the project or to one of our code-sprints,
@@ -29,28 +29,3 @@ index 814a472..bdc4e38 100644
  
  All donations will be handled by `NumFOCUS
  <https://numfocus.org/>`_, a non-profit-organization which is
-@@ -500,24 +502,6 @@ The received donations for the scikit-learn project mostly will go towards
- covering travel-expenses for code sprints, as well as towards the organization
- budget of the project [#f1]_.
- 
--.. raw :: html
--
--    </br></br>
--    <form action="https://www.paypal.com/cgi-bin/webscr" method="post"
--    target="_top">
--    <input type="hidden" name="cmd" value="_s-xclick">
--    <input type="hidden" name="hosted_button_id" value="74EYUMF3FTSW8">
--    <input type="image"
--    src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
--    border="0" name="submit" alt="PayPal - The safer, easier way to pay
--    online!" style="position: relative;
--    left: 40%;">
--    <img alt="" border="0"
--    src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1"
--    height="1">
--    </form>
--    </br>
--
- .. rubric:: Notes
- 
- .. [#f1] Regarding the organization budget, in particular, we might use some of

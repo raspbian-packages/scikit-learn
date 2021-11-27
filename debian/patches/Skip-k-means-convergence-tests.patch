@@ -7,15 +7,15 @@ Until GH 17428 is resolved.
  sklearn/cluster/tests/test_k_means.py | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/sklearn/cluster/tests/test_k_means.py b/sklearn/cluster/tests/test_k_means.py
-index b53fd5b..6183f44 100644
---- a/sklearn/cluster/tests/test_k_means.py
-+++ b/sklearn/cluster/tests/test_k_means.py
-@@ -163,6 +163,7 @@ def test_kmeans_elkan_results(distribution, array_constr, tol):
+Index: scikit-learn/sklearn/cluster/tests/test_k_means.py
+===================================================================
+--- scikit-learn.orig/sklearn/cluster/tests/test_k_means.py	2021-11-27 10:09:48.167604902 +0100
++++ scikit-learn/sklearn/cluster/tests/test_k_means.py	2021-11-27 10:10:41.750876895 +0100
+@@ -172,6 +172,7 @@
      assert km_elkan.inertia_ == pytest.approx(km_full.inertia_, rel=1e-6)
  
  
 +@pytest.mark.skip(reason='GH 17428')
- @pytest.mark.parametrize('algorithm', ['full', 'elkan'])
+ @pytest.mark.parametrize("algorithm", ["full", "elkan"])
  def test_kmeans_convergence(algorithm):
      # Check that KMeans stops when convergence is reached when tol=0. (#16075)

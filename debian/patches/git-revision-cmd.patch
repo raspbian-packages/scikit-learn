@@ -9,17 +9,18 @@ Last-Update: 2020-02-13
  doc/sphinxext/github_link.py | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/doc/sphinxext/github_link.py b/doc/sphinxext/github_link.py
-index 1592b26..c9a441e 100644
---- a/doc/sphinxext/github_link.py
-+++ b/doc/sphinxext/github_link.py
-@@ -5,7 +5,8 @@ import os
+Index: scikit-learn/doc/sphinxext/github_link.py
+===================================================================
+--- scikit-learn.orig/doc/sphinxext/github_link.py	2021-11-27 09:53:40.436505172 +0100
++++ scikit-learn/doc/sphinxext/github_link.py	2021-11-27 09:53:58.837630439 +0100
+@@ -5,8 +5,8 @@
  import sys
  from functools import partial
  
--REVISION_CMD = 'git rev-parse --short HEAD'
-+#REVISION_CMD = 'git rev-parse --short HEAD'
+-REVISION_CMD = "git rev-parse --short HEAD"
+-
++#REVISION_CMD = "git rev-parse --short HEAD"
 +REVISION_CMD = 'cat ../debian/github-revision.txt'
  
- 
  def _get_git_revision():
+     try:

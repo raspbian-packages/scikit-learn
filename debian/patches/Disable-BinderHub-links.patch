@@ -7,22 +7,22 @@ Forwarded: not needed
  doc/conf.py | 8 --------
  1 file changed, 8 deletions(-)
 
-diff --git a/doc/conf.py b/doc/conf.py
-index 701fcee..57fe0bc 100644
---- a/doc/conf.py
-+++ b/doc/conf.py
-@@ -324,14 +324,6 @@ sphinx_gallery_conf = {
-     'examples_dirs': ['../examples'],
-     'gallery_dirs': ['auto_examples'],
-     'subsection_order': SubSectionTitleOrder('../examples'),
--    'binder': {
--        'org': 'scikit-learn',
--        'repo': 'scikit-learn',
--        'binderhub_url': 'https://mybinder.org',
--        'branch': binder_branch,
--        'dependencies': './binder/requirements.txt',
--        'use_jupyter_lab': True
+Index: scikit-learn/doc/conf.py
+===================================================================
+--- scikit-learn.orig/doc/conf.py	2021-11-27 10:07:40.743823925 +0100
++++ scikit-learn/doc/conf.py	2021-11-27 10:07:59.636977606 +0100
+@@ -364,14 +364,6 @@
+     "examples_dirs": ["../examples"],
+     "gallery_dirs": ["auto_examples"],
+     "subsection_order": SubSectionTitleOrder("../examples"),
+-    "binder": {
+-        "org": "scikit-learn",
+-        "repo": "scikit-learn",
+-        "binderhub_url": "https://mybinder.org",
+-        "branch": binder_branch,
+-        "dependencies": "./binder/requirements.txt",
+-        "use_jupyter_lab": True,
 -    },
      # avoid generating too many cross links
-     'inspect_global_variables': False,
-     'remove_config_comments': True,
+     "inspect_global_variables": False,
+     "remove_config_comments": True,
