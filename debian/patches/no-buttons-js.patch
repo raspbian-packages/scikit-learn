@@ -1,0 +1,21 @@
+From: yangfl <yangfl@users.noreply.github.com>
+Date: Sat, 20 Oct 2018 11:29:21 +0800
+Subject: Disable JavaScript GitHub buttons
+
+Forwarded: not-needed
+---
+ doc/developers/contributing.rst | 1 -
+ 1 file changed, 1 deletion(-)
+
+Index: scikit-learn/doc/developers/contributing.rst
+===================================================================
+--- scikit-learn.orig/doc/developers/contributing.rst	2021-11-27 10:05:29.191790856 +0100
++++ scikit-learn/doc/developers/contributing.rst	2021-11-27 10:05:29.183790367 +0100
+@@ -80,7 +80,6 @@
+    <a class="github-button" href="https://github.com/scikit-learn/scikit-learn"
+    data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star
+    scikit-learn/scikit-learn on GitHub">Star</a>
+-   <script async defer src="https://buttons.github.io/buttons.js"></script>
+ 
+ .. topic:: Contributing to related projects
+ 
