@@ -7,6 +7,14 @@ scikit-learn (1.0.1-1) UNRELEASED; urgency=medium
 
   [ Drew Parsons ]
   * New upstream release
+    - applies or deprecates debian patches:
+       disable-doctest.patch
+       Skip-two-tests-when-SciPy-1.5.patch
+       Use-assert_allclose-instead-of-equality-in-FP-comparison.patch
+       Change-expected-result-type-to-pass-on-32-bit.patch
+       Increase-tolerance-for-RANSACRegressor-test.patch
+       fix_scipy1.6_PR18711.patch
+       skip_test_ELKI_PR19115.patch
 
  -- Steffen Moeller <moeller@debian.org>  Mon, 06 Sep 2021 20:08:58 +0200
 
