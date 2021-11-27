@@ -1,4 +1,4 @@
-scikit-learn (1.0.1-1) UNRELEASED; urgency=medium
+scikit-learn (1.0.1-1) unstable; urgency=medium
 
   * Team upload.
 
@@ -6,7 +6,7 @@ scikit-learn (1.0.1-1) UNRELEASED; urgency=medium
   * Created d/u/metadata
 
   [ Drew Parsons ]
-  * New upstream release
+  * New upstream release. Closes: #999528.
     - applies or deprecates debian patches:
        disable-doctest.patch
        Skip-two-tests-when-SciPy-1.5.patch
@@ -27,7 +27,7 @@ scikit-learn (1.0.1-1) UNRELEASED; urgency=medium
   * skip test_load_boston_alternative at build-time (debian builds
     must not access the network)
 
- -- Steffen Moeller <moeller@debian.org>  Mon, 06 Sep 2021 20:08:58 +0200
+ -- Drew Parsons <dparsons@debian.org>  Sat, 27 Nov 2021 15:21:20 +0100
 
 scikit-learn (0.23.2-5) unstable; urgency=medium
 
