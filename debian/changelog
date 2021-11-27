@@ -24,6 +24,8 @@ scikit-learn (1.0.1-1) UNRELEASED; urgency=medium
     runtime. Closes: #918570.
   * debian patch fix_test_calibration_labels_PR21697.patch applies
     upstream PR#21697 to fix label access in test_calibration
+  * skip test_load_boston_alternative at build-time (debian builds
+    must not access the network)
 
  -- Steffen Moeller <moeller@debian.org>  Mon, 06 Sep 2021 20:08:58 +0200
 

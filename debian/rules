@@ -31,6 +31,9 @@ export HOME=$(CURDIR)/tmp
 EXCLUDE_TESTS = not test_old_pickle
 EXCLUDE_TESTS += and not test_ard_accuracy_on_easy_problem
 
+# don't run network tests at build time
+EXCLUDE_TESTS += and not test_load_boston_alternative
+
 # Some tests are known to fail randomly so need to be excluded ATM
 ifeq ($(DEB_HOST_ARCH),arm64)
   # A bit aggressive exclusion of some tests which exhibit a problem I have no time to deal with on arm64
