@@ -17,6 +17,9 @@ scikit-learn (1.0.1-1) UNRELEASED; urgency=medium
        skip_test_ELKI_PR19115.patch
   * Versioned Build-Depends: cython3 (>= 0.28.5~),
      python3-numpy (>= 1.14.6~), python3-scipy (>= 1.1.10~)
+  * Drop Build-Depends: libatlas-base-dev.
+    Build against generic libblas-dev, use specific optimized blas at
+    runtime. Closes: #918570.
 
  -- Steffen Moeller <moeller@debian.org>  Mon, 06 Sep 2021 20:08:58 +0200
 
