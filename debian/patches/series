@@ -8,3 +8,4 @@ Use-local-MathJax.patch
 Disable-BinderHub-links.patch
 Skip-k-means-convergence-tests.patch
 NumPy-div-by-zero-check.patch
+fix_test_calibration_labels_PR21697.patch
