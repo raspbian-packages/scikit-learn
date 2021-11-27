@@ -1,7 +1,12 @@
-scikit-learn (0.23.2-6) UNRELEASED; urgency=medium
+scikit-learn (1.0.1-1) UNRELEASED; urgency=medium
 
   * Team upload.
+
+  [ Steffen Moeller ]
   * Created d/u/metadata
+
+  [ Drew Parsons ]
+  * New upstream release
 
  -- Steffen Moeller <moeller@debian.org>  Mon, 06 Sep 2021 20:08:58 +0200
 
