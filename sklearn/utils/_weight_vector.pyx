@@ -1,9 +1,4 @@
 
-# cython: language_level=3
-# cython: cdivision=True
-# cython: boundscheck=False
-# cython: wraparound=False
-# cython: initializedcheck=False
 # cython: binding=False
 #
 # Author: Peter Prettenhofer <peter.prettenhofer@gmail.com>

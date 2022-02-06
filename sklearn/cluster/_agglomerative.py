@@ -16,8 +16,8 @@ from scipy.sparse.csgraph import connected_components
 
 from ..base import BaseEstimator, ClusterMixin
 from ..metrics.pairwise import paired_distances
-from ..neighbors import DistanceMetric
-from ..neighbors._dist_metrics import METRIC_MAPPING
+from ..metrics import DistanceMetric
+from ..metrics._dist_metrics import METRIC_MAPPING
 from ..utils import check_array
 from ..utils._fast_dict import IntFloatDict
 from ..utils.fixes import _astype_copy_false
@@ -429,11 +429,11 @@ def linkage_tree(
               observations of the two sets.
 
     affinity : str or callable, default='euclidean'
-        which metric to use. Can be 'euclidean', 'manhattan', or any
+        Which metric to use. Can be 'euclidean', 'manhattan', or any
         distance known to paired distance (see metric.pairwise).
 
     return_distance : bool, default=False
-        whether or not to return the distances between the clusters.
+        Whether or not to return the distances between the clusters.
 
     Returns
     -------
@@ -506,7 +506,7 @@ def linkage_tree(
             # by sklearn.metrics.pairwise_distances.
             if X.shape[0] != X.shape[1]:
                 raise ValueError(
-                    "Distance matrix should be square, Got matrix of shape {X.shape}"
+                    f"Distance matrix should be square, got matrix of shape {X.shape}"
                 )
             i, j = np.triu_indices(X.shape[0], k=1)
             X = X[i, j]

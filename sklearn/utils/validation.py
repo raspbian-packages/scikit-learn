@@ -135,7 +135,7 @@ def assert_all_finite(X, *, allow_nan=False):
 
 
 def as_float_array(X, *, copy=True, force_all_finite=True):
-    """Converts an array-like to an array of floats.
+    """Convert an array-like to an array of floats.
 
     The new dtype will be np.float32 or np.float64, depending on the original
     type. The function can create a copy or modify the argument depending
@@ -144,6 +144,7 @@ def as_float_array(X, *, copy=True, force_all_finite=True):
     Parameters
     ----------
     X : {array-like, sparse matrix}
+        The input data.
 
     copy : bool, default=True
         If True, a copy of X will be created. If False, a copy may still be
@@ -365,7 +366,14 @@ def indexable(*iterables):
     ----------
     *iterables : {lists, dataframes, ndarrays, sparse matrices}
         List of objects to ensure sliceability.
+
+    Returns
+    -------
+    result : list of {ndarray, sparse matrix, dataframe} or None
+        Returns a list containing indexable arrays (i.e. NumPy array,
+        sparse matrix, or dataframe) or `None`.
     """
+
     result = [_make_indexable(X) for X in iterables]
     check_consistent_length(*result)
     return result
@@ -997,6 +1005,7 @@ def column_or_1d(y, *, warn=False):
     Parameters
     ----------
     y : array-like
+       Input data.
 
     warn : bool, default=False
        To control display of warnings.
@@ -1004,7 +1013,12 @@ def column_or_1d(y, *, warn=False):
     Returns
     -------
     y : ndarray
+       Output data.
 
+    Raises
+    -------
+    ValueError
+        If `y` is not a 1D array or a 2D array with a single row or column.
     """
     y = np.asarray(y)
     shape = np.shape(y)
@@ -1049,7 +1063,7 @@ def check_random_state(seed):
 
 
 def has_fit_parameter(estimator, parameter):
-    """Checks whether the estimator's fit method supports the given parameter.
+    """Check whether the estimator's fit method supports the given parameter.
 
     Parameters
     ----------
@@ -1061,7 +1075,7 @@ def has_fit_parameter(estimator, parameter):
 
     Returns
     -------
-    is_parameter: bool
+    is_parameter : bool
         Whether the parameter was found to be a named parameter of the
         estimator's fit method.
 
@@ -1071,7 +1085,6 @@ def has_fit_parameter(estimator, parameter):
     >>> from sklearn.utils.validation import has_fit_parameter
     >>> has_fit_parameter(SVC(), "sample_weight")
     True
-
     """
     return parameter in signature(estimator.fit).parameters
 
@@ -1262,7 +1275,7 @@ def check_scalar(
         The minimum valid value the parameter can take. If None (default) it
         is implied that the parameter does not have a lower bound.
 
-    max_val : float or int, default=False
+    max_val : float or int, default=None
         The maximum valid value the parameter can take. If None (default) it
         is implied that the parameter does not have an upper bound.
 

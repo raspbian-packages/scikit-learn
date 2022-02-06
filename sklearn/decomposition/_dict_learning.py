@@ -480,8 +480,8 @@ def _update_dict(
         if positive:
             np.clip(dictionary[k], 0, None, out=dictionary[k])
 
-        # Projection on the constraint set ||V_k|| == 1
-        dictionary[k] /= linalg.norm(dictionary[k])
+        # Projection on the constraint set ||V_k|| <= 1
+        dictionary[k] /= max(linalg.norm(dictionary[k]), 1)
 
     if verbose and n_unused > 0:
         print(f"{n_unused} unused atoms resampled.")
@@ -762,8 +762,9 @@ def dict_learning_online(
     X : ndarray of shape (n_samples, n_features)
         Data matrix.
 
-    n_components : int, default=2
-        Number of dictionary atoms to extract.
+    n_components : int or None, default=2
+        Number of dictionary atoms to extract. If None, then ``n_components``
+        is set to ``n_features``.
 
     alpha : float, default=1
         Sparsity controlling parameter.
@@ -1325,7 +1326,7 @@ class DictionaryLearning(_BaseSparseCoding, BaseEstimator):
 
         (U^*,V^*) = argmin 0.5 || X - U V ||_Fro^2 + alpha * || U ||_1,1
                     (U,V)
-                    with || V_k ||_2 = 1 for all  0 <= k < n_components
+                    with || V_k ||_2 <= 1 for all  0 <= k < n_components
 
     ||.||_Fro stands for the Frobenius norm and ||.||_1,1 stands for
     the entry-wise matrix norm which is the sum of the absolute values
@@ -1335,8 +1336,9 @@ class DictionaryLearning(_BaseSparseCoding, BaseEstimator):
 
     Parameters
     ----------
-    n_components : int, default=n_features
-        Number of dictionary elements to extract.
+    n_components : int, default=None
+        Number of dictionary elements to extract. If None, then ``n_components``
+        is set to ``n_features``.
 
     alpha : float, default=1.0
         Sparsity controlling parameter.
@@ -1596,7 +1598,7 @@ class MiniBatchDictionaryLearning(_BaseSparseCoding, BaseEstimator):
 
        (U^*,V^*) = argmin 0.5 || X - U V ||_Fro^2 + alpha * || U ||_1,1
                     (U,V)
-                    with || V_k ||_2 = 1 for all  0 <= k < n_components
+                    with || V_k ||_2 <= 1 for all  0 <= k < n_components
 
     ||.||_Fro stands for the Frobenius norm and ||.||_1,1 stands for
     the entry-wise matrix norm which is the sum of the absolute values
