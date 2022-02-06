@@ -1,3 +1,9 @@
+scikit-learn (1.0.2-1) UNRELEASED; urgency=medium
+
+  * New upstream release. Update Standard-Version.
+
+ -- Chiara Marmo <marmochiaskl@gmail.com>  Sun, 6 Feb 2022 01:26:35 +0000
+
 scikit-learn (1.0.1-2) UNRELEASED; urgency=medium
 
   * Team upload.
