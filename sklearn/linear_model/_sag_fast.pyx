@@ -1,10 +1,6 @@
 
 #------------------------------------------------------------------------------
 
-# cython: cdivision=True
-# cython: boundscheck=False
-# cython: wraparound=False
-#
 # Authors: Danny Sullivan <dbsullivan23@gmail.com>
 #          Tom Dupre la Tour <tom.dupre-la-tour@m4x.org>
 #          Arthur Mensch <arthur.mensch@m4x.org
