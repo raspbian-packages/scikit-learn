@@ -10,10 +10,8 @@ Last-Update: 2020-02-13
  sklearn/_build_utils/__init__.py | 9 +--------
  1 file changed, 1 insertion(+), 8 deletions(-)
 
-Index: scikit-learn/sklearn/_build_utils/__init__.py
-===================================================================
---- scikit-learn.orig/sklearn/_build_utils/__init__.py	2021-11-27 10:04:48.685317374 +0100
-+++ scikit-learn/sklearn/_build_utils/__init__.py	2021-11-27 10:05:23.675454008 +0100
+--- a/sklearn/_build_utils/__init__.py
++++ b/sklearn/_build_utils/__init__.py
 @@ -60,15 +60,7 @@
      #   to actually build the compiled extensions with OpenMP flags if needed.
      sklearn._OPENMP_SUPPORTED = check_openmp_support()
@@ -29,5 +27,5 @@ Index: scikit-learn/sklearn/_build_utils/__init__.py
 -            n_jobs = joblib.cpu_count()
 +    n_jobs = int(os.environ.get('JOBS', 1))
  
-     config.ext_modules = cythonize(
-         config.ext_modules,
+     # Additional checks for Cython
+     cython_enable_debug_directives = (
