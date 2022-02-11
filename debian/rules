@@ -33,17 +33,6 @@ ifeq ($(DEB_HOST_ARCH),arm64)
   EXCLUDE_TESTS += and not test_dump
 endif
 
-# Until this is fixed:
-# https://github.com/scikit-learn/scikit-learn/issues/16794
-ifeq ($(DEB_HOST_ARCH),ppc64el)
-  EXCLUDE_TESTS += and not test_precomputed_nearest_neighbors_filtering
-  # This is actually a test generator, so this skips a *lot* of tests
-  EXCLUDE_TESTS += and not test_common
-  # These are is flaky
-  EXCLUDE_TESTS += and not test_stacking_cv_influence
-  EXCLUDE_TESTS += and not test_stacking_with_sample_weight
-endif
-
 # Until these are fixed:
 # https://github.com/scikit-learn/scikit-learn/issues/16443
 # https://github.com/scikit-learn/scikit-learn/issues/13052
