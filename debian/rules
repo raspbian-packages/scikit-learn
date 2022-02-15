@@ -3,7 +3,8 @@
 
 # See also: skimage
 
-export DEB_BUILD_OPTIONS += nocheck
+# This was used as last resort to advance the python3.10 transition by Paul Gevers in NMU, disable the tests during build (see: #1003165)
+# export DEB_BUILD_OPTIONS += nocheck
 
 include /usr/share/dpkg/architecture.mk
 
