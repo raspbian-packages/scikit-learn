@@ -16,6 +16,8 @@ scikit-learn (1.0.2-1) UNRELEASED; urgency=medium
   * Fix files location in d/copyright
   * Drop outdated debian/TODO
   * Update debian/source/lintian-overrides
+  * bootstrap-responsive*.css is not vendored by scikit-learn docs any more
+    Closes: #924213
 
  -- Chiara Marmo <marmochiaskl@gmail.com>  Sun, 6 Feb 2022 01:26:35 +0000
 
