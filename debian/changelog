@@ -1,16 +1,18 @@
 scikit-learn (1.0.2-1) UNRELEASED; urgency=medium
 
-  * New upstream release. Update Standard-Version.
-
- -- Chiara Marmo <marmochiaskl@gmail.com>  Sun, 6 Feb 2022 01:26:35 +0000
-
-scikit-learn (1.0.1-2) UNRELEASED; urgency=medium
-
   * Team upload.
+
+  [ Drew Parsons ]
   * run tests without colour to make build and debci logs more legible
   * debian/tests Depends: python3-setuptools
 
- -- Drew Parsons <dparsons@debian.org>  Sat, 27 Nov 2021 20:06:31 +0100
+  [ Chiara Marmo ]
+  * New upstream release. Update Standard-Version.
+
+  [ Andreas Tille ]
+  * Rename debian/.gitlab-ci.yml to debian/salsa-ci.yml
+
+ -- Chiara Marmo <marmochiaskl@gmail.com>  Sun, 6 Feb 2022 01:26:35 +0000
 
 scikit-learn (1.0.1-1) unstable; urgency=medium
 
