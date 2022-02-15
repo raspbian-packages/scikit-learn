@@ -7,7 +7,7 @@ scikit-learn (1.0.2-1) UNRELEASED; urgency=medium
   * debian/tests Depends: python3-setuptools
 
   [ Chiara Marmo ]
-  * New upstream release. Update Standard-Version.
+  * New upstream release. Update Standards-Version.
 
   [ Andreas Tille ]
   * Rename debian/.gitlab-ci.yml to debian/salsa-ci.yml
