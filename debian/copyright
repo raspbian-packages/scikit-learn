@@ -19,11 +19,11 @@ Copyright: 2000-2010 Chih-Chung Chang
 License: BSD-3-Clause
 Comment: Partial fork of the LIBSVM package.
 
-Files: doc/themes/scikit-learn/static/jquery.maphilight.js
+Files: doc/themes/scikit-learn-modern/static/jquery.maphilight.js
 Copyright: 2008 David Lynch, http://davidlynch.org/
 License: Expat
 
-Files: doc/themes/scikit-learn/static/*/bootstrap*
+Files: doc/themes/scikit-learn-modern/static/*/bootstrap*
 Copyright: 2012 Twitter, Inc
 License: Apache-2.0
 
@@ -40,7 +40,7 @@ Files: doc/themes/scikit-learn-modern/static/js/vendor/bootstrap.min.js
 Copyright: Copyright 2011-2019 The Bootstrap Authors
 License: Expat
 
-Files: doc/themes/scikit-learn/static/nature.css_t
+Files: doc/themes/scikit-learn-modern/static/nature.css_t
 Copyright: 2007-2010 Sphinx team
 License: BSD-3-Clause
 
