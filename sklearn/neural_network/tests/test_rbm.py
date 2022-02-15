@@ -236,5 +236,5 @@ def test_convergence_dtype_consistency():
     assert_allclose(
         rbm_64.intercept_visible_, rbm_32.intercept_visible_, rtol=1e-05, atol=0
     )
-    assert_allclose(rbm_64.components_, rbm_32.components_, rtol=1e-03, atol=0)
+    assert_allclose(rbm_64.components_, rbm_32.components_, rtol=1e-02, atol=1e-06)
     assert_allclose(rbm_64.h_samples_, rbm_32.h_samples_)
