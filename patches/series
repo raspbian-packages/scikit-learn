@@ -1,0 +1,11 @@
+remove-google-analytics.patch
+git-revision-cmd.patch
+remove-paypal.patch
+no-download-intersphinx-mapping.patch
+parallel-cythonize.patch
+no-buttons-js.patch
+Use-local-MathJax.patch
+Disable-BinderHub-links.patch
+Skip-k-means-convergence-tests.patch
+NumPy-div-by-zero-check.patch
+relax_test_tolerance.patch
