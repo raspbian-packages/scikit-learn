@@ -14,6 +14,14 @@ scikit-learn (1.0.2-1) UNRELEASED; urgency=medium
 
  -- Chiara Marmo <marmochiaskl@gmail.com>  Sun, 6 Feb 2022 01:26:35 +0000
 
+scikit-learn (1.0.1-1.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * To advance the python3.10 transition, disable the tests during build
+    for now (see: #1003165)
+
+ -- Paul Gevers <elbrus@debian.org>  Fri, 21 Jan 2022 22:38:09 +0100
+
 scikit-learn (1.0.1-1) unstable; urgency=medium
 
   * Team upload.

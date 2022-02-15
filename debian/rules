@@ -3,6 +3,8 @@
 
 # See also: skimage
 
+export DEB_BUILD_OPTIONS += nocheck
+
 include /usr/share/dpkg/architecture.mk
 
 PY3VER  ?= $(shell py3versions -vd)
