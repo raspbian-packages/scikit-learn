@@ -14,6 +14,7 @@ scikit-learn (1.0.2-1) UNRELEASED; urgency=medium
   * Relax test tolerance
   * Revert nocheck option from NMU since the check will pass now hopefully
   * Fix files location in d/copyright
+  * Drop outdated debian/TODO
 
  -- Chiara Marmo <marmochiaskl@gmail.com>  Sun, 6 Feb 2022 01:26:35 +0000
 
