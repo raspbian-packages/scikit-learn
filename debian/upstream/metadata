@@ -1,4 +1,8 @@
 ---
+Bug-Database: https://github.com/scikit-learn/scikit-learn/issues
+Bug-Submit: https://github.com/scikit-learn/scikit-learn/issues/new
+Repository: https://github.com/scikit-learn/scikit-learn.git
+Repository-Browse: https://github.com/scikit-learn/scikit-learn
 Registry:
  - Name: conda:conda-forge
    Entry: scikit-learn
