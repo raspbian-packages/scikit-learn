@@ -325,11 +325,9 @@ def sag64(SequentialDataset64 dataset,
     https://hal.inria.fr/hal-00860051/document
     (section 4.3)
 
-    Defazio, A., Bach, F., Lacoste-Julien, S. (2014),
-    SAGA: A Fast Incremental Gradient Method With Support
-    for Non-Strongly Convex Composite Objectives
-    https://arxiv.org/abs/1407.0202
-
+    :arxiv:`Defazio, A., Bach F. & Lacoste-Julien S. (2014).
+    "SAGA: A Fast Incremental Gradient Method With Support
+    for Non-Strongly Convex Composite Objectives" <1407.0202>`
     """
     # the data pointer for x, the current sample
     cdef double *x_data_ptr = NULL
@@ -656,11 +654,9 @@ def sag32(SequentialDataset32 dataset,
     https://hal.inria.fr/hal-00860051/document
     (section 4.3)
 
-    Defazio, A., Bach, F., Lacoste-Julien, S. (2014),
-    SAGA: A Fast Incremental Gradient Method With Support
-    for Non-Strongly Convex Composite Objectives
-    https://arxiv.org/abs/1407.0202
-
+    :arxiv:`Defazio, A., Bach F. & Lacoste-Julien S. (2014).
+    "SAGA: A Fast Incremental Gradient Method With Support
+    for Non-Strongly Convex Composite Objectives" <1407.0202>`
     """
     # the data pointer for x, the current sample
     cdef float *x_data_ptr = NULL
