@@ -41,8 +41,8 @@ cdef class SequentialDataset64:
         Number of samples in the dataset.
 
     seed : np.uint32_t
-        Seed used for random sampling.
-
+        Seed used for random sampling. This attribute is modified at each call to the
+        `random` method.
     """
 
     cdef void next(self, double **x_data_ptr, int **x_ind_ptr,
@@ -366,8 +366,8 @@ cdef class SequentialDataset32:
         Number of samples in the dataset.
 
     seed : np.uint32_t
-        Seed used for random sampling.
-
+        Seed used for random sampling. This attribute is modified at each call to the
+        `random` method.
     """
 
     cdef void next(self, float **x_data_ptr, int **x_ind_ptr,
