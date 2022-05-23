@@ -1,0 +1,31 @@
+From: Yaroslav Halchenko <debian@onerussian.com>
+Date: Tue, 20 Oct 2015 13:32:25 -0500
+Subject: No Paypal
+
+Remove an embedded Paypal object to avoid phoning home every time the
+documentation is read.
+
+Last-Update: 2020-02-13
+---
+ doc/about.rst | 26 +++++---------------------
+ 1 file changed, 5 insertions(+), 21 deletions(-)
+
+Index: scikit-learn/doc/about.rst
+===================================================================
+--- scikit-learn.orig/doc/about.rst	2021-11-27 09:55:11.086045457 +0100
++++ scikit-learn/doc/about.rst	2021-11-27 09:55:11.082045212 +0100
+@@ -594,9 +594,11 @@
+ .......................
+ 
+ If you are interested in donating to the project or to one of our code-sprints,
+-you can use the *Paypal* button below or the `NumFOCUS Donations Page
+-<https://www.numfocus.org/support-numfocus.html>`_ (if you use the latter,
+-please indicate that you are donating for the scikit-learn project).
++you can use the `*Paypal* button on the upstream website
++<https://scikit-learn.org/stable/about.html#donating-to-the-project>`_ or the
++`NumFOCUS Donations Page <https://www.numfocus.org/support-numfocus.html>`_ (if
++you use the latter, please indicate that you are donating for the scikit-learn
++project).
+ 
+ All donations will be handled by `NumFOCUS
+ <https://numfocus.org/>`_, a non-profit-organization which is

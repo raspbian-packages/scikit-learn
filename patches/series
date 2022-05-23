@@ -1,0 +1,9 @@
+relax_test_tolerance.patch
+Disable-BinderHub-links.patch
+parallel-cythonize.patch
+no-download-intersphinx-mapping.patch
+remove-google-analytics.patch
+git-revision-cmd.patch
+remove-paypal.patch
+no-buttons-js.patch
+Use-local-MathJax.patch
