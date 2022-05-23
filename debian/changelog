@@ -1,25 +1,10 @@
-scikit-learn (1.1.1-1) UNRELEASED; urgency=medium
+scikit-learn (1.1.1-1) unstable; urgency=medium
 
   * Team upload.
   * New upstream release.
   * Refresh patches.
 
- -- Chiara Marmo <marmochiaskl@gmail.com>  Mon, 23 May 2022 03:16:23 +0000
-
-scikit-learn (1.1.0-1) UNRELEASED; urgency=medium
-
-  * New upstream release.
-  * Refresh patches.
-  * Update standard version.
-
- -- Chiara Marmo <marmochiaskl@gmail.com>  Fri, 13 May 2022 03:13:14 +0000
-
-scikit-learn (1.0.2-2) UNRELEASED; urgency=medium
-
-  * Team upload.
-  * debian/upstream/metadata: Bugs, Repository
-
- -- Andreas Tille <tille@debian.org>  Wed, 16 Feb 2022 08:01:56 +0100
+ -- Chiara Marmo <marmochiaskl@gmail.com>  Mon, 23 May 2022 21:08:39 +0530
 
 scikit-learn (1.0.2-1) unstable; urgency=medium
 
