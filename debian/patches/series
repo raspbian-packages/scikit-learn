@@ -1,3 +1,4 @@
+sphinx-doc-no-download.patch
 relax_test_tolerance.patch
 Disable-BinderHub-links.patch
 parallel-cythonize.patch
