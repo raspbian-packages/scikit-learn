@@ -28,7 +28,21 @@ export JOBLIB_MULTIPROCESSING := $(shell expr $(JOBS) / $(words $(PY3VERS)))
 export HOME=$(CURDIR)/tmp
 
 # don't run network tests at build time
-EXCLUDE_TESTS = not test_load_boston_alternative
+EXCLUDE_TESTS = not test_load_boston_alternative and \
+                not test_fetch_openml and \
+                not test_missing_values_pandas and \
+                not test_illegal_column and \
+                not test_dataset_with_openml_warning and \
+                not test_string_attribute_without_dataframe and \
+                not test_warn_ignore_attribute and \
+                not test_raises_illegal_multitarget and \
+                not test_fetch_nonexiting and \
+                not test_decode_emotions and \
+                not test_decode_cpu and \
+                not test_decode_anneal and \
+                not test_decode_iris and \
+                not test_dataset_with_openml_error and \
+                not test_convert_arff_data_dataframe_warning_low_memory_pandas
 # Until https://github.com/scikit-learn/scikit-learn/issues/17798
 # is not solved
 EXCLUDE_TEST += and not sklearn.ensemble._weight_boosting.AdaBoostRegressor
