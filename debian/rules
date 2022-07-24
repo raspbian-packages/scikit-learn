@@ -88,10 +88,8 @@ endif
 
 # This is used by patch sphinx-doc-no-download.patch to prevent the sphinx
 # doc build from downloading datasets, while not breaking the actual download
-# functionality when user runs the same function.
-# Without this, QEMU build of this package could take more than 12 hours due
-# to massive amount of download timeout for some reason.
-# See also #1015805
+# functionality when user runs the same function. Disabling downloads also
+# makes the build slightly faster. See also #1015805
 export DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS=1
 
 %:

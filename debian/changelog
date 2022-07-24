@@ -1,3 +1,11 @@
+scikit-learn (1.1.1-2) unstable; urgency=medium
+
+  * Team upload.
+  * Prevent network access during sphinx build. (Closes: #1015805)
+  * Skip all tests that calls fetch_openml() for network access.
+
+ -- Mo Zhou <lumin@debian.org>  Sun, 24 Jul 2022 12:55:12 -0700
+
 scikit-learn (1.1.1-1) unstable; urgency=medium
 
   * Team upload.
