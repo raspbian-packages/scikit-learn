@@ -1,0 +1,27 @@
+Index: scikit-learn/sklearn/datasets/_base.py
+===================================================================
+--- scikit-learn.orig/sklearn/datasets/_base.py	2022-07-23 20:41:20.459157252 +0000
++++ scikit-learn/sklearn/datasets/_base.py	2022-07-23 20:41:20.447157717 +0000
+@@ -1506,6 +1506,8 @@
+     file_path: str
+         Full path of the created file.
+     """
++    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++        raise IOError('Debian Policy Section 4.9 prohibits network access during build')
+ 
+     file_path = remote.filename if dirname is None else join(dirname, remote.filename)
+     urlretrieve(remote.url, file_path)
+Index: scikit-learn/sklearn/datasets/_openml.py
+===================================================================
+--- scikit-learn.orig/sklearn/datasets/_openml.py	2022-07-21 04:46:37.498975831 +0000
++++ scikit-learn/sklearn/datasets/_openml.py	2022-07-23 20:43:25.154318693 +0000
+@@ -722,6 +722,9 @@
+         in 'target' are represented as NaN's (numerical target) or None
+         (categorical target).
+     """
++    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++        raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
++
+     if cache is False:
+         # no caching will be applied
+         data_home = None
