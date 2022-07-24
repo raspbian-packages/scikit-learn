@@ -1,0 +1,30 @@
+From: yangfl <yangfl@users.noreply.github.com>
+Date: Fri, 19 Oct 2018 23:21:53 +0800
+Subject: No-downloading intersphinx mapping
+
+===================================================================
+---
+ doc/conf.py | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -304,13 +304,11 @@
+ 
+ # intersphinx configuration
+ intersphinx_mapping = {
+-    "python": ("https://docs.python.org/{.major}".format(sys.version_info), None),
+-    "numpy": ("https://numpy.org/doc/stable", None),
+-    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
+-    "matplotlib": ("https://matplotlib.org/", None),
+-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
+-    "joblib": ("https://joblib.readthedocs.io/en/latest/", None),
+-    "seaborn": ("https://seaborn.pydata.org/", None),
++    "python": ("https://docs.python.org/{.major}".format(sys.version_info), '/usr/share/doc/python3/html/objects.inv'),
++    "numpy": ("https://numpy.org/doc/stable", '/usr/share/doc/python-numpy-doc/html/objects.inv'),
++    "scipy": ("https://docs.scipy.org/doc/scipy/", '/usr/share/doc/python-scipy-doc/html/objects.inv'),
++    "matplotlib": ("https://matplotlib.org/", '/usr/share/doc/python-matplotlib-doc/html/objects.inv'),
++    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", '/usr/share/doc/python-pandas-doc/html/objects.inv'),
+ }
+ 
+ v = parse(release)
