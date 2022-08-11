@@ -122,6 +122,11 @@ override_dh_auto_configure:
 	python$(PY3VER) setup.py config
 # 	dh_auto_configure
 	mv PKG-INFO-BAK PKG-INFO
+	# Provide bootstrap links even at build process - otherwise sphinx fails
+	mkdir -p doc/themes/scikit-learn-modern/static/css/vendor/
+	ln -s /usr/share/javascript/bootstrap4/css/bootstrap.min.css doc/themes/scikit-learn-modern/static/css/vendor/bootstrap.min.css
+	mkdir -p doc/themes/scikit-learn-modern/static/js/vendor
+	ln -s /usr/share/javascript/bootstrap4/js/bootstrap.min.js doc/themes/scikit-learn-modern/static/js/vendor/bootstrap.min.js
 
 # Ensure sample and test data are copied to .pybuild
 define PYBUILD_AFTER_BUILD
