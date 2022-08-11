@@ -55,10 +55,6 @@ Files: sklearn/datasets/_olivetti_faces.py
 Copyright: 2011 David Warde-Farley <wardefar at iro dot umontreal dot ca>
 License: BSD-3-Clause
 
-Files: sklearn/externals/_pep562.py
-Copyright: 2018 Isaac Muse <isaacmuse@gmail.com>
-License: Expat
-
 Files: sklearn/neighbors/_base.py sklearn/neighbors/_classification.py sklearn/neighbors/_graph.py
 Copyright: (C) INRIA, University of Amsterdam
 License: BSD-3-Clause
