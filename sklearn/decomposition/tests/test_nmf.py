@@ -51,13 +51,12 @@ def test_initialize_nn_output():
 )
 def test_parameter_checking():
     A = np.ones((2, 2))
-    name = "spam"
 
     with ignore_warnings(category=FutureWarning):
         # TODO remove in 1.2
         msg = "Invalid regularization parameter: got 'spam' instead of one of"
         with pytest.raises(ValueError, match=msg):
-            NMF(regularization=name).fit(A)
+            NMF(regularization="spam").fit(A)
 
     msg = "Invalid beta_loss parameter: solver 'cd' does not handle beta_loss = 1.0"
     with pytest.raises(ValueError, match=msg):
