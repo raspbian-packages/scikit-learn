@@ -2,6 +2,7 @@ scikit-learn (1.1.2-1) UNRELEASED; urgency=medium
 
   * Team upload.
   * New upstream version
+  * Fix Maintainer name of Debian Science team (routine-update)
 
  -- Andreas Tille <tille@debian.org>  Thu, 11 Aug 2022 13:35:35 +0200
 

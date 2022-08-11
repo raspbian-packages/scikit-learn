@@ -1,7 +1,7 @@
 Source: scikit-learn
 Section: python
 Priority: optional
-Maintainer: Debian Science Team <debian-science-maintainers@lists.alioth.debian.org>
+Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
 Uploaders: Yaroslav Halchenko <debian@onerussian.com>,
            Michael Hanke <michael.hanke@gmail.com>,
            Christian Kastner <ckk@debian.org>,
