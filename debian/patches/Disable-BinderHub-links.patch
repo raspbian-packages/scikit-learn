@@ -9,7 +9,7 @@ Forwarded: not needed
 
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -388,14 +388,6 @@
+@@ -389,14 +389,6 @@ sphinx_gallery_conf = {
      "gallery_dirs": ["auto_examples"],
      "subsection_order": SubSectionTitleOrder("../examples"),
      "within_subsection_order": SKExampleTitleSortKey,
