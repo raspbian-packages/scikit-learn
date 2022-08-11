@@ -20,22 +20,9 @@ Copyright: 2000-2010 Chih-Chung Chang
 License: BSD-3-Clause
 Comment: Partial fork of the LIBSVM package.
 
-Files: doc/themes/scikit-learn-modern/static/*/bootstrap*
-Copyright: 2012 Twitter, Inc
-License: Apache-2.0
-
-Files: doc/themes/scikit-learn-modern/static/css/vendor/bootstrap.min.css
-Copyright: Copyright 2011-2019 The Bootstrap Authors
- Copyright 2011-2019 Twitter, Inc.
-License: Expat
-
 Files: doc/themes/scikit-learn-modern/static/js/searchtools.js
 Copyright: Copyright 2007-2019 by the Sphinx team
 License: BSD-2-Clause
-
-Files: doc/themes/scikit-learn-modern/static/js/vendor/bootstrap.min.js
-Copyright: Copyright 2011-2019 The Bootstrap Authors
-License: Expat
 
 Files: sklearn/covariance/_graph_lasso.py
 Copyright: INRIA
