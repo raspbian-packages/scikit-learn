@@ -991,12 +991,15 @@ class BaseGradientBoosting(BaseEnsemble, metaclass=ABCMeta):
 class GradientBoostingClassifier(ClassifierMixin, BaseGradientBoosting):
     """Gradient Boosting for classification.
 
-    GB builds an additive model in a
-    forward stage-wise fashion; it allows for the optimization of
-    arbitrary differentiable loss functions. In each stage ``n_classes_``
-    regression trees are fit on the negative gradient of the loss function,
-    e.g. binary or multiclass log loss. Binary classification
-    is a special case where only a single regression tree is induced.
+    This algorithm builds an additive model in a forward stage-wise fashion; it
+    allows for the optimization of arbitrary differentiable loss functions. In
+    each stage ``n_classes_`` regression trees are fit on the negative gradient
+    of the loss function, e.g. binary or multiclass log loss. Binary
+    classification is a special case where only a single regression tree is
+    induced.
+
+    :class:`sklearn.ensemble.HistGradientBoostingClassifier` is a much faster
+    variant of this algorithm for intermediate datasets (`n_samples >= 10_000`).
 
     Read more in the :ref:`User Guide <gradient_boosting>`.
 
@@ -1122,7 +1125,7 @@ class GradientBoostingClassifier(ClassifierMixin, BaseGradientBoosting):
 
         - If int, values must be in the range `[1, inf)`.
         - If float, values must be in the range `(0.0, 1.0]` and the features
-          considered at each split will be `int(max_features * n_features)`.
+          considered at each split will be `max(1, int(max_features * n_features_in_))`.
         - If 'auto', then `max_features=sqrt(n_features)`.
         - If 'sqrt', then `max_features=sqrt(n_features)`.
         - If 'log2', then `max_features=log2(n_features)`.
@@ -1559,10 +1562,13 @@ class GradientBoostingClassifier(ClassifierMixin, BaseGradientBoosting):
 class GradientBoostingRegressor(RegressorMixin, BaseGradientBoosting):
     """Gradient Boosting for regression.
 
-    GB builds an additive model in a forward stage-wise fashion;
-    it allows for the optimization of arbitrary differentiable loss functions.
-    In each stage a regression tree is fit on the negative gradient of the
-    given loss function.
+    This estimator builds an additive model in a forward stage-wise fashion; it
+    allows for the optimization of arbitrary differentiable loss functions. In
+    each stage a regression tree is fit on the negative gradient of the given
+    loss function.
+
+    :class:`sklearn.ensemble.HistGradientBoostingRegressor` is a much faster
+    variant of this algorithm for intermediate datasets (`n_samples >= 10_000`).
 
     Read more in the :ref:`User Guide <gradient_boosting>`.
 
@@ -1695,7 +1701,7 @@ class GradientBoostingRegressor(RegressorMixin, BaseGradientBoosting):
 
         - If int, values must be in the range `[1, inf)`.
         - If float, values must be in the range `(0.0, 1.0]` and the features
-          considered at each split will be `int(max_features * n_features)`.
+          considered at each split will be `max(1, int(max_features * n_features_in_))`.
         - If "auto", then `max_features=n_features`.
         - If "sqrt", then `max_features=sqrt(n_features)`.
         - If "log2", then `max_features=log2(n_features)`.
