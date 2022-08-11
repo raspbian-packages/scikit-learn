@@ -2,6 +2,7 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: scikit-learn
 Upstream-Contact: https://github.com/scikit-learn/scikit-learn/issues
 Source: http://github.com/scikit-learn/scikit-learn
+Files-Excluded: */bootstrap*
 
 Files: *
 Copyright: 2007-2019 Scikit-Learn Developers
