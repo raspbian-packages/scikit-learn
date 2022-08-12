@@ -1,4 +1,4 @@
-scikit-learn (1.1.2+dfsg-2) UNRELEASED; urgency=medium
+scikit-learn (1.1.2+dfsg-2) unstable; urgency=medium
 
   * Team upload.
   * Remove bootstrap from d/copyright since it is not included any more
@@ -6,7 +6,7 @@ scikit-learn (1.1.2+dfsg-2) UNRELEASED; urgency=medium
     and do not fail if dh_auto_test returns error.  Thus we keep a logfile
     containing failed errors we can point upstream to
 
- -- Andreas Tille <tille@debian.org>  Thu, 11 Aug 2022 15:57:43 +0200
+ -- Andreas Tille <tille@debian.org>  Fri, 12 Aug 2022 14:38:37 +0200
 
 scikit-learn (1.1.2+dfsg-1) unstable; urgency=medium
 
