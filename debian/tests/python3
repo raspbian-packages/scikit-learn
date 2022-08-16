@@ -1,6 +1,8 @@
 #!/bin/sh
 set -efux
 
+export JOBLIB_MULTIPROCESSING=4
+
 pys="$(py3versions -rv 2>/dev/null)"
 pkgbuild=${pkgbuild:-no}
 
