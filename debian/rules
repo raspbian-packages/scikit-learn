@@ -22,7 +22,7 @@ else
   JOBS := 1
 endif
 export JOBS := $(JOBS)
-export JOBLIB_MULTIPROCESSING := $(shell expr $(JOBS) / $(words $(PY3VERS)))
+export JOBLIB_MULTIPROCESSING=0
 
 # things in the doc building and tests try to access stuff in HOME (https://bugs.debian.org/915078)
 export HOME=$(CURDIR)/tmp
