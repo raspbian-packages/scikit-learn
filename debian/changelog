@@ -2,6 +2,7 @@ scikit-learn (1.1.2+dfsg-5) UNRELEASED; urgency=medium
 
   * Fix incorrect use of JOBLIB_MULTIPROCESSING, it is
     a boolean (Closes: #1017402)
+  * Add riscv64 to architectures where test suite results are ignored
 
  -- Graham Inggs <ginggs@debian.org>  Sun, 21 Aug 2022 09:05:35 +0000
 
