@@ -1,4 +1,4 @@
-scikit-learn (1.1.2+dfsg-6) UNRELEASED; urgency=medium
+scikit-learn (1.1.2+dfsg-6) unstable; urgency=medium
 
   * Team upload.
   * update debian patch relax_test_tolerance.patch to relax
@@ -6,7 +6,7 @@ scikit-learn (1.1.2+dfsg-6) UNRELEASED; urgency=medium
     neural_network. Required for ppc64el to pass with scipy 1.8 with
     pythran support. Closes: #1019384.
 
- -- Drew Parsons <dparsons@debian.org>  Sun, 11 Sep 2022 15:58:35 +0200
+ -- Drew Parsons <dparsons@debian.org>  Sun, 11 Sep 2022 16:05:34 +0200
 
 scikit-learn (1.1.2+dfsg-5) unstable; urgency=medium
 
