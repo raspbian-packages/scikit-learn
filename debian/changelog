@@ -1,3 +1,10 @@
+scikit-learn (1.1.2+dfsg-7) UNRELEASED; urgency=medium
+
+  * Align create_memmap_backed_data() by default to avoid a
+    bus error on armhf, thanks Seth Arnold
+
+ -- Graham Inggs <ginggs@debian.org>  Sat, 15 Oct 2022 15:43:59 +0000
+
 scikit-learn (1.1.2+dfsg-6) unstable; urgency=medium
 
   * Team upload.
