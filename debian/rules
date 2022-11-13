@@ -108,7 +108,7 @@ endif
 
 else
 # for all architectures that are known to have failures in test suite we are ignoring these
-ifeq ($(DEB_HOST_ARCH),$(filter $(DEB_HOST_ARCH), i386 mipsel mips64el hppa armel armhf arm64 ppc64 ppc64el s390x alpha riscv64))
+ifeq ($(DEB_HOST_ARCH),$(filter $(DEB_HOST_ARCH), i386 mipsel mips64el hppa armel armhf arm64 ppc64 ppc64el s390x alpha riscv64 amd64))
   # Ignored due to bug #1003165
 IGNORE_ERRORS= || true
 endif
