@@ -1,0 +1,57 @@
+Description: prevent dataset download during doc build. Guard with debian
+ specific environment variable to avoid breaking the functionality.
+Author: Mo Zhou <lumin@debian.org>
+Forward: not-necessary
+Index: scikit-learn/sklearn/datasets/_base.py
+===================================================================
+--- scikit-learn.orig/sklearn/datasets/_base.py
++++ scikit-learn/sklearn/datasets/_base.py
+@@ -1506,6 +1506,8 @@ def _fetch_remote(remote, dirname=None):
+     file_path: str
+         Full path of the created file.
+     """
++    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++        raise IOError('Debian Policy Section 4.9 prohibits network access during build')
+ 
+     file_path = remote.filename if dirname is None else join(dirname, remote.filename)
+     urlretrieve(remote.url, file_path)
+Index: scikit-learn/sklearn/datasets/_openml.py
+===================================================================
+--- scikit-learn.orig/sklearn/datasets/_openml.py
++++ scikit-learn/sklearn/datasets/_openml.py
+@@ -722,6 +722,9 @@ def fetch_openml(
+         in 'target' are represented as NaN's (numerical target) or None
+         (categorical target).
+     """
++    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++        raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
++
+     if cache is False:
+         # no caching will be applied
+         data_home = None
+Index: scikit-learn/examples/applications/plot_stock_market.py
+===================================================================
+--- scikit-learn.orig/examples/applications/plot_stock_market.py
++++ scikit-learn/examples/applications/plot_stock_market.py
+@@ -96,6 +96,8 @@ for symbol in symbols:
+         "https://raw.githubusercontent.com/scikit-learn/examples-data/"
+         "master/financial-data/{}.csv"
+     )
++    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++        raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
+     quotes.append(pd.read_csv(url.format(symbol)))
+ 
+ close_prices = np.vstack([q["close"] for q in quotes])
+Index: scikit-learn/examples/applications/plot_out_of_core_classification.py
+===================================================================
+--- scikit-learn.orig/examples/applications/plot_out_of_core_classification.py
++++ scikit-learn/examples/applications/plot_out_of_core_classification.py
+@@ -165,6 +165,8 @@ def stream_reuters_documents(data_path=N
+                 sys.stdout.write("\rdownloaded %s / %s" % (current_sz_mb, total_sz_mb))
+ 
+         archive_path = os.path.join(data_path, ARCHIVE_FILENAME)
++        if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++            raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
+         urlretrieve(DOWNLOAD_URL, filename=archive_path, reporthook=progress)
+         if _not_in_sphinx():
+             sys.stdout.write("\r")
