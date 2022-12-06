@@ -8,3 +8,4 @@ git-revision-cmd.patch
 no-buttons-js.patch
 Use-local-MathJax.patch
 align-create_memmap_backed_data.patch
+python-3.11.patch
