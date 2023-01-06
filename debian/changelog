@@ -1,3 +1,10 @@
+scikit-learn (1.1.2+dfsg-92) unstable; urgency=medium
+
+  * Team upload.
+  * Drop python-matplotlib-doc dependency (Closes: #1027588)
+
+ -- Jochen Sprickerhof <jspricke@debian.org>  Fri, 06 Jan 2023 19:41:36 +0100
+
 scikit-learn (1.1.2+dfsg-91) unstable; urgency=medium
 
   * Team upload.
