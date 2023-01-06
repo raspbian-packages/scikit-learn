@@ -636,7 +636,7 @@ def _create_aligned_memmap_backed_arrays(data, mmap_mode, folder):
     )
 
 
-def create_memmap_backed_data(data, mmap_mode="r", return_folder=False, aligned=False):
+def create_memmap_backed_data(data, mmap_mode="r", return_folder=False, aligned=True):
     """
     Parameters
     ----------
