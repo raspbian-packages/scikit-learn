@@ -36,7 +36,6 @@ Build-Depends-Indep: python3-sphinx,
                      python3-doc,
                      python-numpy-doc,
                      python-scipy-doc,
-                     python-matplotlib-doc,
                      python-pandas-doc
 Standards-Version: 4.6.1
 Vcs-Browser: https://salsa.debian.org/science-team/scikit-learn
