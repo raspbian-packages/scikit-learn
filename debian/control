@@ -34,7 +34,6 @@ Build-Depends-Indep: python3-sphinx,
                      librsvg2-bin,
                      graphviz,
                      python3-doc,
-                     python-numpy-doc,
                      python-scipy-doc,
                      python-pandas-doc
 Standards-Version: 4.6.1

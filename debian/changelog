@@ -1,3 +1,11 @@
+scikit-learn (1.1.2+dfsg-93) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * Drop obsolete python-numpy-doc build dependency.
+    (closes: #1029249)
+
+ -- Bas Couwenberg <sebastic@debian.org>  Sun, 22 Jan 2023 07:26:41 +0100
+
 scikit-learn (1.1.2+dfsg-92) unstable; urgency=medium
 
   * Team upload.
