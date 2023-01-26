@@ -7,6 +7,7 @@ scikit-learn (1.2.1+dfsg-1) UNRELEASED; urgency=medium
 
   [ Andreas Tille ]
   * Standards-Version: 4.6.2 (routine-update)
+  * Remove unused license definitions for Apache-2.0, Expat.
 
  -- Bas Couwenberg <sebastic@debian.org>  Sun, 22 Jan 2023 07:26:41 +0100
 
