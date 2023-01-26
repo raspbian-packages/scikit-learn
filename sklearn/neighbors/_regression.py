@@ -14,9 +14,10 @@ import warnings
 
 import numpy as np
 
-from ._base import _get_weights, _check_weights
+from ._base import _get_weights
 from ._base import NeighborsBase, KNeighborsMixin, RadiusNeighborsMixin
 from ..base import RegressorMixin
+from ..utils._param_validation import StrOptions
 
 
 class KNeighborsRegressor(KNeighborsMixin, RegressorMixin, NeighborsBase):
@@ -34,7 +35,7 @@ class KNeighborsRegressor(KNeighborsMixin, RegressorMixin, NeighborsBase):
     n_neighbors : int, default=5
         Number of neighbors to use by default for :meth:`kneighbors` queries.
 
-    weights : {'uniform', 'distance'} or callable, default='uniform'
+    weights : {'uniform', 'distance'}, callable or None, default='uniform'
         Weight function used in prediction.  Possible values:
 
         - 'uniform' : uniform weights.  All points in each neighborhood
@@ -160,6 +161,12 @@ class KNeighborsRegressor(KNeighborsMixin, RegressorMixin, NeighborsBase):
     [0.5]
     """
 
+    _parameter_constraints: dict = {
+        **NeighborsBase._parameter_constraints,
+        "weights": [StrOptions({"uniform", "distance"}), callable, None],
+    }
+    _parameter_constraints.pop("radius")
+
     def __init__(
         self,
         n_neighbors=5,
@@ -205,7 +212,7 @@ class KNeighborsRegressor(KNeighborsMixin, RegressorMixin, NeighborsBase):
         self : KNeighborsRegressor
             The fitted k-nearest neighbors regressor.
         """
-        self.weights = _check_weights(self.weights)
+        self._validate_params()
 
         return self._fit(X, y)
 
@@ -214,7 +221,7 @@ class KNeighborsRegressor(KNeighborsMixin, RegressorMixin, NeighborsBase):
 
         Parameters
         ----------
-        X : array-like of shape (n_queries, n_features), \
+        X : {array-like, sparse matrix} of shape (n_queries, n_features), \
                 or (n_queries, n_indexed) if metric == 'precomputed'
             Test samples.
 
@@ -269,7 +276,7 @@ class RadiusNeighborsRegressor(RadiusNeighborsMixin, RegressorMixin, NeighborsBa
         Range of parameter space to use by default for :meth:`radius_neighbors`
         queries.
 
-    weights : {'uniform', 'distance'} or callable, default='uniform'
+    weights : {'uniform', 'distance'}, callable or None, default='uniform'
         Weight function used in prediction.  Possible values:
 
         - 'uniform' : uniform weights.  All points in each neighborhood
@@ -362,7 +369,7 @@ class RadiusNeighborsRegressor(RadiusNeighborsMixin, RegressorMixin, NeighborsBa
 
     See Also
     --------
-    NearestNeighbors : Regression based on nearest neighbors.
+    NearestNeighbors : Unsupervised learner for implementing neighbor searches.
     KNeighborsRegressor : Regression based on k-nearest neighbors.
     KNeighborsClassifier : Classifier based on the k-nearest neighbors.
     RadiusNeighborsClassifier : Classifier based on neighbors within a given radius.
@@ -385,6 +392,12 @@ class RadiusNeighborsRegressor(RadiusNeighborsMixin, RegressorMixin, NeighborsBa
     >>> print(neigh.predict([[1.5]]))
     [0.5]
     """
+
+    _parameter_constraints: dict = {
+        **NeighborsBase._parameter_constraints,
+        "weights": [StrOptions({"uniform", "distance"}), callable, None],
+    }
+    _parameter_constraints.pop("n_neighbors")
 
     def __init__(
         self,
@@ -427,8 +440,7 @@ class RadiusNeighborsRegressor(RadiusNeighborsMixin, RegressorMixin, NeighborsBa
         self : RadiusNeighborsRegressor
             The fitted radius neighbors regressor.
         """
-        self.weights = _check_weights(self.weights)
-
+        self._validate_params()
         return self._fit(X, y)
 
     def predict(self, X):
@@ -436,7 +448,7 @@ class RadiusNeighborsRegressor(RadiusNeighborsMixin, RegressorMixin, NeighborsBa
 
         Parameters
         ----------
-        X : array-like of shape (n_queries, n_features), \
+        X : {array-like, sparse matrix} of shape (n_queries, n_features), \
                 or (n_queries, n_indexed) if metric == 'precomputed'
             Test samples.
 

@@ -3,17 +3,18 @@ Testing for Support Vector Machine module (sklearn.svm)
 
 TODO: remove hard coded numerical results when possible
 """
+import warnings
+import re
+
 import numpy as np
 import pytest
-import re
 
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 from numpy.testing import assert_almost_equal
 from numpy.testing import assert_allclose
 from scipy import sparse
 from sklearn import svm, linear_model, datasets, metrics, base
-from sklearn.svm import LinearSVC
-from sklearn.svm import LinearSVR
+from sklearn.svm import LinearSVC, OneClassSVM, SVR, NuSVR, LinearSVR
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import make_classification, make_blobs
 from sklearn.metrics import f1_score
@@ -345,22 +346,6 @@ def test_oneclass_score_samples():
     )
 
 
-# TODO: Remove in v1.2
-def test_oneclass_fit_params_is_deprecated():
-    clf = svm.OneClassSVM()
-    params = {
-        "unused_param": "",
-        "extra_param": None,
-    }
-    msg = (
-        "Passing additional keyword parameters has no effect and is deprecated "
-        "in 1.0. An error will be raised from 1.2 and beyond. The ignored "
-        f"keyword parameter(s) are: {params.keys()}."
-    )
-    with pytest.warns(FutureWarning, match=re.escape(msg)):
-        clf.fit(X, **params)
-
-
 def test_tweak_params():
     # Make sure some tweaking of parameters works.
     # We change clf.dual_coef_ at run time and expect .predict() to change
@@ -453,9 +438,6 @@ def test_decision_function_shape(SVM):
     clf = SVM(kernel="linear", decision_function_shape="ovo").fit(X_train, y_train)
     dec = clf.decision_function(X_train)
     assert dec.shape == (len(X_train), 10)
-
-    with pytest.raises(ValueError, match="must be either 'ovr' or 'ovo'"):
-        SVM(decision_function_shape="bad").fit(X_train, y_train)
 
 
 def test_svr_predict():
@@ -592,7 +574,8 @@ def test_negative_sample_weights_mask_all_samples(Estimator, err_msg, sample_wei
     [
         (
             svm.SVC,
-            "Invalid input - all samples with positive weights have the same label",
+            "Invalid input - all samples with positive weights belong to the same"
+            " class",
         ),
         (svm.NuSVC, "specified nu is infeasible"),
     ],
@@ -684,19 +667,10 @@ def test_auto_weight():
 
 
 def test_bad_input():
-    # Test that it gives proper exception on deficient input
-    # impossible value of C
-    with pytest.raises(ValueError):
-        svm.SVC(C=-1).fit(X, Y)
-
-    # impossible value of nu
-    clf = svm.NuSVC(nu=0.0)
-    with pytest.raises(ValueError):
-        clf.fit(X, Y)
-
+    # Test dimensions for labels
     Y2 = Y[:-1]  # wrong dimensions for labels
     with pytest.raises(ValueError):
-        clf.fit(X, Y2)
+        svm.SVC().fit(X, Y2)
 
     # Test with arrays that are non-contiguous.
     for clf in (svm.SVC(), svm.LinearSVC(random_state=0)):
@@ -742,60 +716,6 @@ def test_svc_nonfinite_params():
     msg = "The dual coefficients or intercepts are not finite"
     with pytest.raises(ValueError, match=msg):
         clf.fit(X, y)
-
-
-@pytest.mark.parametrize(
-    "Estimator, data",
-    [
-        (svm.SVC, datasets.load_iris(return_X_y=True)),
-        (svm.NuSVC, datasets.load_iris(return_X_y=True)),
-        (svm.SVR, datasets.load_diabetes(return_X_y=True)),
-        (svm.NuSVR, datasets.load_diabetes(return_X_y=True)),
-        (svm.OneClassSVM, datasets.load_iris(return_X_y=True)),
-    ],
-)
-@pytest.mark.parametrize(
-    "gamma, err_msg",
-    [
-        (
-            "auto_deprecated",
-            "When 'gamma' is a string, it should be either 'scale' or 'auto'",
-        ),
-        (
-            -1,
-            "gamma value must be > 0; -1 is invalid. Use"
-            " a positive number or use 'auto' to set gamma to a"
-            " value of 1 / n_features.",
-        ),
-        (
-            0.0,
-            "gamma value must be > 0; 0.0 is invalid. Use"
-            " a positive number or use 'auto' to set gamma to a"
-            " value of 1 / n_features.",
-        ),
-        (
-            np.array([1.0, 4.0]),
-            "The gamma value should be set to 'scale',"
-            f" 'auto' or a positive float value. {np.array([1.0, 4.0])!r}"
-            " is not a valid option",
-        ),
-        (
-            [],
-            "The gamma value should be set to 'scale', 'auto' or a positive"
-            f" float value. {[]} is not a valid option",
-        ),
-        (
-            {},
-            "The gamma value should be set to 'scale', 'auto' or a positive"
-            " float value. {} is not a valid option",
-        ),
-    ],
-)
-def test_svm_gamma_error(Estimator, data, gamma, err_msg):
-    X, y = data
-    est = Estimator(gamma=gamma)
-    with pytest.raises(ValueError, match=(re.escape(err_msg))):
-        est.fit(X, y)
 
 
 def test_unicode_kernel():
@@ -850,21 +770,6 @@ def test_linearsvc_parameters(loss, penalty, dual):
             clf.fit(X, y)
     else:
         clf.fit(X, y)
-
-
-def test_linear_svx_uppercase_loss_penality_raises_error():
-    # Check if Upper case notation raises error at _fit_liblinear
-    # which is called by fit
-
-    X, y = [[0.0], [1.0]], [0, 1]
-
-    msg = "loss='SQuared_hinge' is not supported"
-    with pytest.raises(ValueError, match=msg):
-        svm.LinearSVC(loss="SQuared_hinge").fit(X, y)
-
-    msg = "The combination of penalty='L2' and loss='squared_hinge' is not supported"
-    with pytest.raises(ValueError, match=msg):
-        svm.LinearSVC(penalty="L2").fit(X, y)
 
 
 def test_linearsvc():
@@ -1178,22 +1083,6 @@ def test_svr_coef_sign():
         )
 
 
-def test_linear_svc_intercept_scaling():
-    # Test that the right error message is thrown when intercept_scaling <= 0
-
-    for i in [-1, 0]:
-        lsvc = svm.LinearSVC(intercept_scaling=i)
-
-        msg = (
-            "Intercept scaling is %r but needs to be greater than 0."
-            " To disable fitting an intercept,"
-            " set fit_intercept=False."
-            % lsvc.intercept_scaling
-        )
-        with pytest.raises(ValueError, match=msg):
-            lsvc.fit(X, Y)
-
-
 def test_lsvc_intercept_scaling_zero():
     # Test that intercept_scaling is ignored when fit_intercept is False
 
@@ -1390,7 +1279,7 @@ def test_linearsvm_liblinear_sample_weight(SVM, params):
             assert_allclose(X_est_no_weight, X_est_with_weight)
 
 
-@pytest.mark.parametrize("Klass", (svm.OneClassSVM, svm.SVR, svm.NuSVR))
+@pytest.mark.parametrize("Klass", (OneClassSVM, SVR, NuSVR))
 def test_n_support(Klass):
     # Make n_support is correct for oneclass and SVR (used to be
     # non-initialized)
@@ -1485,3 +1374,18 @@ def test_n_iter_libsvm(estimator, expected_n_iter_type, dataset):
     if estimator in [svm.SVC, svm.NuSVC]:
         n_classes = len(np.unique(y))
         assert n_iter.shape == (n_classes * (n_classes - 1) // 2,)
+
+
+# TODO(1.4): Remove
+@pytest.mark.parametrize("Klass", [SVR, NuSVR, OneClassSVM])
+def test_svm_class_weights_deprecation(Klass):
+    clf = Klass()
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", FutureWarning)
+        clf.fit(X, Y)
+    msg = (
+        "Attribute `class_weight_` was deprecated in version 1.2 and will be removed"
+        " in 1.4"
+    )
+    with pytest.warns(FutureWarning, match=re.escape(msg)):
+        getattr(clf, "class_weight_")

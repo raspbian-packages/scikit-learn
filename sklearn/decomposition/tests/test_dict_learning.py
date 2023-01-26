@@ -5,11 +5,14 @@ import numpy as np
 from functools import partial
 import itertools
 
+import sklearn
+
 from sklearn.base import clone
 
 from sklearn.exceptions import ConvergenceWarning
 
 from sklearn.utils import check_array
+from sklearn.utils.parallel import Parallel
 
 from sklearn.utils._testing import assert_allclose
 from sklearn.utils._testing import assert_array_almost_equal
@@ -260,13 +263,6 @@ def test_dict_learning_nonzero_coefs():
     assert len(np.flatnonzero(code)) == 3
 
 
-def test_dict_learning_unknown_fit_algorithm():
-    n_components = 5
-    dico = DictionaryLearning(n_components, fit_algorithm="<unknown>")
-    with pytest.raises(ValueError):
-        dico.fit(X)
-
-
 def test_dict_learning_split():
     n_components = 5
     dico = DictionaryLearning(
@@ -290,6 +286,7 @@ def test_dict_learning_online_shapes():
         n_components=n_components,
         batch_size=4,
         max_iter=10,
+        method="cd",
         random_state=rng,
         return_code=True,
     )
@@ -302,6 +299,7 @@ def test_dict_learning_online_shapes():
         n_components=n_components,
         batch_size=4,
         max_iter=10,
+        method="cd",
         random_state=rng,
         return_code=False,
     )
@@ -331,6 +329,7 @@ def test_minibatch_dictionary_learning_positivity(
     dico = MiniBatchDictionaryLearning(
         n_components,
         batch_size=4,
+        max_iter=10,
         transform_algorithm=transform_algorithm,
         random_state=0,
         positive_code=positive_code,
@@ -356,6 +355,7 @@ def test_minibatch_dictionary_learning_lars(positive_dict):
     dico = MiniBatchDictionaryLearning(
         n_components,
         batch_size=4,
+        max_iter=10,
         transform_algorithm="lars",
         random_state=0,
         positive_dict=positive_dict,
@@ -664,26 +664,6 @@ def test_sparse_coder_n_features_in():
     assert sc.n_features_in_ == d.shape[1]
 
 
-# default value of batch_size changed. FIXME: remove in 1.3
-@pytest.mark.filterwarnings("ignore:The default value of batch_size will change")
-@pytest.mark.parametrize(
-    "param, match",
-    [
-        ({"n_components": 0}, "n_components == 0, must be >= 1"),
-        ({"fit_algorithm": "wrong"}, "Coding method 'wrong' not supported"),
-        ({"batch_size": 0}, "batch_size == 0, must be >= 1"),
-        ({"n_iter": -1}, "n_iter == -1, must be >= 0"),
-        ({"max_iter": -1}, "max_iter == -1, must be >= 0"),
-        ({"max_no_improvement": -1}, "max_no_improvement == -1, must be >= 0"),
-    ],
-)
-def test_minibatch_dict_learning_wrong_params(param, match):
-    # Check that error are raised with clear error message when wrong values
-    # are passed for the parameters of MiniBatchDictionaryLearning
-    with pytest.raises(ValueError, match=match):
-        MiniBatchDictionaryLearning(**param).fit(X)
-
-
 @pytest.mark.parametrize("attr", ["iter_offset_", "inner_stats_", "random_state_"])
 def test_minibatch_dict_learning_deprecated_attributes(attr):
     # check that we raise a deprecation warning when accessing the deprecated
@@ -717,7 +697,7 @@ def test_minibatch_dict_learning_n_iter_deprecated():
     # check the deprecation warning of n_iter
     # FIXME: remove in 1.3
     depr_msg = (
-        "'n_iter' is deprecated in version 1.1 and will be removed in version 1.3"
+        "'n_iter' is deprecated in version 1.1 and will be removed in version 1.4"
     )
     est = MiniBatchDictionaryLearning(
         n_components=2, batch_size=4, n_iter=5, random_state=0
@@ -783,15 +763,6 @@ def test_update_dict():
     _update_dict(newd_online, X, code, A, B)
 
     assert_allclose(newd_batch, newd_online)
-
-
-# default value of batch_size changed. FIXME: remove in 1.3
-@pytest.mark.filterwarnings("ignore:The default value of batch_size will change")
-@pytest.mark.parametrize("Estimator", [DictionaryLearning, MiniBatchDictionaryLearning])
-def test_warning_default_transform_alpha(Estimator):
-    dl = Estimator(alpha=0.1)
-    with pytest.warns(FutureWarning, match="default transform_alpha"):
-        dl.fit_transform(X)
 
 
 # FIXME: remove in 1.3
@@ -1050,7 +1021,11 @@ def test_dict_learning_online_numerical_consistency(method):
 
 @pytest.mark.parametrize(
     "estimator",
-    [SparseCoder(X.T), DictionaryLearning(), MiniBatchDictionaryLearning(batch_size=4)],
+    [
+        SparseCoder(X.T),
+        DictionaryLearning(),
+        MiniBatchDictionaryLearning(batch_size=4, max_iter=10),
+    ],
     ids=lambda x: x.__class__.__name__,
 )
 def test_get_feature_names_out(estimator):
@@ -1064,3 +1039,37 @@ def test_get_feature_names_out(estimator):
         feature_names_out,
         [f"{estimator_name}{i}" for i in range(n_components)],
     )
+
+
+def test_cd_work_on_joblib_memmapped_data(monkeypatch):
+    monkeypatch.setattr(
+        sklearn.decomposition._dict_learning,
+        "Parallel",
+        partial(Parallel, max_nbytes=100),
+    )
+
+    rng = np.random.RandomState(0)
+    X_train = rng.randn(10, 10)
+
+    dict_learner = DictionaryLearning(
+        n_components=5,
+        random_state=0,
+        n_jobs=2,
+        fit_algorithm="cd",
+        max_iter=50,
+        verbose=True,
+    )
+
+    # This must run and complete without error.
+    dict_learner.fit(X_train)
+
+
+# TODO(1.4) remove
+def test_minibatch_dictionary_learning_warns_and_ignore_n_iter():
+    """Check that we always raise a warning when `n_iter` is set even if it is
+    ignored if `max_iter` is set.
+    """
+    warn_msg = "'n_iter' is deprecated in version 1.1"
+    with pytest.warns(FutureWarning, match=warn_msg):
+        model = MiniBatchDictionaryLearning(batch_size=256, n_iter=2, max_iter=2).fit(X)
+    assert model.n_iter_ == 2
