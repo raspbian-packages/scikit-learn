@@ -19,7 +19,7 @@ Last-Update: 2013-11-24
 
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -160,7 +160,7 @@ html_theme = "scikit-learn-modern"
+@@ -171,7 +171,7 @@ html_theme = "scikit-learn-modern"
  # further.  For a list of options available for each theme, see the
  # documentation.
  html_theme_options = {

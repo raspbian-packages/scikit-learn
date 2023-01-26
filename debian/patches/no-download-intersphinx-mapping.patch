@@ -9,7 +9,7 @@ Subject: No-downloading intersphinx mapping
 
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -305,13 +305,11 @@ trim_doctests_flags = True
+@@ -324,14 +324,11 @@ trim_doctests_flags = True
  
  # intersphinx configuration
  intersphinx_mapping = {
@@ -20,6 +20,7 @@ Subject: No-downloading intersphinx mapping
 -    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 -    "joblib": ("https://joblib.readthedocs.io/en/latest/", None),
 -    "seaborn": ("https://seaborn.pydata.org/", None),
+-    "skops": ("https://skops.readthedocs.io/en/stable/", None),
 +    "python": ("https://docs.python.org/{.major}".format(sys.version_info), '/usr/share/doc/python3/html/objects.inv'),
 +    "numpy": ("https://numpy.org/doc/stable", '/usr/share/doc/python-numpy-doc/html/objects.inv'),
 +    "scipy": ("https://docs.scipy.org/doc/scipy/", '/usr/share/doc/python-scipy-doc/html/objects.inv'),
