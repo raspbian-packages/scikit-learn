@@ -1,0 +1,16 @@
+Author: Andreas Tille <tille@debian.org>
+Last-Update: Thu, 26 Jan 2023 17:47:28 +0100
+Description: Provide all method to clean target
+
+--- a/setup.py
++++ b/setup.py
+@@ -130,6 +130,9 @@ class CleanCommand(Command):
+     def finalize_options(self):
+         pass
+ 
++    def all(self):
++        run()
++
+     def run(self):
+         # Remove c files if we are not within a sdist package
+         cwd = os.path.abspath(os.path.dirname(__file__))
