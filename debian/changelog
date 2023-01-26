@@ -1,4 +1,4 @@
-scikit-learn (1.1.2+dfsg-93) UNRELEASED; urgency=medium
+scikit-learn (1.2.1+dfsg-1) UNRELEASED; urgency=medium
 
   * Team upload.
   * Drop obsolete python-numpy-doc build dependency.
