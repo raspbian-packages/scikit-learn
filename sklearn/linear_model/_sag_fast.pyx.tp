@@ -38,7 +38,7 @@ SAG and SAGA implementation
 WARNING: Do not edit .pyx file directly, it is generated from .pyx.tp
 """
 
-cimport numpy as np
+cimport numpy as cnp
 import numpy as np
 from libc.math cimport fabs, exp, log
 from libc.time cimport time, time_t
@@ -50,7 +50,7 @@ from ..utils._seq_dataset cimport SequentialDataset32, SequentialDataset64
 
 from libc.stdio cimport printf
 
-np.import_array()
+cnp.import_array()
 
 
 {{for name_suffix, c_type, np_type in dtypes}}
@@ -212,8 +212,8 @@ cdef inline {{c_type}} _soft_thresholding{{name_suffix}}({{c_type}} x, {{c_type}
 {{for name_suffix, c_type, np_type in dtypes}}
 
 def sag{{name_suffix}}(SequentialDataset{{name_suffix}} dataset,
-        np.ndarray[{{c_type}}, ndim=2, mode='c'] weights_array,
-        np.ndarray[{{c_type}}, ndim=1, mode='c'] intercept_array,
+        cnp.ndarray[{{c_type}}, ndim=2, mode='c'] weights_array,
+        cnp.ndarray[{{c_type}}, ndim=1, mode='c'] intercept_array,
         int n_samples,
         int n_features,
         int n_classes,
@@ -223,18 +223,41 @@ def sag{{name_suffix}}(SequentialDataset{{name_suffix}} dataset,
         double step_size,
         double alpha,
         double beta,
-        np.ndarray[{{c_type}}, ndim=2, mode='c'] sum_gradient_init,
-        np.ndarray[{{c_type}}, ndim=2, mode='c'] gradient_memory_init,
-        np.ndarray[bint, ndim=1, mode='c'] seen_init,
+        cnp.ndarray[{{c_type}}, ndim=2, mode='c'] sum_gradient_init,
+        cnp.ndarray[{{c_type}}, ndim=2, mode='c'] gradient_memory_init,
+        cnp.ndarray[bint, ndim=1, mode='c'] seen_init,
         int num_seen,
         bint fit_intercept,
-        np.ndarray[{{c_type}}, ndim=1, mode='c'] intercept_sum_gradient_init,
+        cnp.ndarray[{{c_type}}, ndim=1, mode='c'] intercept_sum_gradient_init,
         double intercept_decay,
         bint saga,
         bint verbose):
     """Stochastic Average Gradient (SAG) and SAGA solvers.
 
     Used in Ridge and LogisticRegression.
+
+    Some implementation details:
+
+    - Just-in-time (JIT) update: In SAG(A), the average-gradient update is
+    collinear with the drawn sample X_i. Therefore, if the data is sparse, the
+    random sample X_i will change the average gradient only on features j where
+    X_ij != 0. In some cases, the average gradient on feature j might change
+    only after k random samples with no change. In these cases, instead of
+    applying k times the same gradient step on feature j, we apply the gradient
+    step only once, scaled by k. This is called the "just-in-time update", and
+    it is performed in `lagged_update{{name_suffix}}`. This function also
+    applies the proximal operator after the gradient step (if L1 regularization
+    is used in SAGA).
+
+    - Weight scale: In SAG(A), the weights are scaled down at each iteration
+    due to the L2 regularization. To avoid updating all the weights at each
+    iteration, the weight scale is factored out in a separate variable `wscale`
+    which is only used in the JIT update. When this variable is too small, it
+    is reset for numerical stability using the function
+    `scale_weights{{name_suffix}}`. This reset requires applying all remaining
+    JIT updates. This reset is also performed every `n_samples` iterations
+    before each convergence check, so when the algorithm stops, we are sure
+    that there is no remaining JIT updates.
 
     Reference
     ---------
@@ -302,25 +325,25 @@ def sag{{name_suffix}}(SequentialDataset{{name_suffix}} dataset,
     cdef {{c_type}}* gradient_memory = <{{c_type}}*> gradient_memory_init.data
 
     # the cumulative sums needed for JIT params
-    cdef np.ndarray[{{c_type}}, ndim=1] cumulative_sums_array = \
+    cdef cnp.ndarray[{{c_type}}, ndim=1] cumulative_sums_array = \
         np.empty(n_samples, dtype={{np_type}}, order="c")
     cdef {{c_type}}* cumulative_sums = <{{c_type}}*> cumulative_sums_array.data
 
     # the index for the last time this feature was updated
-    cdef np.ndarray[int, ndim=1] feature_hist_array = \
+    cdef cnp.ndarray[int, ndim=1] feature_hist_array = \
         np.zeros(n_features, dtype=np.int32, order="c")
     cdef int* feature_hist = <int*> feature_hist_array.data
 
     # the previous weights to use to compute stopping criteria
-    cdef np.ndarray[{{c_type}}, ndim=2] previous_weights_array = \
+    cdef cnp.ndarray[{{c_type}}, ndim=2] previous_weights_array = \
         np.zeros((n_features, n_classes), dtype={{np_type}}, order="c")
     cdef {{c_type}}* previous_weights = <{{c_type}}*> previous_weights_array.data
 
-    cdef np.ndarray[{{c_type}}, ndim=1] prediction_array = \
+    cdef cnp.ndarray[{{c_type}}, ndim=1] prediction_array = \
         np.zeros(n_classes, dtype={{np_type}}, order="c")
     cdef {{c_type}}* prediction = <{{c_type}}*> prediction_array.data
 
-    cdef np.ndarray[{{c_type}}, ndim=1] gradient_array = \
+    cdef cnp.ndarray[{{c_type}}, ndim=1] gradient_array = \
         np.zeros(n_classes, dtype={{np_type}}, order="c")
     cdef {{c_type}}* gradient = <{{c_type}}*> gradient_array.data
 
@@ -340,7 +363,7 @@ def sag{{name_suffix}}(SequentialDataset{{name_suffix}} dataset,
     cumulative_sums[0] = 0.0
 
     # the multipliative scale needed for JIT params
-    cdef np.ndarray[{{c_type}}, ndim=1] cumulative_sums_prox_array
+    cdef cnp.ndarray[{{c_type}}, ndim=1] cumulative_sums_prox_array
     cdef {{c_type}}* cumulative_sums_prox
 
     cdef bint prox = beta > 0 and saga
@@ -387,7 +410,7 @@ def sag{{name_suffix}}(SequentialDataset{{name_suffix}} dataset,
                     num_seen += 1
                     seen[sample_ind] = 1
 
-                # make the weight updates
+                # make the weight updates (just-in-time gradient step, and prox operator)
                 if sample_itr > 0:
                    status = lagged_update{{name_suffix}}(weights, wscale, xnnz,
                                                   n_samples, n_classes,
@@ -427,6 +450,11 @@ def sag{{name_suffix}}(SequentialDataset{{name_suffix}} dataset,
                             val * (gradient[class_ind] -
                                    gradient_memory[s_idx + class_ind])
                         if saga:
+                            # Note that this is not the main gradient step,
+                            # which is performed just-in-time in lagged_update.
+                            # This part is done outside the JIT update
+                            # as it does not depend on the average gradient.
+                            # The prox operator is applied after the JIT update
                             weights[f_idx + class_ind] -= \
                                 (gradient_correction * step_size
                                  * (1 - 1. / num_seen) / wscale)
@@ -474,6 +502,7 @@ def sag{{name_suffix}}(SequentialDataset{{name_suffix}} dataset,
                         (cumulative_sums_prox[sample_itr - 1] +
                              step_size * beta / wscale)
                 # If wscale gets too small, we need to reset the scale.
+                # This also resets the just-in-time update system.
                 if wscale < 1e-9:
                     if verbose:
                         with gil:
@@ -492,8 +521,10 @@ def sag{{name_suffix}}(SequentialDataset{{name_suffix}} dataset,
             if status == -1:
                 break
 
-            # we scale the weights every n_samples iterations and reset the
+            # We scale the weights every n_samples iterations and reset the
             # just-in-time update system for numerical stability.
+            # Because this reset is done before every convergence check, we are
+            # sure there is no remaining lagged update when the algorithm stops.
             status = scale_weights{{name_suffix}}(weights, &wscale, n_features,
                                            n_samples,
                                            n_classes, n_samples - 1,
@@ -504,6 +535,7 @@ def sag{{name_suffix}}(SequentialDataset{{name_suffix}} dataset,
 
             if status == -1:
                 break
+
             # check if the stopping criteria is reached
             max_change = 0.0
             max_weight = 0.0
@@ -554,7 +586,10 @@ cdef int scale_weights{{name_suffix}}({{c_type}}* weights, {{c_type}}* wscale,
                                bint prox,
                                {{c_type}}* sum_gradient,
                                int n_iter) nogil:
-    """Scale the weights with wscale for numerical stability.
+    """Scale the weights and reset wscale to 1.0 for numerical stability, and
+    reset the just-in-time (JIT) update system.
+
+    See `sag{{name_suffix}}`'s docstring about the JIT update system.
 
     wscale = (1 - step_size * alpha) ** (n_iter * n_samples + sample_itr)
     can become very small, so we reset it every n_samples iterations to 1.0 for
@@ -595,6 +630,9 @@ cdef int lagged_update{{name_suffix}}({{c_type}}* weights, {{c_type}} wscale, in
                                bint reset,
                                int n_iter) nogil:
     """Hard perform the JIT updates for non-zero features of present sample.
+
+    See `sag{{name_suffix}}`'s docstring about the JIT update system.
+
     The updates that awaits are kept in memory using cumulative_sums,
     cumulative_sums_prox, wscale and feature_hist. See original SAGA paper
     (Defazio et al. 2014) for details. If reset=True, we also reset wscale to
@@ -727,8 +765,8 @@ cdef void predict_sample{{name_suffix}}({{c_type}}* x_data_ptr, int* x_ind_ptr, 
 
 def _multinomial_grad_loss_all_samples(
         SequentialDataset64 dataset,
-        np.ndarray[double, ndim=2, mode='c'] weights_array,
-        np.ndarray[double, ndim=1, mode='c'] intercept_array,
+        cnp.ndarray[double, ndim=2, mode='c'] weights_array,
+        cnp.ndarray[double, ndim=1, mode='c'] intercept_array,
         int n_samples, int n_features, int n_classes):
     """Compute multinomial gradient and loss across all samples.
 
@@ -750,15 +788,15 @@ def _multinomial_grad_loss_all_samples(
 
     cdef MultinomialLogLoss64 multiloss = MultinomialLogLoss64()
 
-    cdef np.ndarray[double, ndim=2] sum_gradient_array = \
+    cdef cnp.ndarray[double, ndim=2] sum_gradient_array = \
         np.zeros((n_features, n_classes), dtype=np.double, order="c")
     cdef double* sum_gradient = <double*> sum_gradient_array.data
 
-    cdef np.ndarray[double, ndim=1] prediction_array = \
+    cdef cnp.ndarray[double, ndim=1] prediction_array = \
         np.zeros(n_classes, dtype=np.double, order="c")
     cdef double* prediction = <double*> prediction_array.data
 
-    cdef np.ndarray[double, ndim=1] gradient_array = \
+    cdef cnp.ndarray[double, ndim=1] gradient_array = \
         np.zeros(n_classes, dtype=np.double, order="c")
     cdef double* gradient = <double*> gradient_array.data
 
