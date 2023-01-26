@@ -1,8 +1,12 @@
 scikit-learn (1.2.1+dfsg-1) UNRELEASED; urgency=medium
 
+  [ Bas Couwenberg ]
   * Team upload.
   * Drop obsolete python-numpy-doc build dependency.
     (closes: #1029249)
+
+  [ Andreas Tille ]
+  * Standards-Version: 4.6.2 (routine-update)
 
  -- Bas Couwenberg <sebastic@debian.org>  Sun, 22 Jan 2023 07:26:41 +0100
 
