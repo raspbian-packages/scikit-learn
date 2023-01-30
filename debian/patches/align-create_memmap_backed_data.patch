@@ -1,0 +1,18 @@
+Description: align create_memmap_backed_data() by default
+ This avoids a bus error on armhf and should avoid
+ slow downs on other architectures, thanks Seth Arnold
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/scikit-learn/+bug/1991621
+Author: Graham Inggs <ginggs@debian.org>
+Last-Update: 2022-10-08
+
+--- a/sklearn/utils/_testing.py
++++ b/sklearn/utils/_testing.py
+@@ -504,7 +504,7 @@ def _create_aligned_memmap_backed_arrays
+     )
+ 
+ 
+-def create_memmap_backed_data(data, mmap_mode="r", return_folder=False, aligned=False):
++def create_memmap_backed_data(data, mmap_mode="r", return_folder=False, aligned=True):
+     """
+     Parameters
+     ----------
