@@ -1,3 +1,10 @@
+scikit-learn (1.2.1+dfsg-1) unstable; urgency=medium
+
+  * Team upload.
+  * Upload to unstable
+
+ -- Andreas Tille <tille@debian.org>  Mon, 30 Jan 2023 07:02:29 +0100
+
 scikit-learn (1.2.1+dfsg-0exp1) experimental; urgency=medium
 
   * Team upload.
@@ -11,7 +18,7 @@ scikit-learn (1.2.1+dfsg-0exp1) experimental; urgency=medium
   * Standards-Version: 4.6.2 (routine-update)
   * Remove unused license definitions for Apache-2.0, Expat.
 
- -- Andreas Tille <tille@debian.org>  Thu, 26 Jan 2023 17:47:28 +0100
+ -- Andreas Tille <tille@debian.org>  Mon, 30 Jan 2023 07:01:45 +0100
 
 scikit-learn (1.1.2+dfsg-92) unstable; urgency=medium
 
