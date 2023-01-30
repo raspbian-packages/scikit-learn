@@ -130,6 +130,9 @@ class CleanCommand(Command):
     def finalize_options(self):
         pass
 
+    def all(self):
+        run()
+
     def run(self):
         # Remove c files if we are not within a sdist package
         cwd = os.path.abspath(os.path.dirname(__file__))
