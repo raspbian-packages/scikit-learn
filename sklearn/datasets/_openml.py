@@ -860,6 +860,9 @@ def fetch_openml(
     attribute `categories` of the `Bunch` instance. Instead, `"pandas"` returns
     a NumPy array were the categories are not encoded.
     """
+    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
+        raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
+
     if cache is False:
         # no caching will be applied
         data_home = None

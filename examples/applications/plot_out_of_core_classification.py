@@ -168,7 +168,8 @@ def stream_reuters_documents(data_path=None):
                 sys.stdout.write("\rdownloaded %s / %s" % (current_sz_mb, total_sz_mb))
 
         archive_path = data_path / ARCHIVE_FILENAME
-
+        if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
+            raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
         urlretrieve(DOWNLOAD_URL, filename=archive_path, reporthook=progress)
         if _not_in_sphinx():
             sys.stdout.write("\r")

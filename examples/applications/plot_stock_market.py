@@ -97,6 +97,8 @@ for symbol in symbols:
         "https://raw.githubusercontent.com/scikit-learn/examples-data/"
         "master/financial-data/{}.csv"
     )
+    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
+        raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
     quotes.append(pd.read_csv(url.format(symbol)))
 
 close_prices = np.vstack([q["close"] for q in quotes])
