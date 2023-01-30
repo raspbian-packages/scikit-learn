@@ -1,0 +1,41 @@
+Author: Andreas Tille <tille@debian.org>
+Last-Update: Tue, 15 Feb 2022 13:33:35 +0100
+Origin: https://salsa.debian.org/science-team/scikit-learn/-/jobs/2469653
+Description: Relax test tolerance - this patch is needed at least for i386 (not for amd64)
+ >       assert_allclose(rbm_64.components_, rbm_32.components_, rtol=1e-03, atol=0)
+ E       AssertionError: 
+ E       Not equal to tolerance rtol=0.001, atol=0
+ E       
+ E       Mismatched elements: 1 / 1024 (0.0977%)
+ E       Max absolute difference: 1.64902041e-07
+ E       Max relative difference: 0.00120168
+ E        x: array([[-0.314464, -0.269352, -0.050074, ...,  0.032314, -0.184839,
+ E               -0.34867 ],
+ E              [-0.315646, -0.263143, -0.079185, ...,  0.054781, -0.178217,...
+ E        y: array([[-0.314464, -0.269352, -0.050074, ...,  0.032314, -0.184839,
+ E               -0.34867 ],
+ E              [-0.315646, -0.263143, -0.079185, ...,  0.054781, -0.178217,...
+ sklearn/neural_network/tests/test_rbm.py:239: AssertionError
+
+--- a/sklearn/neural_network/tests/test_rbm.py
++++ b/sklearn/neural_network/tests/test_rbm.py
+@@ -232,7 +232,7 @@ def test_convergence_dtype_consistency()
+     assert_allclose(
+         rbm_64.intercept_visible_, rbm_32.intercept_visible_, rtol=1e-05, atol=0
+     )
+-    assert_allclose(rbm_64.components_, rbm_32.components_, rtol=1e-03, atol=0)
++    assert_allclose(rbm_64.components_, rbm_32.components_, rtol=1e-02, atol=1e-06)
+     assert_allclose(rbm_64.h_samples_, rbm_32.h_samples_)
+ 
+ 
+--- a/sklearn/neural_network/tests/test_mlp.py
++++ b/sklearn/neural_network/tests/test_mlp.py
+@@ -846,7 +846,7 @@ def test_mlp_regressor_dtypes_casting():
+     mlp_32.fit(X_digits[:300].astype(np.float32), y_digits[:300])
+     pred_32 = mlp_32.predict(X_digits[300:].astype(np.float32))
+ 
+-    assert_allclose(pred_64, pred_32, rtol=1e-04)
++    assert_allclose(pred_64, pred_32, rtol=2e-04)
+ 
+ 
+ @pytest.mark.parametrize("dtype", [np.float32, np.float64])

@@ -1,0 +1,50 @@
+Description: prevent dataset download during doc build. Guard with debian
+ specific environment variable to avoid breaking the functionality.
+Author: Mo Zhou <lumin@debian.org>
+Forward: not-necessary
+--- a/sklearn/datasets/_base.py
++++ b/sklearn/datasets/_base.py
+@@ -1319,6 +1319,8 @@ def _fetch_remote(remote, dirname=None):
+     file_path: str
+         Full path of the created file.
+     """
++    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++        raise IOError('Debian Policy Section 4.9 prohibits network access during build')
+ 
+     file_path = remote.filename if dirname is None else join(dirname, remote.filename)
+     urlretrieve(remote.url, file_path)
+--- a/sklearn/datasets/_openml.py
++++ b/sklearn/datasets/_openml.py
+@@ -860,6 +860,9 @@ def fetch_openml(
+     attribute `categories` of the `Bunch` instance. Instead, `"pandas"` returns
+     a NumPy array were the categories are not encoded.
+     """
++    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++        raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
++
+     if cache is False:
+         # no caching will be applied
+         data_home = None
+--- a/examples/applications/plot_stock_market.py
++++ b/examples/applications/plot_stock_market.py
+@@ -97,6 +97,8 @@ for symbol in symbols:
+         "https://raw.githubusercontent.com/scikit-learn/examples-data/"
+         "master/financial-data/{}.csv"
+     )
++    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++        raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
+     quotes.append(pd.read_csv(url.format(symbol)))
+ 
+ close_prices = np.vstack([q["close"] for q in quotes])
+--- a/examples/applications/plot_out_of_core_classification.py
++++ b/examples/applications/plot_out_of_core_classification.py
+@@ -168,7 +168,8 @@ def stream_reuters_documents(data_path=N
+                 sys.stdout.write("\rdownloaded %s / %s" % (current_sz_mb, total_sz_mb))
+ 
+         archive_path = data_path / ARCHIVE_FILENAME
+-
++        if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++            raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
+         urlretrieve(DOWNLOAD_URL, filename=archive_path, reporthook=progress)
+         if _not_in_sphinx():
+             sys.stdout.write("\r")
