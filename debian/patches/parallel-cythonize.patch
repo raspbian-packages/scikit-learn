@@ -12,8 +12,8 @@ Last-Update: 2020-02-13
 
 --- a/sklearn/_build_utils/__init__.py
 +++ b/sklearn/_build_utils/__init__.py
-@@ -60,11 +60,7 @@
-     #   to actually build the compiled extensions with OpenMP flags if needed.
+@@ -57,11 +57,7 @@ def cythonize_extensions(extension):
+     # with OpenMP flags if needed.
      sklearn._OPENMP_SUPPORTED = check_openmp_support()
  
 -    n_jobs = 1

@@ -4,7 +4,7 @@ Description: Provide all method to clean target
 
 --- a/setup.py
 +++ b/setup.py
-@@ -130,6 +130,9 @@ class CleanCommand(Command):
+@@ -68,6 +68,9 @@ class CleanCommand(Command):
      def finalize_options(self):
          pass
  

@@ -9,7 +9,7 @@ Subject: No-downloading intersphinx mapping
 
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -324,14 +324,11 @@ trim_doctests_flags = True
+@@ -383,14 +383,11 @@ trim_doctests_flags = True
  
  # intersphinx configuration
  intersphinx_mapping = {

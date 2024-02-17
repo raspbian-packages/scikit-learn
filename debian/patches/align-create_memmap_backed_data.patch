@@ -4,6 +4,7 @@ Description: align create_memmap_backed_data() by default
 Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/scikit-learn/+bug/1991621
 Author: Graham Inggs <ginggs@debian.org>
 Last-Update: 2022-10-08
+Comment: This patch is deactivated since the aligned parameter vanished upstream
 
 --- a/sklearn/utils/_testing.py
 +++ b/sklearn/utils/_testing.py

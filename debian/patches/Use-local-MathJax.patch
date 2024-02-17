@@ -9,7 +9,7 @@ Forwarded: not-needed
 
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -86,7 +86,7 @@ if os.environ.get("NO_MATHJAX"):
+@@ -109,7 +109,7 @@ if os.environ.get("NO_MATHJAX"):
      mathjax_path = ""
  else:
      extensions.append("sphinx.ext.mathjax")
