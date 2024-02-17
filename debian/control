@@ -23,6 +23,7 @@ Build-Depends: debhelper-compat (= 13),
                python3-pil <!nocheck>,
                libjs-bootstrap4
 Build-Depends-Indep: python3-sphinx,
+                     python3-sphinx-copybutton,
                      python3-sphinx-gallery,
                      python3-sphinx-prompt,
                      python3-sphinxext-opengraph,
