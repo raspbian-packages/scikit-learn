@@ -156,6 +156,7 @@ override_dh_auto_configure:
 	ln -s /usr/share/javascript/bootstrap4/css/bootstrap.min.css doc/themes/scikit-learn-modern/static/css/vendor/bootstrap.min.css
 	mkdir -p doc/themes/scikit-learn-modern/static/js/vendor
 	ln -s /usr/share/javascript/bootstrap4/js/bootstrap.min.js doc/themes/scikit-learn-modern/static/js/vendor/bootstrap.min.js
+	ln -s /usr/share/javascript/jquery/jquery.min.js           doc/themes/scikit-learn-modern/static/js/vendor/jquery-3.6.3.slim.min.js
 
 # Ensure sample and test data are copied to .pybuild
 define PYBUILD_AFTER_BUILD

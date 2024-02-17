@@ -3,6 +3,7 @@ Upstream-Name: scikit-learn
 Upstream-Contact: https://github.com/scikit-learn/scikit-learn/issues
 Source: http://github.com/scikit-learn/scikit-learn
 Files-Excluded: */bootstrap*
+                */jquery*.slim.min.js
 
 Files: *
 Copyright: 2007-2019 Scikit-Learn Developers
