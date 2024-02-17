@@ -1,0 +1,27 @@
+From: yangfl <yangfl@users.noreply.github.com>
+Date: Sat, 20 Oct 2018 02:04:22 +0800
+Subject: Get cythonize parallelization from environment
+
+Instead of hard-coding to the CPU count, get the number of jobs for the JOBS
+env var (eg: set in debian/rules), defaulting to 1 if it is not set.
+
+Last-Update: 2020-02-13
+---
+ sklearn/_build_utils/__init__.py | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
+
+--- a/sklearn/_build_utils/__init__.py
++++ b/sklearn/_build_utils/__init__.py
+@@ -57,11 +57,7 @@ def cythonize_extensions(extension):
+     # with OpenMP flags if needed.
+     sklearn._OPENMP_SUPPORTED = check_openmp_support()
+ 
+-    n_jobs = 1
+-    with contextlib.suppress(ImportError):
+-        import joblib
+-
+-        n_jobs = joblib.cpu_count()
++    n_jobs = int(os.environ.get('JOBS', 1))
+ 
+     # Additional checks for Cython
+     cython_enable_debug_directives = (

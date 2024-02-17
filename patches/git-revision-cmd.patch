@@ -1,0 +1,24 @@
+From: Yaroslav Halchenko <debian@onerussian.com>
+Date: Wed, 11 Mar 2015 12:25:57 -0400
+Subject: Supply GitHub revision for built documentation
+
+This is used for the [source] links in the documentation.
+
+Last-Update: 2020-02-13
+---
+ doc/sphinxext/github_link.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/doc/sphinxext/github_link.py
++++ b/doc/sphinxext/github_link.py
+@@ -5,8 +5,8 @@ import sys
+ from functools import partial
+ from operator import attrgetter
+ 
+-REVISION_CMD = "git rev-parse --short HEAD"
+-
++#REVISION_CMD = "git rev-parse --short HEAD"
++REVISION_CMD = 'cat ../debian/github-revision.txt'
+ 
+ def _get_git_revision():
+     try:
