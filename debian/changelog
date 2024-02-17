@@ -1,3 +1,10 @@
+scikit-learn (1.4.1.post1+dfsg-1) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * New upstream version
+
+ -- Andreas Tille <tille@debian.org>  Sat, 17 Feb 2024 11:01:45 +0100
+
 scikit-learn (1.2.1+dfsg-1) unstable; urgency=medium
 
   * Team upload.
