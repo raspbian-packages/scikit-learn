@@ -8,7 +8,9 @@ scikit-learn (1.4.1.post1+dfsg-1) UNRELEASED; urgency=medium
   * Support loong64
     Closes: #1059206
   * Drop nose from Build-/Test-Depends
-    Closes: #1018635 
+    Closes: #1018635
+  * Fix clean target
+    Closes: #1046775, #1049646
 
  -- Andreas Tille <tille@debian.org>  Sat, 17 Feb 2024 11:01:45 +0100
 

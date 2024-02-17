@@ -140,6 +140,7 @@ override_dh_clean:
 	for i in $$(find -name '*.pyx.in'); do \
 		rm -f $${i%.*}; \
 	done
+	find . -name "bootstrap.min*" -delete
 ifneq (,$(filter python-sklearn-doc,$(shell dh_listpackages)))
 	+$(MAKE) -C doc clean
 endif
