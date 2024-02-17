@@ -2,6 +2,7 @@ scikit-learn (1.4.1.post1+dfsg-1) UNRELEASED; urgency=medium
 
   * Team upload.
   * New upstream version
+    Closes: #1029701, #1008369, #1027208
   * Build-Depends: s/dh-python/dh-sequence-python3/ (routine-update)
   * Build-Depends: python3-sphinx-copybutton
 
