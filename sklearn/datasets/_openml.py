@@ -988,6 +988,9 @@ def fetch_openml(
     dtypes: category(9), int64(6)
     memory usage: 2.7 MB
     """
+    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
+        raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
+
     if cache is False:
         # no caching will be applied
         data_home = None
