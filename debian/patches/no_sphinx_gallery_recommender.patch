@@ -1,0 +1,17 @@
+Author: Andreas Tille <tille@debian.org>
+Last-Update: Sat, 17 Feb 2024 11:01:45 +0100
+Description: Work around
+    Configuration error:
+    Unknown key(s) in sphinx_gallery_conf:
+    'recommender'
+
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -535,7 +535,6 @@ sphinx_gallery_conf = {
+     "inspect_global_variables": False,
+     "remove_config_comments": True,
+     "plot_gallery": "True",
+-    "recommender": {"enable": True, "n_examples": 5, "min_df": 12},
+     "reset_modules": ("matplotlib", "seaborn", reset_sklearn_config),
+ }
+ if with_jupyterlite:
