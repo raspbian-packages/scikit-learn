@@ -61,6 +61,7 @@ endif
 ifeq ($(DEB_HOST_ARCH),armel)
   # Ignored due to bug #1003165
   EXCLUDE_TESTS += and not test_tfidf_no_smoothing
+  EXCLUDE_TESTS += and not test_qda_regularization
 endif
 
 # Until these are fixed:

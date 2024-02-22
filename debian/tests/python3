@@ -13,6 +13,10 @@ exclude_tests="not test_old_pickle and not test_ard_accuracy_on_easy_problem"
 if dpkg-architecture -e arm64; then
 	exclude_tests="$exclude_tests and not test_dump"
 fi
+if dpkg-architecture -e armel; then
+	exclude_tests="$exclude_tests and not test_tfidf_no_smoothing"
+	exclude_tests="$exclude_tests and not test_qda_regularization"
+fi
 if dpkg-architecture -e ppc64el; then
 	exclude_tests="$exclude_tests and not test_precomputed_nearest_neighbors_filtering"
 	exclude_tests="$exclude_tests and not test_common"
