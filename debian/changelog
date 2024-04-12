@@ -1,8 +1,15 @@
 scikit-learn (1.4.2+dfsg-1) UNRELEASED; urgency=medium
 
+  * Team upload.
+  * New upstream release.
+
+  [ Drew Parsons ]
   * skip failing tests on armel: test_tfidf_no_smoothing and
     test_qda_regularization, which don't emit expected divide-by-zero
     runtime warnings.
+
+  [ Michael R. Crusoe ]
+  * Update docs patch to "import os" as needed
 
  -- Drew Parsons <dparsons@debian.org>  Thu, 22 Feb 2024 02:39:13 +0100
 

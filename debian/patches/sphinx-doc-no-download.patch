@@ -2,9 +2,9 @@ Description: prevent dataset download during doc build. Guard with debian
  specific environment variable to avoid breaking the functionality.
 Author: Mo Zhou <lumin@debian.org>
 Forward: not-necessary
---- a/sklearn/datasets/_base.py
-+++ b/sklearn/datasets/_base.py
-@@ -1428,6 +1428,8 @@ def _fetch_remote(remote, dirname=None):
+--- scikit-learn.orig/sklearn/datasets/_base.py
++++ scikit-learn/sklearn/datasets/_base.py
+@@ -1428,6 +1428,8 @@
      file_path: str
          Full path of the created file.
      """
@@ -13,9 +13,9 @@ Forward: not-necessary
  
      file_path = remote.filename if dirname is None else join(dirname, remote.filename)
      urlretrieve(remote.url, file_path)
---- a/sklearn/datasets/_openml.py
-+++ b/sklearn/datasets/_openml.py
-@@ -988,6 +988,9 @@ def fetch_openml(
+--- scikit-learn.orig/sklearn/datasets/_openml.py
++++ scikit-learn/sklearn/datasets/_openml.py
+@@ -988,6 +988,9 @@
      dtypes: category(9), int64(6)
      memory usage: 2.7 MB
      """
@@ -25,9 +25,17 @@ Forward: not-necessary
      if cache is False:
          # no caching will be applied
          data_home = None
---- a/examples/applications/plot_stock_market.py
-+++ b/examples/applications/plot_stock_market.py
-@@ -98,6 +98,8 @@ for symbol in symbols:
+--- scikit-learn.orig/examples/applications/plot_stock_market.py
++++ scikit-learn/examples/applications/plot_stock_market.py
+@@ -23,6 +23,7 @@
+ # `data.nasdaq.com <https://data.nasdaq.com/>`_ and
+ # `alphavantage.co <https://www.alphavantage.co/>`_.
+ 
++import os
+ import sys
+ 
+ import numpy as np
+@@ -98,6 +99,8 @@
          "https://raw.githubusercontent.com/scikit-learn/examples-data/"
          "master/financial-data/{}.csv"
      )
@@ -36,9 +44,17 @@ Forward: not-necessary
      quotes.append(pd.read_csv(url.format(symbol)))
  
  close_prices = np.vstack([q["close"] for q in quotes])
---- a/examples/applications/plot_out_of_core_classification.py
-+++ b/examples/applications/plot_out_of_core_classification.py
-@@ -166,7 +166,8 @@ def stream_reuters_documents(data_path=N
+--- scikit-learn.orig/examples/applications/plot_out_of_core_classification.py
++++ scikit-learn/examples/applications/plot_out_of_core_classification.py
+@@ -19,6 +19,7 @@
+ # License: BSD 3 clause
+ 
+ import itertools
++import os
+ import re
+ import sys
+ import tarfile
+@@ -166,7 +167,8 @@
                  sys.stdout.write("\rdownloaded %s / %s" % (current_sz_mb, total_sz_mb))
  
          archive_path = data_path / ARCHIVE_FILENAME
