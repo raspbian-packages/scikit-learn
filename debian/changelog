@@ -1,4 +1,4 @@
-scikit-learn (1.4.1.post1+dfsg-1.1) UNRELEASED; urgency=medium
+scikit-learn (1.4.2+dfsg-1) UNRELEASED; urgency=medium
 
   * skip failing tests on armel: test_tfidf_no_smoothing and
     test_qda_regularization, which don't emit expected divide-by-zero
