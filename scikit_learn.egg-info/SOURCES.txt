@@ -116,6 +116,7 @@ doc/images/plot_digits_classification.png
 doc/images/plot_face_recognition_1.png
 doc/images/plot_face_recognition_2.png
 doc/images/png-logo-inria-la-fondation.png
+doc/images/probabl.png
 doc/images/quansight-labs-small.png
 doc/images/quansight-labs.png
 doc/images/rbm_graph.png
