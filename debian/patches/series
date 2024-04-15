@@ -1,0 +1,12 @@
+sphinx-doc-no-download.patch
+relax_test_tolerance.patch
+Disable-BinderHub-links.patch
+parallel-cythonize.patch
+no-download-intersphinx-mapping.patch
+remove-google-analytics.patch
+git-revision-cmd.patch
+no-buttons-js.patch
+Use-local-MathJax.patch
+# align-create_memmap_backed_data.patch
+fix_clean.patch
+no_sphinx_gallery_recommender.patch

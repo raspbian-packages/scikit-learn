@@ -1,0 +1,28 @@
+scikit-learn for Debian on mispel
+==================================
+
+On some architectures the build-time test of scikit-learn is failing
+14 tests out of > 2500.  To provide the package also on those
+architectures the failure is ignored but documented here.  You can
+find the latest build log for all architectures here:
+
+   https://buildd.debian.org/status/package.php?p=scikit-learn
+
+Please check the mipsel build and seek for the string:
+
+   ==== FAILURES ====
+
+to see what test was failed but ignored in the Debian build.  Please
+use scikit-learn on this architecture with a grain of salt in case
+you might suspect that this test suite failure might be relevant for
+your application.
+
+   ***********************************************
+   * You are kindly invited to fix these issues. *
+   ***********************************************
+
+Upstream is informed about the issue in
+
+    https://github.com/scikit-learn/scikit-learn/issues/23901
+
+ -- Andreas Tille <tille@debian.org>  Thu, 11 Aug 2022 15:57:43 +0200

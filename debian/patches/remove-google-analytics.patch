@@ -1,0 +1,42 @@
+From: Yaroslav Halchenko <debian@onerussian.com>
+Date: Thu, 14 May 2020 12:54:06 +0200
+Subject: Disable google analytics referrals in the -doc
+
+  if we were to provide some information from just reading  documentation we
+  had to disclose and seek approval from the user before doing that.
+
+  Thanks Ambrose Andrews for the analysis and report
+
+Origin: Debian
+Bug: 730259
+Bug-Debian: http://bugs.debian.org/730259
+Bug-Ubuntu: https://launchpad.net/bugs/
+Last-Update: 2013-11-24
+---
+ doc/conf.py                        | 2 +-
+ doc/themes/scikit-learn/theme.conf | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -195,7 +195,7 @@ html_theme = "scikit-learn-modern"
+ # documentation.
+ html_theme_options = {
+     "legacy_google_analytics": True,
+-    "analytics": True,
++    "analytics": False,
+     "mathjax_path": mathjax_path,
+     "link_to_live_contributing_page": not parsed_version.is_devrelease,
+ }
+--- a/doc/themes/scikit-learn-modern/theme.conf
++++ b/doc/themes/scikit-learn-modern/theme.conf
+@@ -4,7 +4,7 @@ pygments_style = default
+ stylesheet = css/theme.css
+ 
+ [options]
+-legacy_google_analytics = true
+-analytics = true
++legacy_google_analytics = false
++analytics = false
+ link_to_live_contributing_page = false
+ mathjax_path =
