@@ -3,7 +3,7 @@ set -efux
 
 export JOBLIB_MULTIPROCESSING=0
 
-pys="$(py3versions -rv 2>/dev/null)"
+pys="$(py3versions -sv 2>/dev/null)"
 pkgbuild=${pkgbuild:-no}
 
 srcdir=$PWD

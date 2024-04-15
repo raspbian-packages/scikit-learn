@@ -10,6 +10,7 @@ scikit-learn (1.4.2+dfsg-1) UNRELEASED; urgency=medium
 
   [ Michael R. Crusoe ]
   * Update docs patch to "import os" as needed
+  * d/tests/python3: test on all supported versions of Python
 
  -- Drew Parsons <dparsons@debian.org>  Thu, 22 Feb 2024 02:39:13 +0100
 
