@@ -1,4 +1,4 @@
-scikit-learn (1.4.2+dfsg-1) UNRELEASED; urgency=medium
+scikit-learn (1.4.2+dfsg-1) unstable; urgency=medium
 
   * Team upload.
   * New upstream release.
@@ -12,7 +12,7 @@ scikit-learn (1.4.2+dfsg-1) UNRELEASED; urgency=medium
   * Update docs patch to "import os" as needed
   * d/tests/python3: test on all supported versions of Python
 
- -- Drew Parsons <dparsons@debian.org>  Thu, 22 Feb 2024 02:39:13 +0100
+ -- Michael R. Crusoe <crusoe@debian.org>  Mon, 15 Apr 2024 11:46:28 +0200
 
 scikit-learn (1.4.1.post1+dfsg-1) unstable; urgency=medium
 
