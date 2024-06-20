@@ -96,6 +96,10 @@ Depends: ${misc:Depends},
          libjs-bootstrap4,
          libjs-mathjax,
          libjs-jquery (>= 3.6.1+dfsg+~3.5.14-1~)
+Suggests: python3-doc,
+          python-numpy-doc,
+          python-scipy-doc,
+          python-pandas-doc
 Conflicts: python-scikits-learn-doc
 Replaces: python-scikits-learn-doc
 Built-Using: ${sphinxdoc:Built-Using}
