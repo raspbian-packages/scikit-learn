@@ -1,17 +1,18 @@
 From: Yaroslav Halchenko <debian@onerussian.com>
 Date: Thu, 14 May 2020 12:54:06 +0200
 Subject: Disable google analytics referrals in the -doc
+Origin: Debian
+Bug: 730259
+Bug-Debian: http://bugs.debian.org/730259
+Bug-Ubuntu: https://launchpad.net/bugs/
+Last-Update: 2013-11-24
+Forwarded: Not-Needed
 
   if we were to provide some information from just reading  documentation we
   had to disclose and seek approval from the user before doing that.
 
   Thanks Ambrose Andrews for the analysis and report
 
-Origin: Debian
-Bug: 730259
-Bug-Debian: http://bugs.debian.org/730259
-Bug-Ubuntu: https://launchpad.net/bugs/
-Last-Update: 2013-11-24
 ---
  doc/conf.py                        | 2 +-
  doc/themes/scikit-learn/theme.conf | 2 +-

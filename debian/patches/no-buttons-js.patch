@@ -1,8 +1,8 @@
 From: yangfl <yangfl@users.noreply.github.com>
 Date: Sat, 20 Oct 2018 11:29:21 +0800
 Subject: Disable JavaScript GitHub buttons
-
 Forwarded: not-needed
+
 ---
  doc/developers/contributing.rst | 1 -
  1 file changed, 1 deletion(-)

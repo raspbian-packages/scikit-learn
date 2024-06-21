@@ -1,8 +1,8 @@
 From: Christian Kastner <ckk@debian.org>
 Date: Sun, 3 May 2020 00:58:59 +0200
 Subject: Use local MathJax
-
 Forwarded: not-needed
+
 ---
  doc/conf.py | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)

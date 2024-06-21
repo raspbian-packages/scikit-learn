@@ -1,7 +1,8 @@
 Description: prevent dataset download during doc build. Guard with debian
  specific environment variable to avoid breaking the functionality.
 Author: Mo Zhou <lumin@debian.org>
-Forward: not-necessary
+Forward: not-needed
+
 --- scikit-learn.orig/sklearn/datasets/_base.py
 +++ scikit-learn/sklearn/datasets/_base.py
 @@ -1428,6 +1428,8 @@
