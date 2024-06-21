@@ -1428,6 +1428,8 @@ def _fetch_remote(remote, dirname=None):
     file_path: str
         Full path of the created file.
     """
+    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
+        raise IOError('Debian Policy Section 4.9 prohibits network access during build')
 
     file_path = remote.filename if dirname is None else join(dirname, remote.filename)
     urlretrieve(remote.url, file_path)
