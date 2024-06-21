@@ -1,0 +1,31 @@
+From: yangfl <yangfl@users.noreply.github.com>
+Date: Fri, 19 Oct 2018 23:21:53 +0800
+Subject: No-downloading intersphinx mapping
+Forwarded: not-needed
+
+===================================================================
+---
+ doc/conf.py | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+--- scikit-learn.orig/doc/conf.py
++++ scikit-learn/doc/conf.py
+@@ -383,14 +383,11 @@
+ 
+ # intersphinx configuration
+ intersphinx_mapping = {
+-    "python": ("https://docs.python.org/{.major}".format(sys.version_info), None),
+-    "numpy": ("https://numpy.org/doc/stable", None),
+-    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
++    "python": ("/usr/share/doc/python3/html/", None),
++    "numpy": ("/usr/share/doc/python-numpy/html/", None),
++    "scipy": ("/usr/share/doc/python-scipy-doc/html/", None),
+     "matplotlib": ("https://matplotlib.org/", None),
+-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
+-    "joblib": ("https://joblib.readthedocs.io/en/latest/", None),
+-    "seaborn": ("https://seaborn.pydata.org/", None),
+-    "skops": ("https://skops.readthedocs.io/en/stable/", None),
++    "pandas": ("/usr/share/doc/python-pandas-doc/html/", None),
+ }
+ 
+ v = parse(release)
