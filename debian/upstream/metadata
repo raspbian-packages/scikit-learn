@@ -7,8 +7,7 @@ Registry:
  - Name: conda:conda-forge
    Entry: scikit-learn
  - Name: bio.tools
-   Entry: NA
-   Checked: 2021-09-06
+   Entry: scikit-learn
  - Name: guix:machine-learning
    Entry: python-scikit-learn
  - Name: SciCrunch

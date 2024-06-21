@@ -5,6 +5,7 @@ scikit-learn (1.4.2+dfsg-3) UNRELEASED; urgency=medium
     source tarball name.
   * d/github-revision.txt: out of date
   * d/README.source: added reminder about updating d/github-revision.txt
+  * d/upstream/metadata: upstream finally has a bio.tools identifier
 
  -- Michael R. Crusoe <crusoe@debian.org>  Fri, 21 Jun 2024 12:26:43 +0200
 
