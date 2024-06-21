@@ -1,3 +1,11 @@
+scikit-learn (1.4.2+dfsg-3) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * d/watch: upstream switched from a hyphen to an underscore in the
+    source tarball name.
+
+ -- Michael R. Crusoe <crusoe@debian.org>  Fri, 21 Jun 2024 12:26:43 +0200
+
 scikit-learn (1.4.2+dfsg-2) unstable; urgency=medium
 
   * Team upload.
