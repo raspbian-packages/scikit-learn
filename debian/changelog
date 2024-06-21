@@ -1,4 +1,4 @@
-scikit-learn (1.4.2+dfsg-3) UNRELEASED; urgency=medium
+scikit-learn (1.4.2+dfsg-3) unstable; urgency=medium
 
   * Team upload.
   * d/watch: upstream switched from a hyphen to an underscore in the
@@ -8,7 +8,7 @@ scikit-learn (1.4.2+dfsg-3) UNRELEASED; urgency=medium
   * d/upstream/metadata: upstream finally has a bio.tools identifier
   * d/patches: adjust some metadata
 
- -- Michael R. Crusoe <crusoe@debian.org>  Fri, 21 Jun 2024 12:26:43 +0200
+ -- Michael R. Crusoe <crusoe@debian.org>  Fri, 21 Jun 2024 12:45:23 +0200
 
 scikit-learn (1.4.2+dfsg-2) unstable; urgency=medium
 
