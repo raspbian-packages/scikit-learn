@@ -3,6 +3,8 @@ scikit-learn (1.4.2+dfsg-3) UNRELEASED; urgency=medium
   * Team upload.
   * d/watch: upstream switched from a hyphen to an underscore in the
     source tarball name.
+  * d/github-revision.txt: out of date
+  * d/README.source: added reminder about updating d/github-revision.txt
 
  -- Michael R. Crusoe <crusoe@debian.org>  Fri, 21 Jun 2024 12:26:43 +0200
 
