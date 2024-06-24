@@ -122,16 +122,9 @@ endif
 export DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS=1
 
 %:
-	dh $@ --with sphinxdoc --buildsystem pybuild
-
-%-arch:
 	dh $@ --buildsystem pybuild
 
-clean:
-	dh $@ --buildsystem pybuild
-
-override_dh_clean:
-	dh_clean
+execute_after_dh_clean:
 	rm -rf .pytest_cache build scikit_learn.egg-info tmp
 	-mv PKG-INFO-BAK PKG-INFO
 	rm -f debian/build-stamp-*
@@ -146,12 +139,7 @@ ifneq (,$(filter python-sklearn-doc,$(shell dh_listpackages)))
 	+$(MAKE) -C doc clean
 endif
 
-override_dh_auto_configure:
-	mkdir -p tmp
-	-mv PKG-INFO PKG-INFO-BAK
-	python$(PY3VER) setup.py config
-# 	dh_auto_configure
-	mv PKG-INFO-BAK PKG-INFO
+execute_after_dh_auto_configure:
 	# Provide bootstrap links even at build process - otherwise sphinx fails
 	mkdir -p doc/themes/scikit-learn-modern/static/css/vendor/
 	ln -s /usr/share/javascript/bootstrap4/css/bootstrap.min.css doc/themes/scikit-learn-modern/static/css/vendor/bootstrap.min.css
@@ -167,25 +155,18 @@ define PYBUILD_AFTER_BUILD
   done;
 endef
 export PYBUILD_AFTER_BUILD
+
+execute_after_dh_auto_build-indep:
 # Only with the default Python 3, additionally use pybuild to run
 # sphinx once the build is complete.
 ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
-define PYBUILD_AFTER_BUILD_python$(PY3VER)
-  $(PYBUILD_AFTER_BUILD)
-  PYTHONPATH={build_dir} \
-  http_proxy='127.0.0.1.9' \
-  https_proxy='127.0.0.1.9' \
-  SPHINXBUILD="python$(PY3VER) -m sphinx" \
-  $(MAKE) -C doc html SPHINXOPTS="-j $(JOBS)" || true;
-  [ -d doc/_build/html ]
-endef
-export PYBUILD_AFTER_BUILD_python$(PY3VER)
+	PYTHONPATH=$(shell pybuild --print build_dir  --interpreter python3) \
+	http_proxy='127.0.0.1.9' \
+	https_proxy='127.0.0.1.9' \
+	SPHINXBUILD="python$(PY3VER) -m sphinx" \
+	$(MAKE) -C doc html SPHINXOPTS="-j $(JOBS)" || true;
+	[ -d doc/_build/html ]
 endif
-override_dh_auto_build-arch:
-	# Don't try to build docs in the arch build, so unset that hook
-	env -u PYBUILD_AFTER_BUILD_python$(PY3VER) \
-		dh_auto_build
-
 
 export PYBUILD_TEST_PYTEST := 1
 export PYBUILD_TEST_ARGS_python3 := -m "not network" -v --color=no -k "$(EXCLUDE_TESTS)"
@@ -204,16 +185,13 @@ export PYBUILD_AFTER_TEST
 # Nothing to do for indep
 override_dh_auto_test-indep:
 
-
 override_dh_auto_test-arch:
 	dh_auto_test -a $(IGNORE_ERRORS)
 
 export PYBUILD_AFTER_INSTALL = rm -f {destdir}/{install_dir}/_configtest*
-override_dh_auto_install:
-	dh_auto_install
+execute_after_dh_auto_install:
 	# cleanup python3 cache (mixing python3 subversions)
 	-find debian/tmp -name "__pycache__" -exec rm -r {} +
-
 
 override_dh_installdocs-arch:
 	dh_installdocs -A README*.rst

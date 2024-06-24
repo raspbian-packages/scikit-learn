@@ -1,3 +1,10 @@
+scikit-learn (1.4.2+dfsg-4) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * d/rules: Don't run setup.py ourselves
+
+ -- Michael R. Crusoe <crusoe@debian.org>  Mon, 24 Jun 2024 16:10:51 +0200
+
 scikit-learn (1.4.2+dfsg-3) unstable; urgency=medium
 
   * Team upload.
