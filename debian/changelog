@@ -3,6 +3,7 @@ scikit-learn (1.4.2+dfsg-4) UNRELEASED; urgency=medium
   * Team upload.
   * d/rules: Don't run setup.py ourselves
   * d/control: switch to PEP-517 building
+  * d/source/options: ignore the .egg-info directory
 
  -- Michael R. Crusoe <crusoe@debian.org>  Mon, 24 Jun 2024 16:10:51 +0200
 
