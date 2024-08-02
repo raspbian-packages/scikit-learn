@@ -39,7 +39,9 @@ Build-Depends-Indep: dh-sequence-sphinxdoc,
                      graphviz,
                      python3-doc,
                      python-scipy-doc,
-                     python-pandas-doc
+                     python-pandas-doc,
+                     python-numpy-doc,
+                     python-matplotlib-doc
 Standards-Version: 4.6.2
 Vcs-Browser: https://salsa.debian.org/science-team/scikit-learn
 Vcs-Git: https://salsa.debian.org/science-team/scikit-learn.git
