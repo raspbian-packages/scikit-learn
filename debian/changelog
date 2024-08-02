@@ -1,3 +1,11 @@
+scikit-learn (1.4.2+dfsg-5) unstable; urgency=medium
+
+  * Team upload.
+  * d/rules: Add "-Wno-incompatible-pointer-types" to the CFLAGS to fix
+    the build on 32-bit systems.
+
+ -- Michael R. Crusoe <crusoe@debian.org>  Fri, 02 Aug 2024 14:02:53 +0200
+
 scikit-learn (1.4.2+dfsg-4) unstable; urgency=medium
 
   * Team upload. Closes: #1077461, #1076923

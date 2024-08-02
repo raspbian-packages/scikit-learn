@@ -13,7 +13,7 @@ PY3VERS ?= $(shell py3versions -vr)
 
 export DEB_BUILD_MAINT_OPTIONS := hardening=+all
 
-export DEB_CFLAGS_MAINT_APPEND :=
+export DEB_CFLAGS_MAINT_APPEND := -Wno-incompatible-pointer-types
 export DEB_LDFLAGS_MAINT_APPEND := -Wl,--as-needed
 
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
