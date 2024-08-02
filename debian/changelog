@@ -1,4 +1,4 @@
-scikit-learn (1.4.2+dfsg-4) UNRELEASED; urgency=medium
+scikit-learn (1.4.2+dfsg-4) unstable; urgency=medium
 
   * Team upload. Closes: #1077461, #1076923
   * d/rules: Don't run setup.py ourselves
@@ -6,7 +6,7 @@ scikit-learn (1.4.2+dfsg-4) UNRELEASED; urgency=medium
   * d/source/options: ignore the .egg-info directory
   * d/control: use python-numpy-doc & python-matplotlib-doc for our docs
 
- -- Michael R. Crusoe <crusoe@debian.org>  Mon, 24 Jun 2024 16:10:51 +0200
+ -- Michael R. Crusoe <crusoe@debian.org>  Fri, 02 Aug 2024 11:16:36 +0200
 
 scikit-learn (1.4.2+dfsg-3) unstable; urgency=medium
 
