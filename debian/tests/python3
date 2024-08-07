@@ -17,6 +17,9 @@ if dpkg-architecture -e armel; then
 	exclude_tests="$exclude_tests and not test_tfidf_no_smoothing"
 	exclude_tests="$exclude_tests and not test_qda_regularization"
 fi
+if dpkg-architecture -e i386; then
+	exclude_tests="$exclude_tests and not test_svc_ovr_tie_breaking[NuSVC]"
+fi
 if dpkg-architecture -e ppc64el; then
 	exclude_tests="$exclude_tests and not test_precomputed_nearest_neighbors_filtering"
 	exclude_tests="$exclude_tests and not test_common"

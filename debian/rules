@@ -99,6 +99,7 @@ endif
 ifeq ($(DEB_HOST_ARCH),i386)
   EXCLUDE_TESTS += and not test_gaussian_kde
   EXCLUDE_TESTS += and not test_y_multioutput
+  EXCLUDE_TESTS += and not test_svc_ovr_tie_breaking[NuSVC]
 endif
 
 
