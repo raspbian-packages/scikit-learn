@@ -5,6 +5,7 @@ Depends: python3-all,
  python3-matplotlib,
  python3-numpy,
  python3-pytest,
+ python3-pytest-xdist,
  python3-scipy,
  python3-setuptools
 Restrictions: allow-stderr
