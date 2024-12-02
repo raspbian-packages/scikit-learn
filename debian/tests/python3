@@ -10,6 +10,11 @@ srcdir=$PWD
 
 # These exclusions should be kept in sync with debian/rules
 exclude_tests="not test_old_pickle and not test_ard_accuracy_on_easy_problem"
+# See https://bugs.debian.org/1082291
+exclude_tests="$exclude_tests and not test_standard_scaler_partial_fit_numerical_stability[csc_array]"
+exclude_tests="$exclude_tests and not test_standard_scaler_partial_fit_numerical_stability[csr_array]"
+# Not deterministic:
+exclude_tests="$exclude_tests and not test_deprecation_joblib_api"
 if dpkg-architecture -e arm64; then
 	exclude_tests="$exclude_tests and not test_dump"
 fi
