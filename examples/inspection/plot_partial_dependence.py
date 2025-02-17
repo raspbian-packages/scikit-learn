@@ -34,6 +34,9 @@ bike sharing dataset. The example is inspired by [1]_.
        Graphical Statistics, 24(1): 44-65 <1309.6392>`
 """
 
+# Authors: The scikit-learn developers
+# SPDX-License-Identifier: BSD-3-Clause
+
 # %%
 # Bike sharing dataset preprocessing
 # ----------------------------------
@@ -536,6 +539,7 @@ _ = display.figure_.suptitle(
 #
 # Let's make the same partial dependence plot for the 2 features interaction,
 # this time in 3 dimensions.
+
 # unused but required import for doing 3d projections with matplotlib < 3.2
 import mpl_toolkits.mplot3d  # noqa: F401
 import numpy as np
