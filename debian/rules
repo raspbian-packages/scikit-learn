@@ -6,7 +6,7 @@
 # This was used as last resort to advance the python3.10 transition by Paul Gevers in NMU, disable the tests during build (see: #1003165)
 # export DEB_BUILD_OPTIONS += nocheck
 
-include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/default.mk
 
 PY3VER  ?= $(shell py3versions -vd)
 PY3VERS ?= $(shell py3versions -vr)
@@ -170,7 +170,7 @@ ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
 endif
 
 export PYBUILD_TEST_PYTEST := 1
-export PYBUILD_TEST_ARGS_python3 := -m "not network" -v -n `nproc` --color=no -k "$(EXCLUDE_TESTS)"
+export PYBUILD_TEST_ARGS := -m "not network" -v $(DEB_BUILD_OPTION_PARALLEL:%=-n %) --color=no -k "$(EXCLUDE_TESTS)"
 define PYBUILD_BEFORE_TEST
   (mv $(CURDIR)/sklearn/conftest.py $(CURDIR)/sklearn/conftest.py.test; \
    mv $(CURDIR)/sklearn/datasets/tests/conftest.py $(CURDIR)/sklearn/datasets/tests/conftest.py.test; \

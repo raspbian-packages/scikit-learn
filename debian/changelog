@@ -1,3 +1,11 @@
+scikit-learn (1.4.2+dfsg-8) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * d/rules: use DEB_BUILD_OPTION_PARALLEL instead of nproc for setting
+    the amount of parallel testing.
+
+ -- Michael R. Crusoe <crusoe@debian.org>  Mon, 17 Feb 2025 20:31:40 +0100
+
 scikit-learn (1.4.2+dfsg-7) unstable; urgency=medium
 
   * Team upload.
