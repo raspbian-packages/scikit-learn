@@ -1,4 +1,4 @@
-scikit-learn (1.4.2+dfsg-8) UNRELEASED; urgency=medium
+scikit-learn (1.4.2+dfsg-8) unstable; urgency=medium
 
   [ Michael R. Crusoe ]
   * Team upload.
@@ -11,7 +11,7 @@ scikit-learn (1.4.2+dfsg-8) UNRELEASED; urgency=medium
     test_csr_polynomial_expansion_index_overflow[csr_array-False-True
     Closes: #1096252
 
- -- Michael R. Crusoe <crusoe@debian.org>  Mon, 17 Feb 2025 20:31:40 +0100
+ -- Drew Parsons <dparsons@debian.org>  Mon, 10 Mar 2025 22:18:34 +0100
 
 scikit-learn (1.4.2+dfsg-7) unstable; urgency=medium
 
