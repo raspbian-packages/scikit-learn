@@ -9,18 +9,30 @@ License: BSD 3 clause
 """
 import warnings
 from heapq import heapify, heappop, heappush, heappushpop
+from numbers import Integral, Real
 
 import numpy as np
 from scipy import sparse
 from scipy.sparse.csgraph import connected_components
 
-from ..base import BaseEstimator, ClusterMixin
-from ..metrics.pairwise import paired_distances
-from ..neighbors import DistanceMetric
-from ..neighbors._dist_metrics import METRIC_MAPPING
+from ..base import (
+    BaseEstimator,
+    ClassNamePrefixFeaturesOutMixin,
+    ClusterMixin,
+    _fit_context,
+)
+from ..metrics import DistanceMetric
+from ..metrics._dist_metrics import METRIC_MAPPING64
+from ..metrics.pairwise import _VALID_METRICS, paired_distances
 from ..utils import check_array
 from ..utils._fast_dict import IntFloatDict
-from ..utils.fixes import _astype_copy_false
+from ..utils._param_validation import (
+    HasMethods,
+    Hidden,
+    Interval,
+    StrOptions,
+    validate_params,
+)
 from ..utils.graph import _fix_connected_components
 from ..utils.validation import check_memory
 
@@ -78,11 +90,12 @@ def _fix_connectivity(X, connectivity, affinity):
     connectivity = connectivity + connectivity.T
 
     # Convert connectivity matrix to LIL
-    if not sparse.isspmatrix_lil(connectivity):
-        if not sparse.isspmatrix(connectivity):
-            connectivity = sparse.lil_matrix(connectivity)
-        else:
-            connectivity = connectivity.tolil()
+    if not sparse.issparse(connectivity):
+        connectivity = sparse.lil_matrix(connectivity)
+
+    # `connectivity` is a sparse matrix at this point
+    if connectivity.format != "lil":
+        connectivity = connectivity.tolil()
 
     # Compute the number of nodes
     n_connected_components, labels = connected_components(connectivity)
@@ -123,7 +136,7 @@ def _single_linkage_tree(
     from scipy.sparse.csgraph import minimum_spanning_tree
 
     # explicitly cast connectivity to ensure safety
-    connectivity = connectivity.astype("float64", **_astype_copy_false(connectivity))
+    connectivity = connectivity.astype(np.float64, copy=False)
 
     # Ensure zero distances aren't ignored by setting them to "epsilon"
     epsilon_value = np.finfo(dtype=connectivity.data.dtype).eps
@@ -167,6 +180,15 @@ def _single_linkage_tree(
 # Hierarchical tree building functions
 
 
+@validate_params(
+    {
+        "X": ["array-like"],
+        "connectivity": ["array-like", "sparse matrix", None],
+        "n_clusters": [Interval(Integral, 1, None, closed="left"), None],
+        "return_distance": ["boolean"],
+    },
+    prefer_skip_nested_validation=True,
+)
 def ward_tree(X, *, connectivity=None, n_clusters=None, return_distance=False):
     """Ward clustering based on a Feature matrix.
 
@@ -185,7 +207,7 @@ def ward_tree(X, *, connectivity=None, n_clusters=None, return_distance=False):
     X : array-like of shape (n_samples, n_features)
         Feature matrix representing `n_samples` samples to be clustered.
 
-    connectivity : sparse matrix, default=None
+    connectivity : {array-like, sparse matrix}, default=None
         Connectivity matrix. Defines for each sample the neighboring samples
         following a given structure of the data. The matrix is assumed to
         be symmetric and only the upper triangular half is used.
@@ -248,6 +270,24 @@ def ward_tree(X, *, connectivity=None, n_clusters=None, return_distance=False):
         cluster in the forest, :math:`T=|v|+|s|+|t|`, and
         :math:`|*|` is the cardinality of its argument. This is also
         known as the incremental algorithm.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from sklearn.cluster import ward_tree
+    >>> X = np.array([[1, 2], [1, 4], [1, 0],
+    ...               [4, 2], [4, 4], [4, 0]])
+    >>> children, n_connected_components, n_leaves, parents = ward_tree(X)
+    >>> children
+    array([[0, 1],
+           [3, 5],
+           [2, 6],
+           [4, 7],
+           [8, 9]])
+    >>> n_connected_components
+    1
+    >>> n_leaves
+    6
     """
     X = np.asarray(X)
     if X.ndim == 1:
@@ -259,12 +299,14 @@ def ward_tree(X, *, connectivity=None, n_clusters=None, return_distance=False):
 
         if n_clusters is not None:
             warnings.warn(
-                "Partial build of the tree is implemented "
-                "only for structured clustering (i.e. with "
-                "explicit connectivity). The algorithm "
-                "will build the full tree and only "
-                "retain the lower branches required "
-                "for the specified number of clusters",
+                (
+                    "Partial build of the tree is implemented "
+                    "only for structured clustering (i.e. with "
+                    "explicit connectivity). The algorithm "
+                    "will build the full tree and only "
+                    "retain the lower branches required "
+                    "for the specified number of clusters"
+                ),
                 stacklevel=2,
             )
         X = np.require(X, requirements="W")
@@ -328,7 +370,7 @@ def ward_tree(X, *, connectivity=None, n_clusters=None, return_distance=False):
     if return_distance:
         distances = np.empty(n_nodes - n_samples)
 
-    not_visited = np.empty(n_nodes, dtype=np.int8, order="C")
+    not_visited = np.empty(n_nodes, dtype=bool, order="C")
 
     # recursive merge loop
     for k in range(n_samples, n_nodes):
@@ -429,11 +471,11 @@ def linkage_tree(
               observations of the two sets.
 
     affinity : str or callable, default='euclidean'
-        which metric to use. Can be 'euclidean', 'manhattan', or any
+        Which metric to use. Can be 'euclidean', 'manhattan', or any
         distance known to paired distance (see metric.pairwise).
 
     return_distance : bool, default=False
-        whether or not to return the distances between the clusters.
+        Whether or not to return the distances between the clusters.
 
     Returns
     -------
@@ -491,12 +533,14 @@ def linkage_tree(
 
         if n_clusters is not None:
             warnings.warn(
-                "Partial build of the tree is implemented "
-                "only for structured clustering (i.e. with "
-                "explicit connectivity). The algorithm "
-                "will build the full tree and only "
-                "retain the lower branches required "
-                "for the specified number of clusters",
+                (
+                    "Partial build of the tree is implemented "
+                    "only for structured clustering (i.e. with "
+                    "explicit connectivity). The algorithm "
+                    "will build the full tree and only "
+                    "retain the lower branches required "
+                    "for the specified number of clusters"
+                ),
                 stacklevel=2,
             )
 
@@ -506,7 +550,7 @@ def linkage_tree(
             # by sklearn.metrics.pairwise_distances.
             if X.shape[0] != X.shape[1]:
                 raise ValueError(
-                    "Distance matrix should be square, Got matrix of shape {X.shape}"
+                    f"Distance matrix should be square, got matrix of shape {X.shape}"
                 )
             i, j = np.triu_indices(X.shape[0], k=1)
             X = X[i, j]
@@ -523,9 +567,8 @@ def linkage_tree(
             linkage == "single"
             and affinity != "precomputed"
             and not callable(affinity)
-            and affinity in METRIC_MAPPING
+            and affinity in METRIC_MAPPING64
         ):
-
             # We need the fast cythonized metric from neighbors
             dist_metric = DistanceMetric.get_metric(affinity)
 
@@ -559,9 +602,7 @@ def linkage_tree(
     del diag_mask
 
     if affinity == "precomputed":
-        distances = X[connectivity.row, connectivity.col].astype(
-            "float64", **_astype_copy_false(X)
-        )
+        distances = X[connectivity.row, connectivity.col].astype(np.float64, copy=False)
     else:
         # FIXME We compute all the distances, while we could have only computed
         # the "interesting" distances
@@ -751,12 +792,17 @@ class AgglomerativeClustering(ClusterMixin, BaseEstimator):
         The number of clusters to find. It must be ``None`` if
         ``distance_threshold`` is not ``None``.
 
-    affinity : str or callable, default='euclidean'
+    metric : str or callable, default="euclidean"
         Metric used to compute the linkage. Can be "euclidean", "l1", "l2",
-        "manhattan", "cosine", or "precomputed".
-        If linkage is "ward", only "euclidean" is accepted.
-        If "precomputed", a distance matrix (instead of a similarity matrix)
-        is needed as input for the fit method.
+        "manhattan", "cosine", or "precomputed". If linkage is "ward", only
+        "euclidean" is accepted. If "precomputed", a distance matrix is needed
+        as input for the fit method.
+
+        .. versionadded:: 1.2
+
+        .. deprecated:: 1.4
+           `metric=None` is deprecated in 1.4 and will be removed in 1.6.
+           Let `metric` be the default value (i.e. `"euclidean"`) instead.
 
     memory : str or object with the joblib.Memory interface, default=None
         Used to cache the output of the computation of the tree.
@@ -800,7 +846,7 @@ class AgglomerativeClustering(ClusterMixin, BaseEstimator):
             Added the 'single' option
 
     distance_threshold : float, default=None
-        The linkage distance threshold above which, clusters will not be
+        The linkage distance threshold at or above which clusters will not be
         merged. If not ``None``, ``n_clusters`` must be ``None`` and
         ``compute_full_tree`` must be ``True``.
 
@@ -875,11 +921,26 @@ class AgglomerativeClustering(ClusterMixin, BaseEstimator):
     array([1, 1, 1, 0, 0, 0])
     """
 
+    _parameter_constraints: dict = {
+        "n_clusters": [Interval(Integral, 1, None, closed="left"), None],
+        "metric": [
+            StrOptions(set(_VALID_METRICS) | {"precomputed"}),
+            callable,
+            Hidden(None),
+        ],
+        "memory": [str, HasMethods("cache"), None],
+        "connectivity": ["array-like", callable, None],
+        "compute_full_tree": [StrOptions({"auto"}), "boolean"],
+        "linkage": [StrOptions(set(_TREE_BUILDERS.keys()))],
+        "distance_threshold": [Interval(Real, 0, None, closed="left"), None],
+        "compute_distances": ["boolean"],
+    }
+
     def __init__(
         self,
         n_clusters=2,
         *,
-        affinity="euclidean",
+        metric="euclidean",
         memory=None,
         connectivity=None,
         compute_full_tree="auto",
@@ -893,9 +954,10 @@ class AgglomerativeClustering(ClusterMixin, BaseEstimator):
         self.connectivity = connectivity
         self.compute_full_tree = compute_full_tree
         self.linkage = linkage
-        self.affinity = affinity
+        self.metric = metric
         self.compute_distances = compute_distances
 
+    @_fit_context(prefer_skip_nested_validation=True)
     def fit(self, X, y=None):
         """Fit the hierarchical clustering from features, or distance matrix.
 
@@ -904,7 +966,7 @@ class AgglomerativeClustering(ClusterMixin, BaseEstimator):
         X : array-like, shape (n_samples, n_features) or \
                 (n_samples, n_samples)
             Training instances to cluster, or distances between instances if
-            ``affinity='precomputed'``.
+            ``metric='precomputed'``.
 
         y : Ignored
             Not used, present here for API consistency by convention.
@@ -914,7 +976,7 @@ class AgglomerativeClustering(ClusterMixin, BaseEstimator):
         self : object
             Returns the fitted instance.
         """
-        X = self._validate_data(X, ensure_min_samples=2, estimator=self)
+        X = self._validate_data(X, ensure_min_samples=2)
         return self._fit(X)
 
     def _fit(self, X):
@@ -933,11 +995,19 @@ class AgglomerativeClustering(ClusterMixin, BaseEstimator):
         """
         memory = check_memory(self.memory)
 
-        if self.n_clusters is not None and self.n_clusters <= 0:
-            raise ValueError(
-                "n_clusters should be an integer greater than 0. %s was provided."
-                % str(self.n_clusters)
+        # TODO(1.6): remove in 1.6
+        if self.metric is None:
+            warnings.warn(
+                (
+                    "`metric=None` is deprecated in version 1.4 and will be removed in "
+                    "version 1.6. Let `metric` be the default value "
+                    "(i.e. `'euclidean'`) instead."
+                ),
+                FutureWarning,
             )
+            self._metric = "euclidean"
+        else:
+            self._metric = self.metric
 
         if not ((self.n_clusters is None) ^ (self.distance_threshold is None)):
             raise ValueError(
@@ -951,17 +1021,12 @@ class AgglomerativeClustering(ClusterMixin, BaseEstimator):
                 "compute_full_tree must be True if distance_threshold is set."
             )
 
-        if self.linkage == "ward" and self.affinity != "euclidean":
+        if self.linkage == "ward" and self._metric != "euclidean":
             raise ValueError(
-                "%s was provided as affinity. Ward can only "
-                "work with euclidean distances." % (self.affinity,)
+                f"{self._metric} was provided as metric. Ward can only "
+                "work with euclidean distances."
             )
 
-        if self.linkage not in _TREE_BUILDERS:
-            raise ValueError(
-                "Unknown linkage type %s. Valid options are %s"
-                % (self.linkage, _TREE_BUILDERS.keys())
-            )
         tree_builder = _TREE_BUILDERS[self.linkage]
 
         connectivity = self.connectivity
@@ -992,7 +1057,7 @@ class AgglomerativeClustering(ClusterMixin, BaseEstimator):
         kwargs = {}
         if self.linkage != "ward":
             kwargs["linkage"] = self.linkage
-            kwargs["affinity"] = self.affinity
+            kwargs["affinity"] = self._metric
 
         distance_threshold = self.distance_threshold
 
@@ -1054,7 +1119,9 @@ class AgglomerativeClustering(ClusterMixin, BaseEstimator):
         return super().fit_predict(X, y)
 
 
-class FeatureAgglomeration(AgglomerativeClustering, AgglomerationTransform):
+class FeatureAgglomeration(
+    ClassNamePrefixFeaturesOutMixin, AgglomerativeClustering, AgglomerationTransform
+):
     """Agglomerate features.
 
     Recursively merges pair of clusters of features.
@@ -1063,14 +1130,21 @@ class FeatureAgglomeration(AgglomerativeClustering, AgglomerationTransform):
 
     Parameters
     ----------
-    n_clusters : int, default=2
+    n_clusters : int or None, default=2
         The number of clusters to find. It must be ``None`` if
         ``distance_threshold`` is not ``None``.
 
-    affinity : str or callable, default='euclidean'
+    metric : str or callable, default="euclidean"
         Metric used to compute the linkage. Can be "euclidean", "l1", "l2",
-        "manhattan", "cosine", or 'precomputed'.
-        If linkage is "ward", only "euclidean" is accepted.
+        "manhattan", "cosine", or "precomputed". If linkage is "ward", only
+        "euclidean" is accepted. If "precomputed", a distance matrix is needed
+        as input for the fit method.
+
+        .. versionadded:: 1.2
+
+        .. deprecated:: 1.4
+           `metric=None` is deprecated in 1.4 and will be removed in 1.6.
+           Let `metric` be the default value (i.e. `"euclidean"`) instead.
 
     memory : str or object with the joblib.Memory interface, default=None
         Used to cache the output of the computation of the tree.
@@ -1116,7 +1190,7 @@ class FeatureAgglomeration(AgglomerativeClustering, AgglomerationTransform):
         argument `axis=1`, and reduce it to an array of size [M].
 
     distance_threshold : float, default=None
-        The linkage distance threshold above which, clusters will not be
+        The linkage distance threshold at or above which clusters will not be
         merged. If not ``None``, ``n_clusters`` must be ``None`` and
         ``compute_full_tree`` must be ``True``.
 
@@ -1193,11 +1267,27 @@ class FeatureAgglomeration(AgglomerativeClustering, AgglomerationTransform):
     (1797, 32)
     """
 
+    _parameter_constraints: dict = {
+        "n_clusters": [Interval(Integral, 1, None, closed="left"), None],
+        "metric": [
+            StrOptions(set(_VALID_METRICS) | {"precomputed"}),
+            callable,
+            Hidden(None),
+        ],
+        "memory": [str, HasMethods("cache"), None],
+        "connectivity": ["array-like", callable, None],
+        "compute_full_tree": [StrOptions({"auto"}), "boolean"],
+        "linkage": [StrOptions(set(_TREE_BUILDERS.keys()))],
+        "pooling_func": [callable],
+        "distance_threshold": [Interval(Real, 0, None, closed="left"), None],
+        "compute_distances": ["boolean"],
+    }
+
     def __init__(
         self,
         n_clusters=2,
         *,
-        affinity="euclidean",
+        metric="euclidean",
         memory=None,
         connectivity=None,
         compute_full_tree="auto",
@@ -1212,12 +1302,13 @@ class FeatureAgglomeration(AgglomerativeClustering, AgglomerationTransform):
             connectivity=connectivity,
             compute_full_tree=compute_full_tree,
             linkage=linkage,
-            affinity=affinity,
+            metric=metric,
             distance_threshold=distance_threshold,
             compute_distances=compute_distances,
         )
         self.pooling_func = pooling_func
 
+    @_fit_context(prefer_skip_nested_validation=True)
     def fit(self, X, y=None):
         """Fit the hierarchical clustering on the data.
 
@@ -1234,8 +1325,9 @@ class FeatureAgglomeration(AgglomerativeClustering, AgglomerationTransform):
         self : object
             Returns the transformer.
         """
-        X = self._validate_data(X, ensure_min_features=2, estimator=self)
+        X = self._validate_data(X, ensure_min_features=2)
         super()._fit(X.T)
+        self._n_features_out = self.n_clusters_
         return self
 
     @property

@@ -1,0 +1,67 @@
+Description: prevent dataset download during doc build. Guard with debian
+ specific environment variable to avoid breaking the functionality.
+Author: Mo Zhou <lumin@debian.org>
+Forward: not-needed
+
+--- scikit-learn.orig/sklearn/datasets/_base.py
++++ scikit-learn/sklearn/datasets/_base.py
+@@ -1428,6 +1428,8 @@
+     file_path: str
+         Full path of the created file.
+     """
++    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++        raise IOError('Debian Policy Section 4.9 prohibits network access during build')
+ 
+     file_path = remote.filename if dirname is None else join(dirname, remote.filename)
+     urlretrieve(remote.url, file_path)
+--- scikit-learn.orig/sklearn/datasets/_openml.py
++++ scikit-learn/sklearn/datasets/_openml.py
+@@ -988,6 +988,9 @@
+     dtypes: category(9), int64(6)
+     memory usage: 2.7 MB
+     """
++    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++        raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
++
+     if cache is False:
+         # no caching will be applied
+         data_home = None
+--- scikit-learn.orig/examples/applications/plot_stock_market.py
++++ scikit-learn/examples/applications/plot_stock_market.py
+@@ -23,6 +23,7 @@
+ # `data.nasdaq.com <https://data.nasdaq.com/>`_ and
+ # `alphavantage.co <https://www.alphavantage.co/>`_.
+ 
++import os
+ import sys
+ 
+ import numpy as np
+@@ -98,6 +99,8 @@
+         "https://raw.githubusercontent.com/scikit-learn/examples-data/"
+         "master/financial-data/{}.csv"
+     )
++    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++        raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
+     quotes.append(pd.read_csv(url.format(symbol)))
+ 
+ close_prices = np.vstack([q["close"] for q in quotes])
+--- scikit-learn.orig/examples/applications/plot_out_of_core_classification.py
++++ scikit-learn/examples/applications/plot_out_of_core_classification.py
+@@ -19,6 +19,7 @@
+ # License: BSD 3 clause
+ 
+ import itertools
++import os
+ import re
+ import sys
+ import tarfile
+@@ -166,7 +167,8 @@
+                 sys.stdout.write("\rdownloaded %s / %s" % (current_sz_mb, total_sz_mb))
+ 
+         archive_path = data_path / ARCHIVE_FILENAME
+-
++        if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
++            raise TimeoutError('Debian Policy Section 4.9 prohibits network access during build')
+         urlretrieve(DOWNLOAD_URL, filename=archive_path, reporthook=progress)
+         if _not_in_sphinx():
+             sys.stdout.write("\r")

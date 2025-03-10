@@ -51,22 +51,22 @@ at index :math:`i` represents the bias values added to layer :math:`i+1`.
 
 The advantages of Multi-layer Perceptron are:
 
-    + Capability to learn non-linear models.
++ Capability to learn non-linear models.
 
-    + Capability to learn models in real-time (on-line learning)
-      using ``partial_fit``.
++ Capability to learn models in real-time (on-line learning)
+  using ``partial_fit``.
 
 
 The disadvantages of Multi-layer Perceptron (MLP) include:
 
-    + MLP with hidden layers have a non-convex loss function where there exists
-      more than one local minimum. Therefore different random weight
-      initializations can lead to different validation accuracy.
++ MLP with hidden layers have a non-convex loss function where there exists
+  more than one local minimum. Therefore different random weight
+  initializations can lead to different validation accuracy.
 
-    + MLP requires tuning a number of hyperparameters such as the number of
-      hidden neurons, layers, and iterations.
++ MLP requires tuning a number of hyperparameters such as the number of
+  hidden neurons, layers, and iterations.
 
-    + MLP is sensitive to feature scaling.
++ MLP is sensitive to feature scaling.
 
 Please see :ref:`Tips on Practical Use <mlp_tips>` section that addresses
 some of these disadvantages.
@@ -199,7 +199,7 @@ the parameter space search.  :math:`Loss` is the loss function used
 for the network.
 
 More details can be found in the documentation of
-`SGD <http://scikit-learn.org/stable/modules/sgd.html>`_
+`SGD <https://scikit-learn.org/stable/modules/sgd.html>`_
 
 Adam is similar to SGD in a sense that it is a stochastic optimizer, but it can
 automatically adjust the amount to update parameters based on adaptive estimates
@@ -266,21 +266,22 @@ In regression, the output remains as :math:`f(x)`; therefore, output activation
 function is just the identity function.
 
 MLP uses different loss functions depending on the problem type. The loss
-function for classification is Cross-Entropy, which in binary case is given as,
+function for classification is Average Cross-Entropy, which in binary case is
+given as,
 
 .. math::
 
-    Loss(\hat{y},y,W) = -y \ln {\hat{y}} - (1-y) \ln{(1-\hat{y})} + \alpha ||W||_2^2
+    Loss(\hat{y},y,W) = -\dfrac{1}{n}\sum_{i=0}^n(y_i \ln {\hat{y_i}} + (1-y_i) \ln{(1-\hat{y_i})}) + \dfrac{\alpha}{2n} ||W||_2^2
 
 where :math:`\alpha ||W||_2^2` is an L2-regularization term (aka penalty)
 that penalizes complex models; and :math:`\alpha > 0` is a non-negative
 hyperparameter that controls the magnitude of the penalty.
 
-For regression, MLP uses the Square Error loss function; written as,
+For regression, MLP uses the Mean Square Error loss function; written as,
 
 .. math::
 
-    Loss(\hat{y},y,W) = \frac{1}{2}||\hat{y} - y ||_2^2 + \frac{\alpha}{2} ||W||_2^2
+    Loss(\hat{y},y,W) = \frac{1}{2n}\sum_{i=0}^n||\hat{y}_i - y_i ||_2^2 + \frac{\alpha}{2n} ||W||_2^2
 
 
 Starting from initial random weights, multi-layer perceptron (MLP) minimizes
@@ -310,34 +311,35 @@ when the improvement in loss is below a certain, small number.
 Tips on Practical Use
 =====================
 
-  * Multi-layer Perceptron is sensitive to feature scaling, so it
-    is highly recommended to scale your data. For example, scale each
-    attribute on the input vector X to [0, 1] or [-1, +1], or standardize
-    it to have mean 0 and variance 1. Note that you must apply the *same*
-    scaling to the test set for meaningful results.
-    You can use :class:`StandardScaler` for standardization.
+* Multi-layer Perceptron is sensitive to feature scaling, so it
+  is highly recommended to scale your data. For example, scale each
+  attribute on the input vector X to [0, 1] or [-1, +1], or standardize
+  it to have mean 0 and variance 1. Note that you must apply the *same*
+  scaling to the test set for meaningful results.
+  You can use :class:`~sklearn.preprocessing.StandardScaler` for standardization.
 
-      >>> from sklearn.preprocessing import StandardScaler  # doctest: +SKIP
-      >>> scaler = StandardScaler()  # doctest: +SKIP
-      >>> # Don't cheat - fit only on training data
-      >>> scaler.fit(X_train)  # doctest: +SKIP
-      >>> X_train = scaler.transform(X_train)  # doctest: +SKIP
-      >>> # apply same transformation to test data
-      >>> X_test = scaler.transform(X_test)  # doctest: +SKIP
+    >>> from sklearn.preprocessing import StandardScaler  # doctest: +SKIP
+    >>> scaler = StandardScaler()  # doctest: +SKIP
+    >>> # Don't cheat - fit only on training data
+    >>> scaler.fit(X_train)  # doctest: +SKIP
+    >>> X_train = scaler.transform(X_train)  # doctest: +SKIP
+    >>> # apply same transformation to test data
+    >>> X_test = scaler.transform(X_test)  # doctest: +SKIP
 
-    An alternative and recommended approach is to use :class:`StandardScaler`
-    in a :class:`Pipeline`
+  An alternative and recommended approach is to use
+  :class:`~sklearn.preprocessing.StandardScaler` in a
+  :class:`~sklearn.pipeline.Pipeline`
 
-  * Finding a reasonable regularization parameter :math:`\alpha` is
-    best done using :class:`GridSearchCV`, usually in the
-    range ``10.0 ** -np.arange(1, 7)``.
+* Finding a reasonable regularization parameter :math:`\alpha` is best done
+  using :class:`~sklearn.model_selection.GridSearchCV`, usually in the range
+  ``10.0 ** -np.arange(1, 7)``.
 
-  * Empirically, we observed that `L-BFGS` converges faster and
-    with better solutions on small datasets. For relatively large
-    datasets, however, `Adam` is very robust. It usually converges
-    quickly and gives pretty good performance. `SGD` with momentum or
-    nesterov's momentum, on the other hand, can perform better than
-    those two algorithms if learning rate is correctly tuned.
+* Empirically, we observed that `L-BFGS` converges faster and
+  with better solutions on small datasets. For relatively large
+  datasets, however, `Adam` is very robust. It usually converges
+  quickly and gives pretty good performance. `SGD` with momentum or
+  nesterov's momentum, on the other hand, can perform better than
+  those two algorithms if learning rate is correctly tuned.
 
 More control with warm_start
 ============================
@@ -368,6 +370,6 @@ or want to do additional monitoring, using ``warm_start=True`` and
       Y. LeCun, L. Bottou, G. Orr, K. Müller - In Neural Networks: Tricks
       of the Trade 1998.
 
-    *  `"Adam: A method for stochastic optimization."
-       <https://arxiv.org/pdf/1412.6980v8.pdf>`_
-       Kingma, Diederik, and Jimmy Ba. arXiv preprint arXiv:1412.6980 (2014).
+    *  :arxiv:`"Adam: A method for stochastic optimization."
+       <1412.6980>`
+       Kingma, Diederik, and Jimmy Ba (2014)

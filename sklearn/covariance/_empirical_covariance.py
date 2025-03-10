@@ -11,22 +11,31 @@ Maximum likelihood covariance estimator.
 
 # avoid division truncation
 import warnings
+
 import numpy as np
 from scipy import linalg
 
 from .. import config_context
-from ..base import BaseEstimator
-from ..utils import check_array
-from ..utils.extmath import fast_logdet
+from ..base import BaseEstimator, _fit_context
 from ..metrics.pairwise import pairwise_distances
+from ..utils import check_array
+from ..utils._param_validation import validate_params
+from ..utils.extmath import fast_logdet
 
 
+@validate_params(
+    {
+        "emp_cov": [np.ndarray],
+        "precision": [np.ndarray],
+    },
+    prefer_skip_nested_validation=True,
+)
 def log_likelihood(emp_cov, precision):
-    """Computes the sample mean of the log_likelihood under a covariance model
+    """Compute the sample mean of the log_likelihood under a covariance model.
 
-    computes the empirical expected log-likelihood (accounting for the
-    normalization terms and scaling), allowing for universal comparison (beyond
-    this software package)
+    Computes the empirical expected log-likelihood, allowing for universal
+    comparison (beyond this software package), and accounts for normalization
+    terms and scaling.
 
     Parameters
     ----------
@@ -48,20 +57,26 @@ def log_likelihood(emp_cov, precision):
     return log_likelihood_
 
 
+@validate_params(
+    {
+        "X": ["array-like"],
+        "assume_centered": ["boolean"],
+    },
+    prefer_skip_nested_validation=True,
+)
 def empirical_covariance(X, *, assume_centered=False):
-    """Computes the Maximum likelihood covariance estimator
-
+    """Compute the Maximum likelihood covariance estimator.
 
     Parameters
     ----------
     X : ndarray of shape (n_samples, n_features)
-        Data from which to compute the covariance estimate
+        Data from which to compute the covariance estimate.
 
     assume_centered : bool, default=False
-        If True, data will not be centered before computation.
+        If `True`, data will not be centered before computation.
         Useful when working with data whose mean is almost, but not exactly
         zero.
-        If False, data will be centered before computation.
+        If `False`, data will be centered before computation.
 
     Returns
     -------
@@ -78,7 +93,7 @@ def empirical_covariance(X, *, assume_centered=False):
            [0.25, 0.25, 0.25],
            [0.25, 0.25, 0.25]])
     """
-    X = np.asarray(X)
+    X = check_array(X, ensure_2d=False, force_all_finite=False)
 
     if X.ndim == 1:
         X = np.reshape(X, (1, -1))
@@ -168,6 +183,11 @@ class EmpiricalCovariance(BaseEstimator):
     array([0.0622..., 0.0193...])
     """
 
+    _parameter_constraints: dict = {
+        "store_precision": ["boolean"],
+        "assume_centered": ["boolean"],
+    }
+
     def __init__(self, *, store_precision=True, assume_centered=False):
         self.store_precision = store_precision
         self.assume_centered = assume_centered
@@ -207,8 +227,9 @@ class EmpiricalCovariance(BaseEstimator):
             precision = linalg.pinvh(self.covariance_, check_finite=False)
         return precision
 
+    @_fit_context(prefer_skip_nested_validation=True)
     def fit(self, X, y=None):
-        """Fit the maximum liklihood covariance estimator to X.
+        """Fit the maximum likelihood covariance estimator to X.
 
         Parameters
         ----------
@@ -298,7 +319,7 @@ class EmpiricalCovariance(BaseEstimator):
         error = comp_cov - self.covariance_
         # compute the error norm
         if norm == "frobenius":
-            squared_norm = np.sum(error ** 2)
+            squared_norm = np.sum(error**2)
         elif norm == "spectral":
             squared_norm = np.amax(linalg.svdvals(np.dot(error.T, error)))
         else:

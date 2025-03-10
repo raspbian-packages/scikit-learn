@@ -9,13 +9,11 @@ Last-Update: 2020-02-13
  doc/sphinxext/github_link.py | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-Index: scikit-learn/doc/sphinxext/github_link.py
-===================================================================
---- scikit-learn.orig/doc/sphinxext/github_link.py	2021-11-27 09:53:40.436505172 +0100
-+++ scikit-learn/doc/sphinxext/github_link.py	2021-11-27 09:53:58.837630439 +0100
-@@ -5,8 +5,8 @@
- import sys
+--- a/doc/sphinxext/github_link.py
++++ b/doc/sphinxext/github_link.py
+@@ -5,8 +5,8 @@ import sys
  from functools import partial
+ from operator import attrgetter
  
 -REVISION_CMD = "git rev-parse --short HEAD"
 -

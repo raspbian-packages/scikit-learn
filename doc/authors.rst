@@ -34,12 +34,20 @@
     <p>Yaroslav Halchenko</p>
     </div>
     <div>
+    <a href='https://github.com/betatim'><img src='https://avatars.githubusercontent.com/u/1448859?v=4' class='avatar' /></a> <br />
+    <p>Tim Head</p>
+    </div>
+    <div>
     <a href='https://github.com/NicolasHug'><img src='https://avatars.githubusercontent.com/u/1190450?v=4' class='avatar' /></a> <br />
     <p>Nicolas Hug</p>
     </div>
     <div>
     <a href='https://github.com/adrinjalali'><img src='https://avatars.githubusercontent.com/u/1663864?v=4' class='avatar' /></a> <br />
     <p>Adrin Jalali</p>
+    </div>
+    <div>
+    <a href='https://github.com/jjerphan'><img src='https://avatars.githubusercontent.com/u/13029839?v=4' class='avatar' /></a> <br />
+    <p>Julien Jerphanion</p>
     </div>
     <div>
     <a href='https://github.com/glemaitre'><img src='https://avatars.githubusercontent.com/u/7454015?v=4' class='avatar' /></a> <br />
@@ -70,6 +78,10 @@
     <p>Hanmin Qin</p>
     </div>
     <div>
+    <a href='https://github.com/OmarManzoor'><img src='https://avatars.githubusercontent.com/u/17495884?v=4' class='avatar' /></a> <br />
+    <p>Omar Salman</p>
+    </div>
+    <div>
     <a href='https://github.com/bthirion'><img src='https://avatars.githubusercontent.com/u/234454?v=4' class='avatar' /></a> <br />
     <p>Bertrand Thirion</p>
     </div>
@@ -88,5 +100,9 @@
     <div>
     <a href='https://github.com/rth'><img src='https://avatars.githubusercontent.com/u/630936?v=4' class='avatar' /></a> <br />
     <p>Roman Yurchak</p>
+    </div>
+    <div>
+    <a href='https://github.com/Micky774'><img src='https://avatars.githubusercontent.com/u/34613774?v=4' class='avatar' /></a> <br />
+    <p>Meekail Zain</p>
     </div>
     </div>
