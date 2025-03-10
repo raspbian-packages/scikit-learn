@@ -47,6 +47,9 @@ EXCLUDE_TESTS = not test_load_boston_alternative and \
 # is not solved
 EXCLUDE_TEST += and not sklearn.ensemble._weight_boosting.AdaBoostRegressor
 
+# need version of scikit-learn newer than 1.4 to support scipy 1.15 fully. In the meantime skip failing tests
+EXCLUDE_TEST += and not test_csr_polynomial_expansion_index_overflow[csr_array-False-True
+
 IGNORE_ERRORS=
 ERROR_LOG=record
 #we rather want to record the test suite errors in build log than ignoring the potentially failing tests
