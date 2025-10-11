@@ -1489,6 +1489,9 @@ def _fetch_remote(remote, dirname=None, n_retries=3, delay=1):
                 f"re-downloading from {remote.url} ."
             )
 
+    if int(os.getenv('DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS', '0')) > 0:
+        raise IOError('Debian Policy Section 4.9 prohibits network access during build')
+
     # We create a temporary file dedicated to this particular download to avoid
     # conflicts with parallel downloads. If the download is successful, the
     # temporary file is atomically renamed to the final file path (with
