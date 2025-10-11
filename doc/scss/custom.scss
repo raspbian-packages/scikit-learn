@@ -164,7 +164,7 @@ details.sd-dropdown {
   }
 }
 
-/* Download/laucher links and top hint (sphinx-gallery) */
+/* Download/launcher links and top hint (sphinx-gallery) */
 
 // https://sphinx-gallery.github.io/stable/advanced.html#using-sphinx-gallery-sidebar-components
 .sphx-glr-download-link-note,
@@ -250,4 +250,15 @@ div.sk-text-image-grid-small {
 
 div.sk-text-image-grid-large {
   @include sk-text-image-grid(100px);
+}
+
+/* Responsive three-column grid list */
+.grid-list-three-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+
+  @media screen and (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
 }

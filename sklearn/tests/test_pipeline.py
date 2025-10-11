@@ -6,7 +6,6 @@ import itertools
 import re
 import shutil
 import time
-import warnings
 from tempfile import mkdtemp
 
 import joblib
@@ -283,6 +282,16 @@ def test_pipeline_invalid_parameters():
     assert params == params2
 
 
+def test_empty_pipeline():
+    X = iris.data
+    y = iris.target
+
+    pipe = Pipeline([])
+    msg = "The pipeline is empty. Please add steps."
+    with pytest.raises(ValueError, match=msg):
+        pipe.fit(X, y)
+
+
 def test_pipeline_init_tuple():
     # Pipeline accepts steps as tuple
     X = np.array([[1, 2]])
@@ -371,7 +380,7 @@ def test_pipeline_raise_set_params_error():
     # expected error message for invalid inner parameter
     error_msg = re.escape(
         "Invalid parameter 'invalid_param' for estimator LinearRegression(). Valid"
-        " parameters are: ['copy_X', 'fit_intercept', 'n_jobs', 'positive']."
+        " parameters are: ['copy_X', 'fit_intercept', 'n_jobs', 'positive', 'tol']."
     )
     with pytest.raises(ValueError, match=error_msg):
         pipe.set_params(cls__invalid_param="nope")
@@ -601,6 +610,44 @@ def test_make_union_kwargs():
     )
     with pytest.raises(TypeError, match=msg):
         make_union(pca, mock, transformer_weights={"pca": 10, "Transf": 1})
+
+
+def create_mock_transformer(base_name, n_features=3):
+    """Helper to create a mock transformer with custom feature names."""
+    mock = Transf()
+    mock.get_feature_names_out = lambda input_features: [
+        f"{base_name}{i}" for i in range(n_features)
+    ]
+    return mock
+
+
+def test_make_union_passes_verbose_feature_names_out():
+    # Test that make_union passes verbose_feature_names_out
+    # to the FeatureUnion.
+    X = iris.data
+    y = iris.target
+
+    pca = PCA()
+    mock = create_mock_transformer("transf")
+    union = make_union(pca, mock, verbose_feature_names_out=False)
+
+    assert not union.verbose_feature_names_out
+
+    fu_union = make_union(pca, mock, verbose_feature_names_out=True)
+    fu_union.fit(X, y)
+
+    assert_array_equal(
+        [
+            "pca__pca0",
+            "pca__pca1",
+            "pca__pca2",
+            "pca__pca3",
+            "transf__transf0",
+            "transf__transf1",
+            "transf__transf2",
+        ],
+        fu_union.get_feature_names_out(),
+    )
 
 
 def test_pipeline_transform():
@@ -1853,24 +1900,20 @@ def test_feature_union_feature_names_in_():
     assert not hasattr(union, "feature_names_in_")
 
 
-# TODO(1.7): remove this test
-def test_pipeline_inverse_transform_Xt_deprecation():
-    X = np.random.RandomState(0).normal(size=(10, 5))
-    pipe = Pipeline([("pca", PCA(n_components=2))])
-    X = pipe.fit_transform(X)
+def test_feature_union_1d_output():
+    """Test that FeatureUnion raises error for 1D transformer outputs."""
+    X = np.arange(6).reshape(3, 2)
 
-    with pytest.raises(TypeError, match="Missing required positional argument"):
-        pipe.inverse_transform()
-
-    with pytest.raises(TypeError, match="Cannot use both X and Xt. Use X only"):
-        pipe.inverse_transform(X=X, Xt=X)
-
-    with warnings.catch_warnings(record=True):
-        warnings.simplefilter("error")
-        pipe.inverse_transform(X)
-
-    with pytest.warns(FutureWarning, match="Xt was renamed X in version 1.5"):
-        pipe.inverse_transform(Xt=X)
+    with pytest.raises(
+        ValueError,
+        match="Transformer 'b' returned an array or dataframe with 1 dimensions",
+    ):
+        FeatureUnion(
+            [
+                ("a", FunctionTransformer(lambda X: X)),
+                ("b", FunctionTransformer(lambda X: X[:, 1])),
+            ]
+        ).fit_transform(X)
 
 
 # transform_input tests
