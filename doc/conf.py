@@ -730,6 +730,7 @@ sphinx_gallery_conf = {
     "plot_gallery": "True",
     "recommender": {"enable": True, "n_examples": 4, "min_df": 12},
     "reset_modules": ("matplotlib", "seaborn", reset_sklearn_config),
+    "only_warn_on_example_error": True,
 }
 if with_jupyterlite:
     sphinx_gallery_conf["jupyterlite"] = {
