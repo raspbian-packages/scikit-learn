@@ -1,3 +1,21 @@
+scikit-learn (1.7.2+dfsg-1) experimental; urgency=medium
+
+  * Team upload.
+  * Migrate debian/watch to version 5 format
+  * New upstream version 1.7.2+dfsg
+    - Fix FTBFS with SciPy 1.16 (Closes: #1109955)
+    - Fix CVE-2024-5206: Potential data leakage from TF-IDF vectorizer
+      (Closes: #1074234)
+  * Update Debian patches
+  * Update d/copyright
+  * Wrap and sort Debian package files
+  * Update build dependencies
+    - Stop using twitter-bootstrap (Closes: #1088346, #1088593)
+  * Clean up d/rules
+  * Migrate to autopkgtest-pkg-pybuild
+
+ -- Timo Röhling <roehling@debian.org>  Sun, 12 Oct 2025 23:07:39 +0200
+
 scikit-learn (1.4.2+dfsg-8) unstable; urgency=medium
 
   [ Michael R. Crusoe ]
