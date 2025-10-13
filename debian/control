@@ -100,10 +100,6 @@ Suggests:
  python-pandas-doc,
  python-scipy-doc,
  python3-doc,
-Conflicts:
- python-scikits-learn-doc,
-Replaces:
- python-scikits-learn-doc,
 Built-Using:
  ${sphinxdoc:Built-Using},
 Description: documentation and examples for scikit-learn
