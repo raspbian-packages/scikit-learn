@@ -372,10 +372,6 @@ def add_js_css_files(app, pagename, templatename, context, doctree):
     if pagename == "api/index":
         # External: jQuery and DataTables
         app.add_js_file("file:///usr/share/javascript/jquery/jquery.min.js")
-        app.add_js_file("https://cdn.datatables.net/2.0.0/js/dataTables.min.js")
-        app.add_css_file(
-            "https://cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css"
-        )
         # Internal: API search initialization and styling
         app.add_js_file("scripts/api-search.js")
         app.add_css_file("styles/api-search.css")
