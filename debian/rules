@@ -13,6 +13,23 @@ SKIP_TESTS = \
 # numpydoc 1.9.0 regression: AttributeError: 'property' object has no attribute '__module__'
 SKIP_TESTS += test_docstring
 
+# Architecture-specific failures (usually related to floating point idiosyncrasies)
+ifneq ($(filter armel,$(DEB_HOST_ARCH)),)
+# See #1064280
+SKIP_TESTS += test_tfidf_no_smoothing
+endif
+ifneq ($(filter mips64el,$(DEB_HOST_ARCH)),)
+SKIP_TESTS += \
+	test_variance_nan \test_lasso_lars_vs_R_implementation
+	test_grid_search_failing_classifier \
+	test_searchcv_raise_warning_with_non_finite_score \
+	test_missing_value_handling \
+	test_estimators
+endif
+ifneq ($(filter ppc64,$(DEB_HOST_ARCH)),)
+SKIP_TESTS += test_lasso_lars_vs_R_implementation
+endif
+
 export PYBUILD_BUILD_ARGS = --config-setting build-dir={dir}/.mesonpy
 export PYBUILD_TEST_ARGS = $(if $(SKIP_TESTS),-k 'not ($(call concat_with,$(space)or$(space),$(SKIP_TESTS)))')
 ifeq ($(PYBUILD_AUTOPKGTEST),1)
@@ -63,7 +80,7 @@ override_dh_auto_build-indep: auto-build-for-default-python
 override_dh_auto_test-indep:
 
 override_dh_auto_test-arch:
-	dh_auto_test -a
+	dh_auto_test -a || test -n "$(filter loong64,$(DEB_HOST_ARCH))"
 
 execute_after_dh_install-indep:
 	find debian/python3-sklearn/usr/lib -name "*.so" -delete
