@@ -4,6 +4,7 @@ Uploaders:
  Yaroslav Halchenko <debian@onerussian.com>,
  Michael Hanke <michael.hanke@gmail.com>,
  Christian Kastner <ckk@debian.org>,
+ Timo Röhling <roehling@debian.org>,
 Section: python
 Priority: optional
 Build-Depends:
