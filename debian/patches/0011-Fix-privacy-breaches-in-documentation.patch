@@ -1,0 +1,44 @@
+From: =?utf-8?q?Timo_R=C3=B6hling?= <roehling@debian.org>
+Date: Mon, 13 Oct 2025 15:02:56 +0200
+Subject: Fix privacy breaches in documentation
+
+---
+ doc/conf.py                     | 4 ----
+ doc/developers/contributing.rst | 9 ---------
+ 2 files changed, 13 deletions(-)
+
+diff --git a/doc/conf.py b/doc/conf.py
+index d597377..d04aa8c 100644
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -371,10 +371,6 @@ def add_js_css_files(app, pagename, templatename, context, doctree):
+     if pagename == "api/index":
+         # External: jQuery and DataTables
+         app.add_js_file("file:///usr/share/javascript/jquery/jquery.min.js")
+-        app.add_js_file("https://cdn.datatables.net/2.0.0/js/dataTables.min.js")
+-        app.add_css_file(
+-            "https://cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css"
+-        )
+         # Internal: API search initialization and styling
+         app.add_js_file("scripts/api-search.js")
+         app.add_css_file("styles/api-search.css")
+diff --git a/doc/developers/contributing.rst b/doc/developers/contributing.rst
+index bebeb93..024766f 100644
+--- a/doc/developers/contributing.rst
++++ b/doc/developers/contributing.rst
+@@ -65,15 +65,6 @@ up" on issues that others reported and that are relevant to you.  It also helps
+ us if you spread the word: reference the project from your blog and articles,
+ link to it from your website, or simply star to say "I use it":
+ 
+-.. raw:: html
+-
+-  <p>
+-    <object
+-      data="https://img.shields.io/github/stars/scikit-learn/scikit-learn?style=for-the-badge&logo=github"
+-      type="image/svg+xml">
+-    </object>
+-  </p>
+-
+ In case a contribution/issue involves changes to the API principles
+ or changes to dependencies or supported versions, it must be backed by a
+ :ref:`slep`, where a SLEP must be submitted as a pull-request to

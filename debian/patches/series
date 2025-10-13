@@ -8,3 +8,4 @@
 0008-Do-not-fail-documentation-build-on-example-errors.patch
 0009-Use-local-jQuery.patch
 0010-Do-not-force-pytest-colored-output.patch
+0011-Fix-privacy-breaches-in-documentation.patch

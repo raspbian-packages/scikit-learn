@@ -46,6 +46,7 @@ Copyright: 2001-2018, Python Software Foundation
 License: PSF-2.0 and BSD-3-Clause
 
 Files: sklearn/utils/src/MurmurHash3.*
+Copyright: none
 License: public-domain
  MurmurHash3 was written by Austin Appleby, and is placed in the public
  domain. The author hereby disclaims copyright to this source code.
