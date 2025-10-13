@@ -75,7 +75,6 @@ Suggests:
  python-sklearn-doc,
 Enhances:
  python3-mdp,
- python3-mvpa2,
 Description: Python modules for machine learning and data mining - Python 3
  scikit-learn is a collection of Python modules relevant to
  machine/statistical learning and data mining.  Non-exhaustive list of
