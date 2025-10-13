@@ -65,15 +65,6 @@ up" on issues that others reported and that are relevant to you.  It also helps
 us if you spread the word: reference the project from your blog and articles,
 link to it from your website, or simply star to say "I use it":
 
-.. raw:: html
-
-  <p>
-    <object
-      data="https://img.shields.io/github/stars/scikit-learn/scikit-learn?style=for-the-badge&logo=github"
-      type="image/svg+xml">
-    </object>
-  </p>
-
 In case a contribution/issue involves changes to the API principles
 or changes to dependencies or supported versions, it must be backed by a
 :ref:`slep`, where a SLEP must be submitted as a pull-request to
