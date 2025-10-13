@@ -7,3 +7,4 @@
 0007-Use-local-MathJax.patch
 0008-Do-not-fail-documentation-build-on-example-errors.patch
 0009-Use-local-jQuery.patch
+0010-Do-not-force-pytest-colored-output.patch
