@@ -110,7 +110,6 @@ doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS"
 testpaths = "sklearn"
 addopts = [
     "--disable-pytest-warnings",
-    "--color=yes",
     "--import-mode=importlib",
 ]
 # Used by pytest-run-parallel when testing thread-safety (with or without GIL).
