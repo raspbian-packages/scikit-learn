@@ -1,3 +1,15 @@
+scikit-learn (1.7.2+dfsg-2) experimental; urgency=medium
+
+  * Skip failing tests on non-amd64 architectures
+  * Add myself to uploaders
+  * Bump Standards-Version to 4.7.2
+  * Drop Suggests: for non-existing package
+  * Drop ancient Conflicts/Replaces for python-sklearn-doc
+  * Do not force pytest colored output
+  * Fix Lintian warnings
+
+ -- Timo Röhling <roehling@debian.org>  Mon, 13 Oct 2025 13:12:24 +0200
+
 scikit-learn (1.7.2+dfsg-1) experimental; urgency=medium
 
   * Team upload.
