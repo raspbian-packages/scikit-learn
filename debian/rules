@@ -73,6 +73,7 @@ override_dh_auto_build-arch: auto-build-for-default-python auto-build-for-other-
 
 override_dh_auto_build-indep: auto-build-for-default-python
 	$(MAKE) -C doc html \
+		LANG=C.UTF-8 \
 		SPHINXOPTS= \
 		PYTHON=python3 \
 		PYTHONPATH=$(shell pybuild --print {build_dir} --interpreter python3)
