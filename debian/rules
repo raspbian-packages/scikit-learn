@@ -21,7 +21,8 @@ SKIP_TESTS += test_tfidf_no_smoothing
 endif
 ifneq ($(filter mips64el,$(DEB_HOST_ARCH)),)
 SKIP_TESTS += \
-	test_variance_nan \test_lasso_lars_vs_R_implementation
+	test_variance_nan \
+	test_lasso_lars_vs_R_implementation \
 	test_grid_search_failing_classifier \
 	test_searchcv_raise_warning_with_non_finite_score \
 	test_missing_value_handling \
@@ -36,8 +37,7 @@ export PYBUILD_TEST_ARGS = $(if $(SKIP_TESTS),-k 'not ($(call concat_with,$(spac
 ifeq ($(PYBUILD_AUTOPKGTEST),1)
 PYBUILD_TEST_ARGS += /usr/lib/python3/dist-packages/sklearn
 else
-# Disable network access and skip network tests on buildd
-
+# Disable network access and skip network tests on buildd.
 # DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS prevents the sphinx doc
 # build from downloading datasets for the examples; this functionality is
 # patched in for Debian. See also #1015805
