@@ -85,7 +85,7 @@ override_dh_auto_test-arch:
 
 execute_after_dh_install-indep:
 	find debian/python3-sklearn/usr/lib -name "*.so" -delete
-	find debian/python3-sklearn/usr/lib \( -name "README*" -o -name "LICENSE" -o -name "COPYRIGHT" \) -delete
+	find debian/python3-sklearn/usr/lib \( -name "README" -o -name "README.md" -o -name "LICENSE" -o -name "COPYRIGHT" \) -delete
 
 execute_after_dh_installdocs-indep:
 	mv debian/python-sklearn-doc/usr/share/doc/python-sklearn-doc/stable \
