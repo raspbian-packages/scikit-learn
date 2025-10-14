@@ -4,3 +4,4 @@ include:
 
 variables:
   RELEASE: 'unstable'
+  SALSA_CI_LINTIAN_SUPPRESS_TAGS: 'distribution-and-experimental-mismatch'
