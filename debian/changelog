@@ -1,3 +1,12 @@
+scikit-learn (1.7.2+dfsg-3) unstable; urgency=medium
+
+  * Upload to unstable.
+  * Fix accidental formatting corruption in d/rules
+  * Keep README.txt installed in sklearn.datasets module (Closes: #1118347)
+  * Fix documentation depending on localization
+
+ -- Timo Röhling <roehling@debian.org>  Sun, 19 Oct 2025 21:38:20 +0200
+
 scikit-learn (1.7.2+dfsg-2) experimental; urgency=medium
 
   * Skip failing tests on non-amd64 architectures
