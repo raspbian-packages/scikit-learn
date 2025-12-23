@@ -1,3 +1,11 @@
+scikit-learn (1.8.0+dfsg-1) experimental; urgency=medium
+
+  * Use SEMANTIC_VERSION in d/watch
+  * New upstream version 1.8.0+dfsg
+  * Refresh patches (no functional changes)
+
+ -- Timo Röhling <roehling@debian.org>  Tue, 23 Dec 2025 20:06:06 +0100
+
 scikit-learn (1.7.2+dfsg-3) unstable; urgency=medium
 
   * Upload to unstable.
