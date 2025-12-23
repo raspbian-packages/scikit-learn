@@ -19,21 +19,25 @@ from scipy.integrate import trapezoid
 from scipy.sparse import csr_matrix, issparse
 from scipy.stats import rankdata
 
-from ..exceptions import UndefinedMetricWarning
-from ..preprocessing import label_binarize
-from ..utils import (
+from sklearn.exceptions import UndefinedMetricWarning
+from sklearn.metrics._base import _average_binary_score, _average_multiclass_ovo_score
+from sklearn.preprocessing import label_binarize
+from sklearn.utils import (
     assert_all_finite,
     check_array,
     check_consistent_length,
     column_or_1d,
 )
-from ..utils._encode import _encode, _unique
-from ..utils._param_validation import Interval, StrOptions, validate_params
-from ..utils.extmath import stable_cumsum
-from ..utils.multiclass import type_of_target
-from ..utils.sparsefuncs import count_nonzero
-from ..utils.validation import _check_pos_label_consistency, _check_sample_weight
-from ._base import _average_binary_score, _average_multiclass_ovo_score
+from sklearn.utils._array_api import (
+    _max_precision_float_dtype,
+    get_namespace_and_device,
+    size,
+)
+from sklearn.utils._encode import _encode, _unique
+from sklearn.utils._param_validation import Interval, StrOptions, validate_params
+from sklearn.utils.multiclass import type_of_target
+from sklearn.utils.sparsefuncs import count_nonzero
+from sklearn.utils.validation import _check_pos_label_consistency, _check_sample_weight
 
 
 @validate_params(
@@ -283,9 +287,11 @@ def det_curve(
 ):
     """Compute Detection Error Tradeoff (DET) for different probability thresholds.
 
-    .. note::
-       This metric is used for evaluation of ranking and error tradeoffs of
-       a binary classification task.
+    Note: Support beyond :term:`binary` classification tasks, via one-vs-rest or
+    one-vs-one, is not implemented.
+
+    The DET curve is used for evaluation of ranking and error tradeoffs in binary
+    classification tasks.
 
     Read more in the :ref:`User Guide <det_curve>`.
 
@@ -353,6 +359,8 @@ def det_curve(
     DetCurveDisplay : DET curve visualization.
     roc_curve : Compute Receiver operating characteristic (ROC) curve.
     precision_recall_curve : Compute precision-recall curve.
+    confusion_matrix_at_thresholds : For binary classification, compute true negative,
+        false positive, false negative and true positive counts per threshold.
 
     Examples
     --------
@@ -368,15 +376,17 @@ def det_curve(
     >>> thresholds
     array([0.35, 0.4 , 0.8 ])
     """
-    fps, tps, thresholds = _binary_clf_curve(
+    xp, _, device = get_namespace_and_device(y_true, y_score)
+    _, fps, _, tps, thresholds = confusion_matrix_at_thresholds(
         y_true, y_score, pos_label=pos_label, sample_weight=sample_weight
     )
 
     # add a threshold at inf where the clf always predicts the negative class
     # i.e. tps = fps = 0
-    tps = np.concatenate(([0], tps))
-    fps = np.concatenate(([0], fps))
-    thresholds = np.concatenate(([np.inf], thresholds))
+    tps = xp.concat((xp.asarray([0.0], device=device), tps))
+    fps = xp.concat((xp.asarray([0.0], device=device), fps))
+    thresholds = xp.astype(thresholds, _max_precision_float_dtype(xp, device))
+    thresholds = xp.concat((xp.asarray([xp.inf], device=device), thresholds))
 
     if drop_intermediate and len(fps) > 2:
         # Drop thresholds where true positives (tp) do not change from the
@@ -385,16 +395,20 @@ def det_curve(
         # false positive rate (fpr) changes, producing horizontal line segments
         # in the transformed (normal deviate) scale. These intermediate points
         # can be dropped to create lighter DET curve plots.
-        optimal_idxs = np.where(
-            np.concatenate(
-                [[True], np.logical_or(np.diff(tps[:-1]), np.diff(tps[1:])), [True]]
+        optimal_idxs = xp.where(
+            xp.concat(
+                [
+                    xp.asarray([True], device=device),
+                    xp.logical_or(xp.diff(tps[:-1]), xp.diff(tps[1:])),
+                    xp.asarray([True], device=device),
+                ]
             )
         )[0]
         fps = fps[optimal_idxs]
         tps = tps[optimal_idxs]
         thresholds = thresholds[optimal_idxs]
 
-    if len(np.unique(y_true)) != 2:
+    if xp.unique_values(y_true).shape[0] != 2:
         raise ValueError(
             "Only one class is present in y_true. Detection error "
             "tradeoff curve is not defined in that case."
@@ -406,16 +420,20 @@ def det_curve(
 
     # start with false positives zero, which may be at a finite threshold
     first_ind = (
-        fps.searchsorted(fps[0], side="right") - 1
-        if fps.searchsorted(fps[0], side="right") > 0
+        xp.searchsorted(fps, fps[0], side="right") - 1
+        if xp.searchsorted(fps, fps[0], side="right") > 0
         else None
     )
     # stop with false negatives zero
-    last_ind = tps.searchsorted(tps[-1]) + 1
+    last_ind = xp.searchsorted(tps, tps[-1]) + 1
     sl = slice(first_ind, last_ind)
 
     # reverse the output such that list of false positives is decreasing
-    return (fps[sl][::-1] / n_count, fns[sl][::-1] / p_count, thresholds[sl][::-1])
+    return (
+        xp.flip(fps[sl]) / n_count,
+        xp.flip(fns[sl]) / p_count,
+        xp.flip(thresholds[sl]),
+    )
 
 
 def _binary_roc_auc_score(y_true, y_score, sample_weight=None, max_fpr=None):
@@ -476,8 +494,8 @@ def roc_auc_score(
     """Compute Area Under the Receiver Operating Characteristic Curve (ROC AUC) \
     from prediction scores.
 
-    Note: this implementation can be used with binary, multiclass and
-    multilabel classification, but some restrictions apply (see Parameters).
+    Note: this implementation can be used with :term:`binary`, :term:`multiclass` and
+    :term:`multilabel` classification, but some restrictions apply (see Parameters).
 
     Read more in the :ref:`User Guide <roc_metrics>`.
 
@@ -491,7 +509,7 @@ def roc_auc_score(
     y_score : array-like of shape (n_samples,) or (n_samples, n_classes)
         Target scores.
 
-        * In the binary case, it corresponds to an array of shape
+        * In the :term:`binary` case, it corresponds to an array of shape
           `(n_samples,)`. Both probability estimates and non-thresholded
           decision values can be provided. The probability estimates correspond
           to the **probability of the class with the greater label**,
@@ -499,7 +517,7 @@ def roc_auc_score(
           `estimator.predict_proba(X, y)[:, 1]`. The decision values
           corresponds to the output of `estimator.decision_function(X, y)`.
           See more information in the :ref:`User guide <roc_auc_binary>`;
-        * In the multiclass case, it corresponds to an array of shape
+        * In the :term:`multiclass` case, it corresponds to an array of shape
           `(n_samples, n_classes)` of probability estimates provided by the
           `predict_proba` method. The probability estimates **must**
           sum to 1 across the possible classes. In addition, the order of the
@@ -507,7 +525,7 @@ def roc_auc_score(
           if provided, or else to the numerical or lexicographical order of
           the labels in ``y_true``. See more information in the
           :ref:`User guide <roc_auc_multiclass>`;
-        * In the multilabel case, it corresponds to an array of shape
+        * In the :term:`multilabel` case, it corresponds to an array of shape
           `(n_samples, n_classes)`. Probability estimates are provided by the
           `predict_proba` method and the non-thresholded decision values by
           the `decision_function` method. The probability estimates correspond
@@ -823,8 +841,21 @@ def _multiclass_roc_auc_score(
         )
 
 
-def _binary_clf_curve(y_true, y_score, pos_label=None, sample_weight=None):
-    """Calculate true and false positives per binary classification threshold.
+@validate_params(
+    {
+        "y_true": ["array-like"],
+        "y_score": ["array-like"],
+        "pos_label": [Real, str, "boolean", None],
+        "sample_weight": ["array-like", None],
+    },
+    prefer_skip_nested_validation=True,
+)
+def confusion_matrix_at_thresholds(y_true, y_score, pos_label=None, sample_weight=None):
+    """Calculate :term:`binary` confusion matrix terms per classification threshold.
+
+    Read more in the :ref:`User Guide <confusion_matrix>`.
+
+    .. versionadded:: 1.8
 
     Parameters
     ----------
@@ -842,25 +873,59 @@ def _binary_clf_curve(y_true, y_score, pos_label=None, sample_weight=None):
 
     Returns
     -------
+    tns : ndarray of shape (n_thresholds,)
+        A count of true negatives, at index `i` being the number of negative
+        samples assigned a `score < thresholds[i]`.
+
     fps : ndarray of shape (n_thresholds,)
-        A count of false positives, at index i being the number of negative
-        samples assigned a score >= thresholds[i]. The total number of
-        negative samples is equal to fps[-1] (thus true negatives are given by
-        fps[-1] - fps).
+        A count of false positives, at index `i` being the number of negative
+        samples assigned a `score >= thresholds[i]`. The total number of
+        negative samples is equal to `fps[-1]`.
+
+    fns : ndarray of shape (n_thresholds,)
+        A count of false negatives, at index `i` being the number of positive
+        samples assigned a `score < thresholds[i]`.
 
     tps : ndarray of shape (n_thresholds,)
-        An increasing count of true positives, at index i being the number
-        of positive samples assigned a score >= thresholds[i]. The total
-        number of positive samples is equal to tps[-1] (thus false negatives
-        are given by tps[-1] - tps).
+        An increasing count of true positives, at index `i` being the number
+        of positive samples assigned a `score >= thresholds[i]`. The total
+        number of positive samples is equal to `tps[-1]`.
 
     thresholds : ndarray of shape (n_thresholds,)
         Decreasing score values.
+
+    See Also
+    --------
+    confusion_matrix : Compute classification matrix to evaluate the accuracy of a
+        classifier.
+    roc_curve : Compute Receiver operating characteristic (ROC) curve.
+    precision_recall_curve : Compute precision-recall curve.
+    det_curve : Compute Detection error tradeoff (DET) curve.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from sklearn.metrics import confusion_matrix_at_thresholds
+    >>> y_true = np.array([0., 0., 1., 1.])
+    >>> y_score = np.array([0.1, 0.4, 0.35, 0.8])
+    >>> tns, fps, fns, tps, thresholds = confusion_matrix_at_thresholds(y_true, y_score)
+    >>> tns
+    array([2., 1., 1., 0.])
+    >>> fps
+    array([0., 1., 1., 2.])
+    >>> fns
+    array([1., 1., 0., 0.])
+    >>> tps
+    array([1., 1., 2., 2.])
+    >>> thresholds
+    array([0.8 , 0.4 , 0.35, 0.1 ])
     """
     # Check to make sure y_true is valid
     y_type = type_of_target(y_true, input_name="y_true")
     if not (y_type == "binary" or (y_type == "multiclass" and pos_label is not None)):
         raise ValueError("{0} format is not supported".format(y_type))
+
+    xp, _, device = get_namespace_and_device(y_true, y_score, sample_weight)
 
     check_consistent_length(y_true, y_score, sample_weight)
     y_true = column_or_1d(y_true)
@@ -883,7 +948,7 @@ def _binary_clf_curve(y_true, y_score, pos_label=None, sample_weight=None):
     y_true = y_true == pos_label
 
     # sort scores and corresponding truth values
-    desc_score_indices = np.argsort(y_score, kind="mergesort")[::-1]
+    desc_score_indices = xp.argsort(y_score, stable=True, descending=True)
     y_score = y_score[desc_score_indices]
     y_true = y_true[desc_score_indices]
     if sample_weight is not None:
@@ -894,18 +959,30 @@ def _binary_clf_curve(y_true, y_score, pos_label=None, sample_weight=None):
     # y_score typically has many tied values. Here we extract
     # the indices associated with the distinct values. We also
     # concatenate a value for the end of the curve.
-    distinct_value_indices = np.where(np.diff(y_score))[0]
-    threshold_idxs = np.r_[distinct_value_indices, y_true.size - 1]
+    distinct_value_indices = xp.nonzero(xp.diff(y_score))[0]
+    threshold_idxs = xp.concat(
+        [distinct_value_indices, xp.asarray([size(y_true) - 1], device=device)]
+    )
 
     # accumulate the true positives with decreasing threshold
-    tps = stable_cumsum(y_true * weight)[threshold_idxs]
+    max_float_dtype = _max_precision_float_dtype(xp, device)
+    # Perform the weighted cumulative sum using float64 precision when possible
+    # to avoid numerical stability problem with tens of millions of very noisy
+    # predictions:
+    # https://github.com/scikit-learn/scikit-learn/issues/31533#issuecomment-2967062437
+    y_true = xp.astype(y_true, max_float_dtype)
+    tps = xp.cumulative_sum(y_true * weight, dtype=max_float_dtype)[threshold_idxs]
     if sample_weight is not None:
         # express fps as a cumsum to ensure fps is increasing even in
         # the presence of floating point errors
-        fps = stable_cumsum((1 - y_true) * weight)[threshold_idxs]
+        fps = xp.cumulative_sum((1 - y_true) * weight, dtype=max_float_dtype)[
+            threshold_idxs
+        ]
     else:
-        fps = 1 + threshold_idxs - tps
-    return fps, tps, y_score[threshold_idxs]
+        fps = 1 + xp.astype(threshold_idxs, max_float_dtype) - tps
+    tns = fps[-1] - fps
+    fns = tps[-1] - tps
+    return tns, fps, fns, tps, y_score[threshold_idxs]
 
 
 @validate_params(
@@ -928,7 +1005,8 @@ def precision_recall_curve(
 ):
     """Compute precision-recall pairs for different probability thresholds.
 
-    Note: this implementation is restricted to the binary classification task.
+    Note: Support beyond :term:`binary` classification tasks, via one-vs-rest or
+    one-vs-one, is not implemented.
 
     The precision is the ratio ``tp / (tp + fp)`` where ``tp`` is the number of
     true positives and ``fp`` the number of false positives. The precision is
@@ -999,6 +1077,8 @@ def precision_recall_curve(
     average_precision_score : Compute average precision from prediction scores.
     det_curve: Compute error rates for different probability thresholds.
     roc_curve : Compute Receiver operating characteristic (ROC) curve.
+    confusion_matrix_at_thresholds : For binary classification, compute true negative,
+        false positive, false negative and true positive counts per threshold.
 
     Examples
     --------
@@ -1015,19 +1095,25 @@ def precision_recall_curve(
     >>> thresholds
     array([0.1 , 0.35, 0.4 , 0.8 ])
     """
-    fps, tps, thresholds = _binary_clf_curve(
+    xp, _, device = get_namespace_and_device(y_true, y_score)
+
+    _, fps, _, tps, thresholds = confusion_matrix_at_thresholds(
         y_true, y_score, pos_label=pos_label, sample_weight=sample_weight
     )
 
-    if drop_intermediate and len(fps) > 2:
+    if drop_intermediate and fps.shape[0] > 2:
         # Drop thresholds corresponding to points where true positives (tps)
         # do not change from the previous or subsequent point. This will keep
         # only the first and last point for each tps value. All points
         # with the same tps value have the same recall and thus x coordinate.
         # They appear as a vertical line on the plot.
-        optimal_idxs = np.where(
-            np.concatenate(
-                [[True], np.logical_or(np.diff(tps[:-1]), np.diff(tps[1:])), [True]]
+        optimal_idxs = xp.where(
+            xp.concat(
+                [
+                    xp.asarray([True], device=device),
+                    xp.logical_or(xp.diff(tps[:-1]), xp.diff(tps[1:])),
+                    xp.asarray([True], device=device),
+                ]
             )
         )[0]
         fps = fps[optimal_idxs]
@@ -1037,8 +1123,7 @@ def precision_recall_curve(
     ps = tps + fps
     # Initialize the result array with zeros to make sure that precision[ps == 0]
     # does not contain uninitialized values.
-    precision = np.zeros_like(tps)
-    np.divide(tps, ps, out=precision, where=(ps != 0))
+    precision = xp.where(ps != 0, xp.divide(tps, ps), 0.0)
 
     # When no positive label in y_true, recall is set to 1 for all thresholds
     # tps[-1] == 0 <=> y_true == all negative labels
@@ -1047,13 +1132,16 @@ def precision_recall_curve(
             "No positive class found in y_true, "
             "recall is set to one for all thresholds."
         )
-        recall = np.ones_like(tps)
+        recall = xp.full(tps.shape, 1.0)
     else:
         recall = tps / tps[-1]
 
     # reverse the outputs so recall is decreasing
-    sl = slice(None, None, -1)
-    return np.hstack((precision[sl], 1)), np.hstack((recall[sl], 0)), thresholds[sl]
+    return (
+        xp.concat((xp.flip(precision), xp.asarray([1.0], device=device))),
+        xp.concat((xp.flip(recall), xp.asarray([0.0], device=device))),
+        xp.flip(thresholds),
+    )
 
 
 @validate_params(
@@ -1071,7 +1159,8 @@ def roc_curve(
 ):
     """Compute Receiver operating characteristic (ROC).
 
-    Note: this implementation is restricted to the binary classification task.
+    Note: Support beyond :term:`binary` classification tasks, via one-vs-rest or
+    one-vs-one, is not implemented.
 
     Read more in the :ref:`User Guide <roc_metrics>`.
 
@@ -1107,7 +1196,7 @@ def roc_curve(
     Returns
     -------
     fpr : ndarray of shape (>2,)
-        Increasing false positive rates such that element i is the false
+        Increasing false positive rates such that element `i` is the false
         positive rate of predictions with score >= `thresholds[i]`.
 
     tpr : ndarray of shape (>2,)
@@ -1129,8 +1218,12 @@ def roc_curve(
         (ROC) curve given an estimator and some data.
     RocCurveDisplay.from_predictions : Plot Receiver Operating Characteristic
         (ROC) curve given the true and predicted values.
+    RocCurveDisplay.from_cv_results : Plot multi-fold ROC curves given
+        cross-validation results.
     det_curve: Compute error rates for different probability thresholds.
     roc_auc_score : Compute the area under the ROC curve.
+    confusion_matrix_at_thresholds : For binary classification, compute true negative,
+        false positive, false negative and true positive counts per threshold.
 
     Notes
     -----
@@ -1160,7 +1253,9 @@ def roc_curve(
     >>> thresholds
     array([ inf, 0.8 , 0.4 , 0.35, 0.1 ])
     """
-    fps, tps, thresholds = _binary_clf_curve(
+    xp, _, device = get_namespace_and_device(y_true, y_score)
+
+    _, fps, _, tps, thresholds = confusion_matrix_at_thresholds(
         y_true, y_score, pos_label=pos_label, sample_weight=sample_weight
     )
 
@@ -1170,12 +1265,18 @@ def roc_curve(
     # Here np.diff(_, 2) is used as a "second derivative" to tell if there
     # is a corner at the point. Both fps and tps must be tested to handle
     # thresholds with multiple data points (which are combined in
-    # _binary_clf_curve). This keeps all cases where the point should be kept,
-    # but does not drop more complicated cases like fps = [1, 3, 7],
+    # confusion_matrix_at_thresholds). This keeps all cases where the point should be
+    # kept, but does not drop more complicated cases like fps = [1, 3, 7],
     # tps = [1, 2, 4]; there is no harm in keeping too many thresholds.
-    if drop_intermediate and len(fps) > 2:
-        optimal_idxs = np.where(
-            np.r_[True, np.logical_or(np.diff(fps, 2), np.diff(tps, 2)), True]
+    if drop_intermediate and fps.shape[0] > 2:
+        optimal_idxs = xp.where(
+            xp.concat(
+                [
+                    xp.asarray([True], device=device),
+                    xp.logical_or(xp.diff(fps, 2), xp.diff(tps, 2)),
+                    xp.asarray([True], device=device),
+                ]
+            )
         )[0]
         fps = fps[optimal_idxs]
         tps = tps[optimal_idxs]
@@ -1183,17 +1284,18 @@ def roc_curve(
 
     # Add an extra threshold position
     # to make sure that the curve starts at (0, 0)
-    tps = np.r_[0, tps]
-    fps = np.r_[0, fps]
+    tps = xp.concat([xp.asarray([0.0], device=device), tps])
+    fps = xp.concat([xp.asarray([0.0], device=device), fps])
     # get dtype of `y_score` even if it is an array-like
-    thresholds = np.r_[np.inf, thresholds]
+    thresholds = xp.astype(thresholds, _max_precision_float_dtype(xp, device))
+    thresholds = xp.concat([xp.asarray([xp.inf], device=device), thresholds])
 
     if fps[-1] <= 0:
         warnings.warn(
             "No negative samples in y_true, false positive value should be meaningless",
             UndefinedMetricWarning,
         )
-        fpr = np.repeat(np.nan, fps.shape)
+        fpr = xp.full(fps.shape, xp.nan)
     else:
         fpr = fps / fps[-1]
 
@@ -1202,7 +1304,7 @@ def roc_curve(
             "No positive samples in y_true, true positive value should be meaningless",
             UndefinedMetricWarning,
         )
-        tpr = np.repeat(np.nan, tps.shape)
+        tpr = xp.full(tps.shape, xp.nan)
     else:
         tpr = tps / tps[-1]
 
