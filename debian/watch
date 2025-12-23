@@ -6,3 +6,4 @@ Project: scikit-learn
 Dversion-Mangle: auto
 Repack: yes
 Repack-Suffix: +dfsg
+Version-Type: SEMANTIC_VERSION
