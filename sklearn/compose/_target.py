@@ -5,20 +5,20 @@ import warnings
 
 import numpy as np
 
-from ..base import BaseEstimator, RegressorMixin, _fit_context, clone
-from ..exceptions import NotFittedError
-from ..linear_model import LinearRegression
-from ..preprocessing import FunctionTransformer
-from ..utils import Bunch, _safe_indexing, check_array
-from ..utils._metadata_requests import (
+from sklearn.base import BaseEstimator, RegressorMixin, _fit_context, clone
+from sklearn.exceptions import NotFittedError
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import FunctionTransformer
+from sklearn.utils import Bunch, _safe_indexing, check_array
+from sklearn.utils._metadata_requests import (
     MetadataRouter,
     MethodMapping,
     _routing_enabled,
     process_routing,
 )
-from ..utils._param_validation import HasMethods
-from ..utils._tags import get_tags
-from ..utils.validation import check_is_fitted
+from sklearn.utils._param_validation import HasMethods
+from sklearn.utils._tags import get_tags
+from sklearn.utils.validation import check_is_fitted
 
 __all__ = ["TransformedTargetRegressor"]
 
@@ -355,7 +355,7 @@ class TransformedTargetRegressor(RegressorMixin, BaseEstimator):
     @property
     def n_features_in_(self):
         """Number of features seen during :term:`fit`."""
-        # For consistency with other estimators we raise a AttributeError so
+        # For consistency with other estimators we raise an AttributeError so
         # that hasattr() returns False the estimator isn't fitted.
         try:
             check_is_fitted(self)
@@ -382,7 +382,7 @@ class TransformedTargetRegressor(RegressorMixin, BaseEstimator):
             A :class:`~sklearn.utils.metadata_routing.MetadataRouter` encapsulating
             routing information.
         """
-        router = MetadataRouter(owner=self.__class__.__name__).add(
+        router = MetadataRouter(owner=self).add(
             regressor=self._get_regressor(),
             method_mapping=MethodMapping()
             .add(caller="fit", callee="fit")
