@@ -7,14 +7,14 @@ Subject: Do not force pytest colored output
  1 file changed, 1 deletion(-)
 
 diff --git a/pyproject.toml b/pyproject.toml
-index f7cf10f..3117c1f 100644
+index a867cda..18beca8 100644
 --- a/pyproject.toml
 +++ b/pyproject.toml
-@@ -108,7 +108,6 @@ doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS"
+@@ -106,7 +106,6 @@ doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS"
  testpaths = "sklearn"
  addopts = [
      "--disable-pytest-warnings",
 -    "--color=yes",
      "--import-mode=importlib",
  ]
- 
+ # Used by pytest-run-parallel when testing thread-safety (with or without GIL).

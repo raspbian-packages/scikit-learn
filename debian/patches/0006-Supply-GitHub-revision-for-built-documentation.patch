@@ -10,7 +10,7 @@ Last-Update: 2020-02-13
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/doc/sphinxext/github_link.py b/doc/sphinxext/github_link.py
-index 2cd1fbd..6e7d07e 100644
+index f0de6f1..ad07a50 100644
 --- a/doc/sphinxext/github_link.py
 +++ b/doc/sphinxext/github_link.py
 @@ -5,8 +5,8 @@ import sys

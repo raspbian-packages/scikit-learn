@@ -24,10 +24,10 @@ sklearn/neural_network/tests/test_rbm.py:239: AssertionError
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/sklearn/neural_network/tests/test_rbm.py b/sklearn/neural_network/tests/test_rbm.py
-index 8211c97..adfdc68 100644
+index 782b4fb..7233d4c 100644
 --- a/sklearn/neural_network/tests/test_rbm.py
 +++ b/sklearn/neural_network/tests/test_rbm.py
-@@ -235,7 +235,7 @@ def test_convergence_dtype_consistency():
+@@ -229,7 +229,7 @@ def test_convergence_dtype_consistency():
      assert_allclose(
          rbm_64.intercept_visible_, rbm_32.intercept_visible_, rtol=1e-05, atol=0
      )

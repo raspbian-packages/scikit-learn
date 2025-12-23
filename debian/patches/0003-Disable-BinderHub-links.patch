@@ -8,10 +8,10 @@ Forwarded: not needed
  1 file changed, 8 deletions(-)
 
 diff --git a/doc/conf.py b/doc/conf.py
-index 71c9ec5..400450e 100644
+index 0a06daa..8a46474 100644
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -731,14 +731,6 @@ sphinx_gallery_conf = {
+@@ -738,14 +738,6 @@ sphinx_gallery_conf = {
      "gallery_dirs": [sg_gallery_dir],
      "subsection_order": SubSectionTitleOrder(sg_examples_dir),
      "within_subsection_order": SKExampleTitleSortKey,

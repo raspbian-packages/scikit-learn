@@ -8,7 +8,7 @@ Forwarded: not-needed
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/doc/conf.py b/doc/conf.py
-index 8b8e271..13b6886 100644
+index fe772ca..5185da4 100644
 --- a/doc/conf.py
 +++ b/doc/conf.py
 @@ -125,7 +125,7 @@ if os.environ.get("NO_MATHJAX"):

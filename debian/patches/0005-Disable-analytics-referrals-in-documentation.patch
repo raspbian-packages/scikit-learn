@@ -18,7 +18,7 @@ Forwarded: Not-Needed
  1 file changed, 4 deletions(-)
 
 diff --git a/doc/conf.py b/doc/conf.py
-index 6a464ea..8b8e271 100644
+index 5510647..fe772ca 100644
 --- a/doc/conf.py
 +++ b/doc/conf.py
 @@ -229,10 +229,6 @@ html_theme_options = {

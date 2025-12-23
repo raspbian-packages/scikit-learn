@@ -7,10 +7,10 @@ Subject: Use local jQuery
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/doc/conf.py b/doc/conf.py
-index 5ba8926..d597377 100644
+index 66392cf..902dde0 100644
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -370,7 +370,7 @@ def add_js_css_files(app, pagename, templatename, context, doctree):
+@@ -371,7 +371,7 @@ def add_js_css_files(app, pagename, templatename, context, doctree):
      """
      if pagename == "api/index":
          # External: jQuery and DataTables
