@@ -55,7 +55,7 @@ Build-Depends-Indep:
  python3-sphinxcontrib-sass <!nodoc>,
  python3-sphinxcontrib-towncrier <!nodoc>,
  python3-sphinxext-opengraph <!nodoc>,
-Standards-Version: 4.7.2
+Standards-Version: 4.7.3
 Vcs-Browser: https://salsa.debian.org/science-team/scikit-learn
 Vcs-Git: https://salsa.debian.org/science-team/scikit-learn.git
 Homepage: https://scikit-learn.org
