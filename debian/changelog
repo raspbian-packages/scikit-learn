@@ -6,6 +6,13 @@ scikit-learn (1.8.0+dfsg-1) experimental; urgency=medium
 
  -- Timo Röhling <roehling@debian.org>  Tue, 23 Dec 2025 20:06:06 +0100
 
+scikit-learn (1.7.2+dfsg-4) unstable; urgency=medium
+
+  * Drop --config-setting build-dir (Closes: #1124209)
+  * Bump Standards-Version to 4.7.3
+
+ -- Timo Röhling <roehling@debian.org>  Tue, 30 Dec 2025 00:46:49 +0100
+
 scikit-learn (1.7.2+dfsg-3) unstable; urgency=medium
 
   * Upload to unstable.
