@@ -1,3 +1,9 @@
+scikit-learn (1.8.0+dfsg-3) unstable; urgency=medium
+
+  * Upload to unstable.
+
+ -- Timo Röhling <roehling@debian.org>  Tue, 24 Feb 2026 21:55:46 +0100
+
 scikit-learn (1.8.0+dfsg-2) experimental; urgency=medium
 
   * Experimental rebuild with build-dir fix applied.
