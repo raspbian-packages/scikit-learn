@@ -1,3 +1,10 @@
+scikit-learn (1.8.0+dfsg-4) unstable; urgency=medium
+
+  * Team upload.
+  * d/control: drop python3-mypy dependency, it is ununsed.
+
+ -- Michael R. Crusoe <crusoe@debian.org>  Thu, 26 Mar 2026 09:09:22 +0200
+
 scikit-learn (1.8.0+dfsg-3) unstable; urgency=medium
 
   * Upload to unstable.

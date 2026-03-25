@@ -23,7 +23,6 @@ Build-Depends:
  python3-threadpoolctl:native,
 Build-Depends-Arch:
  python3-matplotlib <!nocheck>,
- python3-mypy <!nocheck>,
  python3-pandas <!nocheck>,
  python3-pil <!nocheck>,
  python3-pytest <!nocheck>,
