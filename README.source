@@ -1,0 +1,6 @@
+New upstream release? Please update debian/github-revision.txt with the commit
+ID corresponding to upstream's release tag.
+
+Thanks,
+
+ -- Michael R. Crusoe <crusoe@debian.org>  Fri, 21 Jun 2024 12:26:43 +0200
