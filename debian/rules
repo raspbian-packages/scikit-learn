@@ -1,0 +1,98 @@
+#!/usr/bin/make -f
+# -*- mode: makefile; coding: utf-8 -*-
+#
+export DEB_BUILD_MAINT_OPTIONS=hardening=+all
+
+# things in the doc building and tests try to access stuff in HOME (https://bugs.debian.org/915078)
+export HOME=$(CURDIR)/tmp
+
+export JOBLIB_MULTIPROCESSING=0
+
+SKIP_TESTS = \
+	test_filter_warning_propagates_no_side_effect_with_loky_backend
+
+# numpydoc 1.9.0 regression: AttributeError: 'property' object has no attribute '__module__'
+SKIP_TESTS += test_docstring
+
+# Architecture-specific failures (usually related to floating point idiosyncrasies)
+ifneq ($(filter armel,$(DEB_HOST_ARCH)),)
+# See #1064280
+SKIP_TESTS += test_tfidf_no_smoothing
+endif
+ifneq ($(filter mips64el,$(DEB_HOST_ARCH)),)
+SKIP_TESTS += \
+	test_variance_nan \
+	test_lasso_lars_vs_R_implementation \
+	test_grid_search_failing_classifier \
+	test_searchcv_raise_warning_with_non_finite_score \
+	test_missing_value_handling \
+	test_estimators
+endif
+ifneq ($(filter ppc64,$(DEB_HOST_ARCH)),)
+SKIP_TESTS += test_lasso_lars_vs_R_implementation
+endif
+
+export PYBUILD_TEST_ARGS = $(if $(SKIP_TESTS),-k 'not ($(call concat_with,$(space)or$(space),$(SKIP_TESTS)))')
+ifeq ($(PYBUILD_AUTOPKGTEST),1)
+PYBUILD_TEST_ARGS += /usr/lib/python3/dist-packages/sklearn
+else
+# Disable network access and skip network tests on buildd.
+# DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS prevents the sphinx doc
+# build from downloading datasets for the examples; this functionality is
+# patched in for Debian. See also #1015805
+export DEBIAN_POLICY_SECTION_4_9_NO_NETWORK_ACCESS=1
+PYBUILD_TEST_ARGS += --ignore=sklearn/datasets/tests
+endif
+
+ifneq ($(DEB_HOST_ARCH),$(DEB_BUILD_ARCH))
+export PYBUILD_BEFORE_BUILD = meson env2mfile --debarch $(DEB_HOST_ARCH) --cross -o {dir}/debian/meson-cross.txt
+export PYBUILD_AFTER_BUILD = rm {dir}/debian/meson-cross.txt
+export PYBUILD_BUILD_ARGS = --config-setting setup-args=--cross-file={dir}/debian/meson-cross.txt
+endif
+
+# Helper variables
+PY3VERS = $(shell py3versions -vr)
+PY3DEF = $(shell py3versions -vd)
+space = $(eval) $(eval)
+concat_with = $(subst $(space),$1,$2)
+
+%:
+	dh $@ --buildsystem pybuild
+
+auto-build-for-default-python:
+	PYBUILD_DISABLE="$(filter-out $(PY3DEF),$(PY3VERS))" dh_auto_build
+	touch $@
+
+auto-build-for-other-python:
+	PYBUILD_DISABLE="$(PY3DEF)" dh_auto_build
+	touch $@
+
+override_dh_auto_build-arch: auto-build-for-default-python auto-build-for-other-python
+	true
+
+override_dh_auto_build-indep: auto-build-for-default-python
+	$(MAKE) -C doc html \
+		LANG=C.UTF-8 \
+		SPHINXOPTS= \
+		PYTHON=python3 \
+		PYTHONPATH=$(shell pybuild --print {build_dir} --interpreter python3)
+
+# Nothing to do for indep
+override_dh_auto_test-indep:
+
+override_dh_auto_test-arch:
+	dh_auto_test -a || test -n "$(filter loong64,$(DEB_HOST_ARCH))"
+
+execute_after_dh_install-indep:
+	find debian/python3-sklearn/usr/lib -name "*.so" -delete
+	find debian/python3-sklearn/usr/lib \( -name "README" -o -name "README.md" -o -name "LICENSE" -o -name "COPYRIGHT" \) -delete
+
+execute_after_dh_installdocs-indep:
+	mv debian/python-sklearn-doc/usr/share/doc/python-sklearn-doc/stable \
+	   debian/python-sklearn-doc/usr/share/doc/python-sklearn-doc/html
+	grep -rFl "$(CURDIR)" debian/python-sklearn-doc/usr/share/doc | xargs -r sed -i -e 's#$(CURDIR)#$$BUILD_DIR#g'
+
+# immediately useable documentation and example scripts/data
+override_dh_compress:
+	dh_compress -X.py -X.html -X.pdf -X.css -X.jpg -X.txt -X.js -X.json -X.rtc -X.ttf
+
