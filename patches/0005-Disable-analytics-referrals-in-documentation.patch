@@ -1,0 +1,34 @@
+From: Yaroslav Halchenko <debian@onerussian.com>
+Date: Thu, 14 May 2020 12:54:06 +0200
+Subject: Disable analytics referrals in documentation
+
+Origin: Debian
+Bug: 730259
+Bug-Debian: http://bugs.debian.org/730259
+Bug-Ubuntu: https://launchpad.net/bugs/
+Last-Update: 2013-11-24
+Forwarded: Not-Needed
+
+  if we were to provide some information from just reading  documentation we
+  had to disclose and seek approval from the user before doing that.
+
+  Thanks Ambrose Andrews for the analysis and report
+---
+ doc/conf.py | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/doc/conf.py b/doc/conf.py
+index 5510647..fe772ca 100644
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -229,10 +229,6 @@ html_theme_options = {
+             "type": "fontawesome",
+         },
+     ],
+-    "analytics": {
+-        "plausible_analytics_domain": "scikit-learn.org",
+-        "plausible_analytics_url": "https://views.scientific-python.org/js/script.js",
+-    },
+     # If "prev-next" is included in article_footer_items, then setting show_prev_next
+     # to True would repeat prev and next links. See
+     # https://github.com/pydata/pydata-sphinx-theme/blob/b731dc230bc26a3d1d1bb039c56c977a9b3d25d8/src/pydata_sphinx_theme/theme/pydata_sphinx_theme/layout.html#L118-L129
