@@ -1,0 +1,21 @@
+From: =?utf-8?q?Timo_R=C3=B6hling?= <roehling@debian.org>
+Date: Sun, 12 Oct 2025 22:24:40 +0200
+Subject: Use local jQuery
+
+---
+ doc/conf.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/doc/conf.py b/doc/conf.py
+index 66392cf..902dde0 100644
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -371,7 +371,7 @@ def add_js_css_files(app, pagename, templatename, context, doctree):
+     """
+     if pagename == "api/index":
+         # External: jQuery and DataTables
+-        app.add_js_file("https://code.jquery.com/jquery-3.7.0.js")
++        app.add_js_file("file:///usr/share/javascript/jquery/jquery.min.js")
+         app.add_js_file("https://cdn.datatables.net/2.0.0/js/dataTables.min.js")
+         app.add_css_file(
+             "https://cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css"
