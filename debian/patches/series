@@ -9,3 +9,4 @@
 0009-Use-local-jQuery.patch
 0010-Do-not-force-pytest-colored-output.patch
 0011-Fix-privacy-breaches-in-documentation.patch
+pytest-9.1.patch

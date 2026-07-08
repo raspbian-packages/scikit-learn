@@ -1,0 +1,27 @@
+From: Colin Watson <cjwatson@debian.org>
+Date: Wed, 8 Jul 2026 15:19:53 +0100
+Subject: Don't parameterize tests using non-Collection iterables
+
+This is deprecated as of pytest 9.1; see
+https://docs.pytest.org/en/stable/deprecations.html#non-collection-iterables-in-pytest-mark-parametrize.
+
+Bug-Debian: https://bugs.debian.org/1141210
+Forwarded: https://github.com/scikit-learn/scikit-learn/pull/34448
+Last-Update: 2026-07-08
+---
+ sklearn/utils/estimator_checks.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sklearn/utils/estimator_checks.py b/sklearn/utils/estimator_checks.py
+index 84edd1a..e6b706f 100644
+--- a/sklearn/utils/estimator_checks.py
++++ b/sklearn/utils/estimator_checks.py
+@@ -684,7 +684,7 @@ def parametrize_with_checks(
+ 
+     return pytest.mark.parametrize(
+         "estimator, check",
+-        _checks_generator(estimators, legacy, expected_failed_checks),
++        list(_checks_generator(estimators, legacy, expected_failed_checks)),
+         ids=_get_check_estimator_ids,
+     )
+ 
