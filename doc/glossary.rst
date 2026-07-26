@@ -15,7 +15,10 @@ Guide, we may minimize redundancy and inconsistency.
 
 We begin by listing general concepts (and any that didn't fit elsewhere), but
 more specific sets of related terms are listed below:
-:ref:`glossary_estimator_types`, :ref:`glossary_target_types`,
+:ref:`glossary_estimator_types`, 
+:ref:`glossary_metadata_routing`,
+:ref:`glossary_callbacks`,
+:ref:`glossary_target_types`,
 :ref:`glossary_methods`, :ref:`glossary_parameters`,
 :ref:`glossary_attributes`, :ref:`glossary_sample_props`.
 
@@ -231,7 +234,7 @@ General Concepts
     cross validation
         A resampling method that iteratively partitions data into mutually
         exclusive 'train' and 'test' subsets so model performance can be
-        evaluated on unseen data. This conserves data as avoids the need to hold
+        evaluated on unseen data. This conserves data as it avoids the need to hold
         out a 'validation' dataset and accounts for variability as multiple
         rounds of cross validation are generally performed.
         See :ref:`User Guide <cross_validation>` for more details.
@@ -518,13 +521,17 @@ General Concepts
         :term:`memory mapping`. See :ref:`parallelism` for more
         information.
 
+    label indicator format
     label indicator matrix
     multilabel indicator matrix
     multilabel indicator matrices
-        The format used to represent multilabel data, where each row of a 2d
-        array or sparse matrix corresponds to a sample, each column
+        This format can be used to represent binary or multilabel data. Each row of
+        a 2d array or sparse matrix corresponds to a sample, each column
         corresponds to a class, and each element is 1 if the sample is labeled
         with the class and 0 if not.
+
+        :ref:`LabelBinarizer <preprocessing_targets>` can be used to create a
+        multilabel indicator matrix from :term:`multiclass` labels.
 
     leakage
     data leakage
@@ -587,6 +594,26 @@ General Concepts
         A shorthand for Numpy due to the conventional import statement::
 
             import numpy as np
+
+    ovo
+    One-vs-one
+    one-vs-one
+        Method of decomposing a :term:`multiclass` problem into
+        `n_classes * (n_classes - 1) / 2` :term:`binary` problems, one for each
+        pairwise combination of classes. A metric is computed or a classifier is
+        fitted for each pair combination.
+        :class:`~sklearn.multiclass.OneVsOneClassifier` implements this
+        method for binary classifiers.
+
+    ovr
+    One-vs-Rest
+    one-vs-rest
+        Method for decomposing a :term:`multiclass` problem into `n_classes`
+        :term:`binary` problems. For each class a metric is computed or classifier
+        fitted, with that class being treated as the positive class while all other
+        classes are negative.
+        :class:`~sklearn.multiclass.OneVsRestClassifier` implements this
+        method for binary classifiers.
 
     online learning
         Where a model is iteratively updated by receiving each batch of ground
@@ -1103,6 +1130,57 @@ Metadata Routing
 
 Please refer to :ref:`Metadata Routing User Guide <metadata_routing>` for more
 information.
+
+.. _glossary_callbacks:
+
+Callbacks
+=========
+
+.. glossary::
+
+    auto-propagated
+    autopropagated
+        A :term:`callback` is auto-propagated if, when registered on a
+        :term:`meta-estimator`, it can be propagated to the sub-estimators of that
+        meta-estimator. This propagation means that the callback gets automatically
+        registered on the sub-estimators, and thus it will have its :term:`hooks`
+        called during their :term:`fitting` too.
+
+    callback
+    callbacks
+        An object which can be registered on a compatible :term:`estimator` to have its
+        :term:`hooks` called during the :term:`fitting` of that estimator. Registering a
+        callback on an estimator makes it possible to add functionalities to the
+        fitting process, such as displaying a progress bar or logging a score at each
+        step of the fitting. A callback can also interrupt the fitting, for example to
+        perform early stopping.
+
+    hook
+    hooks
+        The methods of a :term:`callback` which are called during the :term:`fitting` of
+        the estimator(s) the callback is registered on. The different hooks of a
+        callback are:
+
+        * :meth:`~sklearn.callback.FitCallback.setup` called once at the start of
+          :term:`fit`.
+        * :meth:`~sklearn.callback.FitCallback.on_fit_task_begin` called at the
+          beginning of each :term:`fit task`.
+        * :meth:`~sklearn.callback.FitCallback.on_fit_task_end` called at the end of
+          each :term:`fit task`.
+        * :meth:`~sklearn.callback.FitCallback.teardown` called once at the end of
+          :term:`fit`.
+
+    fit task
+    fit tasks
+        In the context of callbacks, a fit task is an arbitrary unit of work performed
+        during the :term:`fitting` of an estimator. These tasks are typically an
+        iteration of a loop, with nested loop corresponding to nested tasks. The tasks
+        have an inherent tree structure, with the root task being the whole fitting
+        process itself. For a more detailed description of the task tree, see the
+        :ref:`task tree section <callback_task_definition>` of the developer
+        documentation on callbacks.
+
+Please refer to the :ref:`Callbacks User Guide <callbacks_user>` for more information.
 
 .. _glossary_target_types:
 

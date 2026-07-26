@@ -15,7 +15,7 @@ from sklearn.base import (
 )
 from sklearn.metrics._scorer import _Scorer, mean_squared_error
 from sklearn.model_selection import BaseCrossValidator
-from sklearn.model_selection._split import GroupsConsumerMixin
+from sklearn.model_selection._split import GroupKFold, GroupsConsumerMixin
 from sklearn.utils._metadata_requests import (
     SIMPLE_METHODS,
 )
@@ -436,21 +436,21 @@ class ConsumingNoFitTransformTransformer(BaseEstimator):
         return X
 
 
+def consuming_metric(y_pred, y_true, registry=None, **kwargs):
+    if registry is not None:
+        registry.append(consuming_metric)
+    record_metadata_not_default(consuming_metric, **kwargs)
+    sample_weight = kwargs.get("sample_weight", None)
+    return mean_squared_error(y_pred, y_true, sample_weight=sample_weight)
+
+
 class ConsumingScorer(_Scorer):
     def __init__(self, registry=None):
+        score_func = partial(consuming_metric, registry=registry)
         super().__init__(
-            score_func=mean_squared_error, sign=1, kwargs={}, response_method="predict"
+            score_func=score_func, sign=1, kwargs={}, response_method="predict"
         )
         self.registry = registry
-
-    def _score(self, method_caller, clf, X, y, **kwargs):
-        if self.registry is not None:
-            self.registry.append(self)
-
-        record_metadata_not_default(self, **kwargs)
-
-        sample_weight = kwargs.get("sample_weight", None)
-        return super()._score(method_caller, clf, X, y, sample_weight=sample_weight)
 
 
 class ConsumingSplitter(GroupsConsumerMixin, BaseCrossValidator):
@@ -478,6 +478,11 @@ class ConsumingSplitter(GroupsConsumerMixin, BaseCrossValidator):
         test_indices = list(range(split_index, len(X)))
         yield test_indices
         yield train_indices
+
+
+class ConsumingSplitterInheritingFromGroupKFold(ConsumingSplitter, GroupKFold):
+    """Helper class that can be used to test TargetEncoder, that only takes specific
+    splitters."""
 
 
 class MetaRegressor(MetaEstimatorMixin, RegressorMixin, BaseEstimator):
