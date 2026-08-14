@@ -17,6 +17,7 @@ Build-Depends:
  python3-all-dev:any,
  python3-joblib:native,
  python3-mesonpy:native,
+ python3-narwhals,
  python3-numpy-dev,
  python3-numpy:any,
  python3-scipy:native,
