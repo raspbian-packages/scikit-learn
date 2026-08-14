@@ -7,10 +7,10 @@ Subject: Do not fail documentation build on example errors
  1 file changed, 1 insertion(+)
 
 diff --git a/doc/conf.py b/doc/conf.py
-index 5185da4..66392cf 100644
+index 15ded77..e251e98 100644
 --- a/doc/conf.py
 +++ b/doc/conf.py
-@@ -737,6 +737,7 @@ sphinx_gallery_conf = {
+@@ -745,6 +745,7 @@ sphinx_gallery_conf = {
      "plot_gallery": "True",
      "recommender": {"enable": True, "n_examples": 4, "min_df": 12},
      "reset_modules": ("matplotlib", "seaborn", reset_sklearn_config),

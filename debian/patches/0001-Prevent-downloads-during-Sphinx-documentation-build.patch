@@ -11,7 +11,7 @@ Forward: not-needed
  4 files changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/examples/applications/plot_out_of_core_classification.py b/examples/applications/plot_out_of_core_classification.py
-index 52ebd08..afd586f 100644
+index 2b0df1e..a2a1108 100644
 --- a/examples/applications/plot_out_of_core_classification.py
 +++ b/examples/applications/plot_out_of_core_classification.py
 @@ -18,6 +18,7 @@ features (words) may appear in each batch.
@@ -54,10 +54,10 @@ index 40f778c..80791e2 100644
  
  close_prices = np.vstack([q["close"] for q in quotes])
 diff --git a/sklearn/datasets/_base.py b/sklearn/datasets/_base.py
-index 39a84d9..290f7e5 100644
+index b135c6d..ca6deaa 100644
 --- a/sklearn/datasets/_base.py
 +++ b/sklearn/datasets/_base.py
-@@ -1489,6 +1489,9 @@ def _fetch_remote(remote, dirname=None, n_retries=3, delay=1):
+@@ -1492,6 +1492,9 @@ def _fetch_remote(remote, dirname=None, n_retries=3, delay=1):
                  f"re-downloading from {remote.url} ."
              )
  
@@ -68,7 +68,7 @@ index 39a84d9..290f7e5 100644
      # conflicts with parallel downloads. If the download is successful, the
      # temporary file is atomically renamed to the final file path (with
 diff --git a/sklearn/datasets/_openml.py b/sklearn/datasets/_openml.py
-index 7ca17cf..188a95b 100644
+index b707797..8f6ee06 100644
 --- a/sklearn/datasets/_openml.py
 +++ b/sklearn/datasets/_openml.py
 @@ -994,6 +994,9 @@ def fetch_openml(

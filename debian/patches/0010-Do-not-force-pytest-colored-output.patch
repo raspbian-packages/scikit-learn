@@ -7,10 +7,10 @@ Subject: Do not force pytest colored output
  1 file changed, 1 deletion(-)
 
 diff --git a/pyproject.toml b/pyproject.toml
-index a867cda..18beca8 100644
+index fa9463a..76e54b7 100644
 --- a/pyproject.toml
 +++ b/pyproject.toml
-@@ -106,7 +106,6 @@ doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS"
+@@ -110,7 +110,6 @@ doctest_optionflags = "NORMALIZE_WHITESPACE ELLIPSIS"
  testpaths = "sklearn"
  addopts = [
      "--disable-pytest-warnings",
