@@ -1,0 +1,11 @@
+0001-Prevent-downloads-during-Sphinx-documentation-build.patch
+0002-Relax-test-tolerance.patch
+0003-Disable-BinderHub-links.patch
+0004-Do-not-download-intersphinx-mappings.patch
+0005-Disable-analytics-referrals-in-documentation.patch
+0006-Supply-GitHub-revision-for-built-documentation.patch
+0007-Use-local-MathJax.patch
+0008-Do-not-fail-documentation-build-on-example-errors.patch
+0009-Use-local-jQuery.patch
+0010-Do-not-force-pytest-colored-output.patch
+0011-Fix-privacy-breaches-in-documentation.patch
