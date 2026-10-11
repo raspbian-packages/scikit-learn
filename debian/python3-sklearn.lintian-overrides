@@ -1,0 +1,4 @@
+# Text files with datasets are part of the package and not documentation
+python3-sklearn: package-contains-documentation-outside-usr-share-doc [usr/lib/python3/dist-packages/sklearn/datasets/*.rst]
+python3-sklearn: package-contains-documentation-outside-usr-share-doc [usr/lib/python3/dist-packages/sklearn/datasets/*.txt]
+

@@ -1,0 +1,14 @@
+include:
+ - https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/recipes/debian.yml
+
+variables:
+  RELEASE: 'unstable'
+  SALSA_CI_LINTIAN_SUPPRESS_TAGS: 'distribution-and-experimental-mismatch'
+  SALSA_CI_ENABLE_BUILD_PACKAGE_PROFILES: 1
+
+test-build-profiles:
+  extends: .test-build-package-profiles
+  parallel:
+    matrix:
+      - BUILD_PROFILES: nocheck
+      - BUILD_PROFILES: nodoc

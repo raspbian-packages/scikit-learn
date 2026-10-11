@@ -1,0 +1,9 @@
+Version: 5
+
+Template: Github
+Owner: scikit-learn
+Project: scikit-learn
+Dversion-Mangle: auto
+Repack: yes
+Repack-Suffix: +dfsg
+Version-Type: SEMANTIC_VERSION
